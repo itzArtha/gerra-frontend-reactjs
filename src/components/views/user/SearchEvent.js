@@ -6,17 +6,17 @@ import { useState, useCallback, useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import MainButton from "../../MainButton";
 import apiClient from "../../services/apiClient";
+import isUser from "../../services/isUser";
 
 const SearchEvent = () => {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState(Array);
   const [filter, setFilter] = useState({
-    webinar: false,
+    seminar: false,
     kompetisi: false,
-    official: false,
-    thismonth: false,
-    cheap: false,
+    newest: false,
+    mostViewed: false,
   });
   const [hidden, setHidden] = useState(true);
   const location = useLocation();
@@ -31,8 +31,11 @@ const SearchEvent = () => {
 
   const handleSearching = (search) => {
     setSearch(search);
-    console.log(search);
   };
+
+  const filteredEvents = event.filter((event) => {
+    return event.title.toLowerCase().includes(search.toLowerCase());
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -69,7 +72,7 @@ const SearchEvent = () => {
     e.preventDefault();
     filterData(e);
     history.push(
-      `?webinar=${filter.webinar}&kompetisi=${filter.kompetisi}&official=${filter.official}&thismonth=${filter.thismonth}&cheap=${filter.cheap}`
+      `?seminar=${filter.seminar}&kompetisi=${filter.kompetisi}&newest=${filter.newest}&thismonth=${filter.thismonth}&mostViewed=${filter.mostViewed}`
     );
   };
   return (
@@ -90,11 +93,11 @@ const SearchEvent = () => {
                 <h2 className="font-semibold text-2xl mb-12 border-b pb-2">
                   Filter
                 </h2>
-                <div className="first border-b my-2 pb-2">
+                <div className="first border-b mb-12 pb-2">
                   <Checkbox
-                    label="Webinar"
+                    label="Seminar"
                     onChange={(e) => {
-                      setFilter({ ...filter, webinar: e.target.checked });
+                      setFilter({ ...filter, seminar: e.target.checked });
                     }}
                   />
                   <Checkbox
@@ -104,30 +107,20 @@ const SearchEvent = () => {
                     }}
                   />
                 </div>
-                <div className="second border-b my-2 pb-2">
-                  <Checkbox
-                    label="Official Organization"
-                    onChange={(e) => {
-                      setFilter({ ...filter, official: e.target.checked });
-                    }}
-                  />
-                </div>
-                <div className="third border-b mb-12 pb-2">
-                  <Checkbox
-                    label="Bulan ini"
-                    onChange={(e) => {
-                      setFilter({ ...filter, thismonth: e.target.checked });
-                    }}
-                  />
-                </div>
                 <h2 className="font-semibold text-2xl mb-12 border-b pb-2">
                   Urutkan
                 </h2>
-                <div className="third border-b my-2 pb-2">
+                <div className="third border-b mb-12 pb-2">
                   <Checkbox
-                    label="Paling murah"
+                    label="Paling baru"
                     onChange={(e) => {
-                      setFilter({ ...filter, cheap: e.target.checked });
+                      setFilter({ ...filter, newest: e.target.checked });
+                    }}
+                  />
+                  <Checkbox
+                    label="Paling banyak dilihat"
+                    onChange={(e) => {
+                      setFilter({ ...filter, mostViewed: e.target.checked });
                     }}
                   />
                 </div>
@@ -163,7 +156,7 @@ const SearchEvent = () => {
                       <MainTicketBar loading={loading} />
                     </>
                   ) : (
-                    event.map((item, i) => (
+                    filteredEvents.map((item, i) => (
                       <MainTicketBar data={item} key={i} loading={loading} />
                     ))
                   )}

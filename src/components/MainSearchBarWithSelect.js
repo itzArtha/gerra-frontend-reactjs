@@ -42,7 +42,17 @@ const MainSearchBarWithSelect = ({ searchCallback, lastPath }) => {
                   }
                 }}
               />
-              <MainButton onClick={handleCallback} type="button" label="S" />
+              <MainButton
+                onClick={handleCallback}
+                type="button"
+                label={
+                  <img
+                    className="w-4 h-4"
+                    src={process.env.PUBLIC_URL + "/search.svg"}
+                    alt="Icon"
+                  />
+                }
+              />
             </div>
             {error ? (
               <ErrorLabel label="Yaa ketik dulu dong anj, masa main search gitu aja :)" />

@@ -3,6 +3,7 @@ import RoundedButton from "../../../RoundedButton";
 import IconWithTitle from "../../IconWithTitle";
 import Skeleton from "../../../Skeleton";
 import { Link } from "react-router-dom";
+import CurrencyFormat from "react-currency-format";
 
 const SecondTicketBar = ({ data, loading }) => {
   return (
@@ -45,20 +46,29 @@ const SecondTicketBar = ({ data, loading }) => {
           <div className="flex justify-between">
             <IconWithTitle
               loading={loading}
-              title={`Rp${loading ? 0 : data.price}`}
-              icon={
-                <RoundedButton
-                  type="button"
-                  className="w-8 h-8"
-                  icon={process.env.PUBLIC_URL + "/coin-stack.svg"}
+              title={
+                <CurrencyFormat
+                  value={loading ? 0 : data.price}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"Rp"}
                 />
+              }
+              icon={
+                <RoundedButton type="button" className="w-8 h-8">
+                  <img
+                    className="pr-2"
+                    src={process.env.PUBLIC_URL + "/coin-stack.svg"}
+                    alt="Icon"
+                  />
+                </RoundedButton>
               }
             />
 
             {loading ? (
               <Skeleton className="w-16 h-10 rounded-lg" count="1" />
             ) : (
-              <Link to={`event/${data.slug}`}>
+              <Link to={`/explore/event/${data.slug}`}>
                 <MainButton type="button" label="Beli" />
               </Link>
             )}

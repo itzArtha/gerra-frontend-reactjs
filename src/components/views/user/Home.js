@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import MainTicketBar from "./components/MainTicketBar";
 import Skeleton from "../../Skeleton";
 import Logout from "../../auth/Logout";
+import isUser from "../../services/isUser";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
@@ -28,22 +29,12 @@ const Home = () => {
           setOrgLoading(false);
         });
     };
-    setOrgLoading(true);
-    getTopOrg();
-  }, [setTopOrg]);
-
-  useEffect(() => {
     const getTrendNow = async () => {
       await apiClient.get("api/v1/user/trend/event").then((response) => {
         setTrend(response.data.data);
         setTrendLoading(false);
       });
     };
-    setTrendLoading(true);
-    getTrendNow();
-  }, [setTrend]);
-
-  useEffect(() => {
     const getRec = async () => {
       await apiClient
         .get("api/v1/user/rekomendasi/event?limit=true")
@@ -52,12 +43,18 @@ const Home = () => {
           setRecLoading(false);
         });
     };
+    setLoading(true);
     setRecLoading(true);
     getRec();
-  }, [setRec]);
+    setTrendLoading(true);
+    getTrendNow();
+    setOrgLoading(true);
+    getTopOrg();
+    setLoading(false);
+  }, [setTopOrg, setTrend, setRec]);
 
   return (
-    <MainLayout top={true} footer={true}>
+    <MainLayout top={true} footer={true} menu={true}>
       <MainModal
         showModal={showModal}
         title="Kamu bukan organizer lo..."

@@ -270,6 +270,20 @@ const Profile = () => {
       });
   };
 
+  const downloadQRCode = () => {
+    // Generate download with use canvas and stream
+    const canvas = document.getElementById("qr-download");
+    const pngUrl = canvas
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    let downloadLink = document.createElement("a");
+    downloadLink.href = pngUrl;
+    downloadLink.download = `QrCode.png`;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
+
   return (
     <>
       <MainModal
@@ -281,7 +295,15 @@ const Profile = () => {
         buttons={false}
       >
         <div className="flex justify-center">
-          <QRCode value={`https://gerra.co/${data.slug}`} />
+          <QRCode
+            id="qr-download"
+            size="256"
+            renderAs="canvas"
+            value={`https://gerra.co/${data.slug}`}
+          />
+        </div>
+        <div className="text-center m-4">
+          <MainButton onClick={downloadQRCode} label="Download" />
         </div>
       </MainModal>
       <MainModal

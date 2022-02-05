@@ -1,9 +1,27 @@
 import SecondaryButton from "../../../../SecondaryButton";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Skeleton from "../../../../Skeleton";
+import apiClient from "../../../../services/apiClient";
+import { useState } from "react";
 const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
+  const history = useHistory();
+  const [isLoading, setLoading] = useState(false);
   const handleRoute = (e) => {
     setSidebarOpen(!sidebarOpen);
+  };
+  const handleCreateEvent = async () => {
+    setLoading(true);
+    await apiClient
+      .post("/api/v1/organization/event")
+      .then((response) => {
+        if (response.status === 200) {
+          history.push("/manage/event/" + response.data.data.slug);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        //
+      });
   };
   return (
     <>
@@ -60,12 +78,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
               <div>
                 <h2 className="text-xl font-semibold">{data.name}</h2>
                 <p className="text-sm font-light">{data.description}</p>
-                <Link
-                  to={`/${data.slug}`}
+                <a
+                  href={`/${data.slug}`}
+                  target={`_blank`}
                   className="text-sm font-semibold text-blue-500 underline"
                 >
                   {`gerra.co/${data.slug}`}
-                </Link>
+                </a>
               </div>
             )}
           </div>
@@ -74,17 +93,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav>
             <div className="mb-2 last:mb-0">
-              <Link to="create">
-                <SecondaryButton
-                  onClick={(e) => {
-                    handleRoute(e);
-                  }}
-                  className={`w-full py-4 ${
-                    route.includes("create") && "bg-yellow-400"
-                  }`}
-                  label="Buat Event"
-                />
-              </Link>
+              <SecondaryButton
+                onClick={(e) => {
+                  handleCreateEvent();
+                }}
+                className={`w-full py-4 ${
+                  route.includes("create") && "bg-yellow-400"
+                }`}
+                label={isLoading ? "Loading..." : "Buat Event"}
+              />
             </div>
             <div className="mb-2 last:mb-0">
               <Link to="dashboard">

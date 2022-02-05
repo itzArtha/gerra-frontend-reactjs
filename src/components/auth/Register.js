@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import apiClient from "../services/apiClient";
 import { useParams, Link, Redirect, useHistory } from "react-router-dom";
 import Layout from "./Layout";
@@ -8,10 +8,10 @@ import ErrorLabel from "../ErrorLabel";
 import MainBtn from "../MainButton";
 import SecBtn from "../SecondaryButton";
 import GoogleBtn from "../GoogleLoginButton";
+import isAuth from "../services/isAuth";
 
 const Register = () => {
   const history = useHistory();
-  const [redirect, setRedirect] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [formData, setformData] = useState({
     name: "",
@@ -27,19 +27,16 @@ const Register = () => {
     isPassword_confirmationError: false,
     password_confirmationErrorLabel: "",
   });
+
+  useEffect(() => {
+    isAuth();
+  }, []);
+
   const { id } = useParams();
   if (!["user", "organization"].includes(id)) {
     return <Redirect to="/login" />;
   }
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const role = localStorage.getItem("role");
-  if ((isLoggedIn && role) || redirect) {
-    return (
-      <Redirect
-        to={id === "user" || role === "1" ? "/" : "/complete-profile"}
-      />
-    );
-  }
+
   const loginHandler = async () => {
     setLoading(true);
     apiClient.get("/sanctum/csrf-cookie").then((response) => {
@@ -62,9 +59,9 @@ const Register = () => {
               .then((response) => {
                 setLoading(false);
                 if (response.status === 200) {
-                  localStorage.setItem("isLoggedIn", true);
-                  localStorage.setItem("role", id === "user" ? 1 : 0);
-                  setRedirect(true);
+                  return history.push(
+                    id === "user" ? "/" : "/complete-profile"
+                  );
                 }
               });
           }
@@ -85,6 +82,15 @@ const Register = () => {
             });
           }
         });
+    });
+  };
+
+  const loginGoogle = async () => {
+    setLoading(true);
+    await apiClient.get("/sanctum/csrf-cookie").then((response) => {
+      apiClient.get("/api/v1/auth/google").then((response) => {
+        return (window.location.href = response.data);
+      });
     });
   };
 
@@ -143,10 +149,10 @@ const Register = () => {
 
               <GoogleBtn
                 type="button"
-                label="Masuk dengan Google"
+                label={isLoading ? `Loading...` : `Masuk dengan Google`}
                 disabled={isLoading}
                 onClick={() => {
-                  console.log("OK");
+                  loginGoogle();
                 }}
               />
               <div className="flex items-center justify-between mt-4">

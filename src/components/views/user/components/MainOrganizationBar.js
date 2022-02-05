@@ -31,31 +31,43 @@ const MainOrganizationBar = ({ data, loading }) => {
             )}
 
             <div className="flex items-center mt-4 text-gray-700 dark:text-gray-200">
-              <IconWithTitle
-                title={`Jakarta`}
-                loading={loading}
-                icon={
-                  <RoundedButton
-                    type="button"
-                    className="w-8 h-8"
-                    icon={process.env.PUBLIC_URL + "/pin.svg"}
-                  />
-                }
-              />
+              {loading ? (
+                <Skeleton className="w-24 h-4 rounded-full" count="1" />
+              ) : (
+                <IconWithTitle
+                  title={data.address}
+                  loading={loading}
+                  icon={
+                    <RoundedButton type="button" className="w-8 h-8">
+                      <img
+                        className="pr-2"
+                        src={process.env.PUBLIC_URL + "/pin.svg"}
+                        alt="Icon"
+                      />
+                    </RoundedButton>
+                  }
+                />
+              )}
             </div>
 
             <div className="flex items-center mt-1 text-gray-700 dark:text-gray-200">
-              <IconWithTitle
-                loading={loading}
-                title={`100 Tiket Terjual`}
-                icon={
-                  <RoundedButton
-                    type="button"
-                    className="w-8 h-8"
-                    icon={process.env.PUBLIC_URL + "/coin-stack.svg"}
-                  />
-                }
-              />
+              {loading ? (
+                <Skeleton className="w-24 h-4 rounded-full" count="1" />
+              ) : (
+                <IconWithTitle
+                  loading={loading}
+                  title={`${data.countSales} Tiket Terjual`}
+                  icon={
+                    <RoundedButton type="button" className="w-8 h-8">
+                      <img
+                        className="pr-2"
+                        src={process.env.PUBLIC_URL + "/coin-stack.svg"}
+                        alt="Icon"
+                      />
+                    </RoundedButton>
+                  }
+                />
+              )}
             </div>
           </div>
         </div>

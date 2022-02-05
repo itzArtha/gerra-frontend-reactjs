@@ -16,31 +16,28 @@ const App = () => {
   const { router } = useParams();
   const history = useHistory();
 
-  useEffect(
-    (history) => {
-      const handleFetchData = () => {
-        apiClient
-          .get("/api/v1/organization")
-          .then((response) => {
-            setData(response.data.data);
-            setLoading(false);
-            document.getElementById("title").innerHTML =
-              response.data.data.name.split(" ")[0] + " - Gerra Technologies";
-          })
-          .catch((error) => {
-            if (error.response.status === 401) {
-              localStorage.removeItem("isLoggedIn");
-              localStorage.removeItem("role");
-              history.push("/login");
-            } else {
-              //
-            }
-          });
-      };
-      handleFetchData();
-    },
-    [setData]
-  );
+  useEffect(() => {
+    const handleFetchData = () => {
+      apiClient
+        .get("/api/v1/organization")
+        .then((response) => {
+          setData(response.data.data);
+          setLoading(false);
+          document.getElementById("title").innerHTML =
+            response.data.data.name.split(" ")[0] + " - Gerra Technologies";
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("role");
+            history.push("/login");
+          } else {
+            //
+          }
+        });
+    };
+    handleFetchData();
+  }, [setData]);
 
   const handleContent = () => {
     switch (router) {
@@ -71,7 +68,7 @@ const App = () => {
           data={data}
           loading={loading}
         />
-        <div className=" flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
           <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           <main className="p-4 md:ml-72">
             <h2 className="capitalize font-semibold text-2xl">{router}</h2>

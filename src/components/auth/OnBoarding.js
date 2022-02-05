@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "./Layout";
 import Header from "./Header";
 import Footer from "./Footer";
 import MainBox from "../MainBox";
 import { Link, Redirect } from "react-router-dom";
+import isAuth from "../services/isAuth";
 
 const OnBoarding = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const role = localStorage.getItem("role");
-  if (isLoggedIn && role) {
-    return <Redirect to={role === "1" ? "/" : "/complete-profile"} />;
-  }
+  useEffect(() => {
+    isAuth();
+  }, []);
   return (
     <Layout>
       <React.Fragment>

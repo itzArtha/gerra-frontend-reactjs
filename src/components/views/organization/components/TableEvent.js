@@ -1,10 +1,34 @@
 import moment from "moment";
+import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import MainModal from "../../../modals/MainModal";
 
-const TableEvent = ({ data }) => {
+const TableEvent = ({ callback, data }) => {
   const history = useHistory();
+  const [showModal, setShowModal] = useState(false);
+  const [deleteID, setdeleteID] = useState("");
+
+  const handleCallback = (id) => {
+    callback(id);
+    setShowModal(false);
+  };
+
+  const handleDelete = () => {
+    handleCallback(deleteID);
+  };
   return (
     <div className="flex flex-col">
+      <MainModal
+        handleClose={() => {
+          setShowModal(false);
+        }}
+        buttonLabel={"Iii yakin bgtt"}
+        showModal={showModal}
+        onClick={handleDelete}
+        title="Dah yakin mo ngapus?"
+      >
+        Gabisa dikembaliin lagi lo...
+      </MainModal>
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -40,9 +64,6 @@ const TableEvent = ({ data }) => {
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Status
-                  </th>
-                  <th scope="col" className="relative px-6 py-3">
-                    <span className="sr-only cursor-pointer">Edit</span>
                   </th>
                 </tr>
               </thead>
@@ -87,11 +108,11 @@ const TableEvent = ({ data }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         <span className="font-semibold">Start at</span>{" "}
-                        {moment(item.start_at).format("llll")}
+                        {moment(item.start_at).format("lll")}
                       </div>
                       <div className="text-sm text-gray-900">
                         <span className="font-semibold">End at</span>{" "}
-                        {moment(item.end_at).format("llll")}
+                        {moment(item.end_at).format("lll")}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -111,14 +132,32 @@ const TableEvent = ({ data }) => {
                           : "Berakhir"}
                       </span>
                     </td>
+                    <td className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <a target={`__blank`} href={`/admin/event/${item.slug}`}>
+                        <p className="text-green-600 hover:text-green-900 cursor-pointer">
+                          Dashboard
+                        </p>
+                      </a>
+                    </td>
                     <td
-                      className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                      className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium"
                       onClick={() => {
                         history.push(`/manage/event/${item.slug}`);
                       }}
                     >
                       <p className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
                         Edit
+                      </p>
+                    </td>
+                    <td
+                      className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium"
+                      onClick={() => {
+                        setShowModal(true);
+                        setdeleteID(item.slug);
+                      }}
+                    >
+                      <p className="text-red-600 hover:text-red-900 cursor-pointer">
+                        Delete
                       </p>
                     </td>
                   </tr>

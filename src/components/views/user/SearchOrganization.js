@@ -6,9 +6,10 @@ import { useLocation, useHistory } from "react-router-dom";
 import MainOrganizationBar from "./components/MainOrganizationBar";
 import MainButton from "../../MainButton";
 import apiClient from "../../services/apiClient";
+import isUser from "../../services/isUser";
 
 const SearchOrganization = () => {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(Array);
   const [filter, setFilter] = useState({
@@ -26,6 +27,10 @@ const SearchOrganization = () => {
   const lastPath = location.pathname.substring(
     location.pathname.lastIndexOf("/") + 1
   );
+
+  const filteredOrgs = data.filter((org) => {
+    return org.name.toLowerCase().includes(search.toLowerCase());
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -47,7 +52,7 @@ const SearchOrganization = () => {
   const handleFilter = (e) => {
     e.preventDefault();
     history.push(
-      `?official=${filter.official}&eventOngoing=${filter.eventOngoing}&lastUpdate=${filter.lastUpdate}&ticketSale=${filter.ticketSale}`
+      `?eventOngoing=${filter.eventOngoing}&lastUpdate=${filter.lastUpdate}&ticketSale=${filter.ticketSale}`
     );
   };
   return (
@@ -67,7 +72,7 @@ const SearchOrganization = () => {
               <h2 className="font-semibold text-2xl mb-12 border-b pb-2">
                 Filter
               </h2>
-              <div className="first border-b my-2 pb-2">
+              <div className="first border-b mb-12 pb-2">
                 <Checkbox
                   label="Lagi Ngadain Event"
                   name="eventOngoing"
@@ -76,27 +81,16 @@ const SearchOrganization = () => {
                   }}
                 />
               </div>
-              <div className="second border-b mt-2 mb-12 pb-2">
-                <Checkbox
-                  label="Official Organization"
-                  name="official"
-                  onChange={(e) => {
-                    setFilter({ ...filter, official: e.target.checked });
-                  }}
-                />
-              </div>
               <h2 className="font-semibold text-2xl mb-12 border-b pb-2">
                 Urutkan
               </h2>
-              <div className="third border-b my-2 pb-2">
+              <div className="third border-b mb-12 pb-2">
                 <Checkbox
                   label="Terakhir Update"
                   onChange={(e) => {
                     setFilter({ ...filter, lastUpdate: e.target.checked });
                   }}
                 />
-              </div>
-              <div className="third border-b mt-2 mb-12 pb-2">
                 <Checkbox
                   label="Tiket Terjual"
                   onChange={(e) => {
@@ -134,7 +128,7 @@ const SearchOrganization = () => {
                     <MainOrganizationBar loading={loading} />
                   </>
                 ) : (
-                  data.map((item, i) => (
+                  filteredOrgs.map((item, i) => (
                     <MainOrganizationBar
                       data={item}
                       key={i}

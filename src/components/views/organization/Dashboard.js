@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import apiClient from "../../services/apiClient";
 import EventBox from "./components/EventBox";
 import MainBox from "./components/MainBox";
-import TableActivity from "./components/TableActivity";
 
 const Dashboard = () => {
   const [isLoading, setLoading] = useState();
@@ -56,23 +55,7 @@ const Dashboard = () => {
         </MainBox>
       </div>
       <div className="mt-12">
-        <h2 className="text-center font-semibold text-2xl">
-          Aktivitas Terakhir
-        </h2>
-        <div className="mt-4">
-          <h2 className="font-semibold">Event</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
-            {isLoading
-              ? "Loading..."
-              : event.map((item, i) => (
-                  <EventBox key={i} data={item} loading={isLoading} />
-                ))}
-          </div>
-          <div className="mt-8">
-            <h2 className="font-semibold">Peserta</h2>
-            <TableActivity />
-          </div>
-        </div>
+        <h2 className="text-center font-semibold text-2xl">Statistik</h2>
       </div>
     </>
   );

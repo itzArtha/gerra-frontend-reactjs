@@ -30,16 +30,12 @@ const Setting = ({ data, loading }) => {
     switch (status) {
       case "informasi":
         return <Profile data={data} loading={isLoading} />;
-        break;
       case "rekening":
         return <Rekening data={data} loading={isLoading} />;
-        break;
       case "keamanan":
         return <Security data={data} loading={isLoading} />;
-        break;
-      case "notifikasi":
-        return <Notifikasi data={data} loading={isLoading} />;
-        break;
+      // case "notifikasi":
+      //   return <Notifikasi data={data} loading={isLoading} />;
       default:
         history.push("./dashboard");
         break;
@@ -79,7 +75,7 @@ const Setting = ({ data, loading }) => {
             type="button"
             label="Keamanan"
           />
-          <SecondaryButton
+          {/* <SecondaryButton
             onClick={() => {
               handleRedirection("notifikasi");
             }}
@@ -88,7 +84,7 @@ const Setting = ({ data, loading }) => {
             }`}
             type="button"
             label="Notifikasi"
-          />
+          /> */}
         </div>
       </div>
       <div className="mt-12">{handleContent()}</div>

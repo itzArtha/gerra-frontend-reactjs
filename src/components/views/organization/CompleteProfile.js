@@ -237,8 +237,13 @@ const CompleteProfile = () => {
                   }}
                   className="absolute bottom-0 right-0 w-10 h-10 -mx-1 -my-1"
                   disabled={isLoading}
-                  icon={process.env.PUBLIC_URL + "/edit.svg"}
-                />
+                >
+                  <img
+                    className="px-1 w-6 h-6"
+                    src={process.env.PUBLIC_URL + "/edit.svg"}
+                    alt="Icon"
+                  />
+                </RoundedButton>
               )}
             </div>
             {formData.isFileError ? (

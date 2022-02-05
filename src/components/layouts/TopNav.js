@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/apiClient";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import ProfilePicture from "../ProfilePicture";
-import Logout from "../auth/Logout";
 import MainButton from "../MainButton";
+import RoundedButton from "../RoundedButton";
 
 const TopNav = () => {
   const [loading, setLoading] = useState(false);
@@ -42,11 +42,13 @@ const TopNav = () => {
           <div className="flex items-center justify-between">
             <div className="text-xl font-semibold text-gray-700">
               {path === "/" ? (
-                <img
-                  className="w-32"
-                  src={process.env.PUBLIC_URL + "/logo.png"}
-                  alt="Icon"
-                />
+                <Link to="/">
+                  <img
+                    className="w-32"
+                    src={process.env.PUBLIC_URL + "/logo.png"}
+                    alt="Icon"
+                  />
+                </Link>
               ) : (
                 <img
                   className="w-8 cursor-pointer"
@@ -61,27 +63,23 @@ const TopNav = () => {
             {isAdmin ? (
               ""
             ) : isAuth ? (
-              <div className="inline-block items-center mt-4 md:mt-0 group relative">
-                <button
-                  type="button"
-                  className="flex items-center focus:outline-none"
-                  aria-label="toggle profile dropdown"
-                >
+              <div className="flex">
+                <div>
                   <ProfilePicture
-                    transform="w-12 h-12"
-                    link="/profile"
+                    transform="w-12 h-12 mx-1"
+                    link="/profile/biodata"
                     data={user}
                     loading={loading}
                   />
-                </button>
-                <ul className="absolute hidden pt-1 group-hover:block">
-                  <li className="rounded-t py-2 px-4 block whitespace-no-wrap">
-                    <Logout />
-                  </li>
-                </ul>
+                </div>
               </div>
             ) : (
-              <MainButton label="Login" />
+              <MainButton
+                onClick={() => {
+                  history.push("/login");
+                }}
+                label="Login"
+              />
             )}
           </div>
         </div>

@@ -1,9 +1,7 @@
 import CurrencyFormat from "react-currency-format";
 import moment from "moment";
-import { useState } from "react";
 
-const TablePenjualan = () => {
-  const [data, setData] = useState([]);
+const TablePenjualan = ({ data }) => {
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -12,6 +10,12 @@ const TablePenjualan = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    ID Transaksi
+                  </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -51,7 +55,7 @@ const TablePenjualan = () => {
                       <div className="flex items-center">
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {person.title}
+                            {person.id}
                           </div>
                         </div>
                       </div>
@@ -60,7 +64,16 @@ const TablePenjualan = () => {
                       <div className="flex items-center">
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {person.title}
+                            {person.ticket}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {person.name}
                           </div>
                         </div>
                       </div>
@@ -68,7 +81,7 @@ const TablePenjualan = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         <CurrencyFormat
-                          value={person.amount}
+                          value={person.subtotal}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={"Rp"}

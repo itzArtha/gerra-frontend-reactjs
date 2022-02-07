@@ -1,9 +1,5 @@
-import CurrencyFormat from "react-currency-format";
 import moment from "moment";
-import { useState } from "react";
-
-const TablePeserta = () => {
-  const [data, setData] = useState([]);
+const TablePeserta = ({ data }) => {
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -36,6 +32,12 @@ const TablePeserta = () => {
                   >
                     Tiket
                   </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Tanggal Registrasi
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -43,7 +45,7 @@ const TablePeserta = () => {
                   <tr key={person.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        ID
+                        {person.id}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
@@ -51,49 +53,31 @@ const TablePeserta = () => {
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
                             className="h-10 w-10 rounded-full"
-                            src={person.banner_url}
+                            src={person.photo_url}
                             alt=""
                           />
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {person.title}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {person.owner}
+                            {person.name}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        @gmail
+                        {person.email}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        <CurrencyFormat
-                          value={person.amount}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          prefix={"Rp"}
-                        />
+                        {person.ticket}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        {person.status}
-                      </span>
-                    </td>
-                    <td
-                      className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium"
-                      onClick={() => {
-                        // history.push(`/manage/event/${item.slug}`);
-                      }}
-                    >
-                      <p className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
-                        Detail
-                      </p>
+                      <div className="text-sm font-medium text-gray-900">
+                        {moment(person.created_at).format("lll")}
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -4,7 +4,7 @@ import MainButton from "./MainButton";
 import ErrorLabel from "./ErrorLabel";
 
 const MainSearch = ({ searchCallback, placeholder }) => {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [error, setError] = useState(false);
 
   const handleCallback = () => {

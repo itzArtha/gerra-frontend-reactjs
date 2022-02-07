@@ -21,6 +21,7 @@ import Tickets from "../components/views/user/Tickets";
 import Notif from "../components/views/user/notifications/Dashboard";
 import PrivateUserRoute from "./PrivateUserRoute";
 import EventAdmin from "../components/views/organization/events/components/App";
+import OverlayPresensi from "../components/views/organization/events/OverlayPresensi";
 
 const Router = () => {
   return (
@@ -62,6 +63,7 @@ const Router = () => {
         />
         <PrivateOrgRoute path="/admin/:router" exact component={App} />
 
+        <Route path="/overlay/:slug" exact component={OverlayPresensi} />
         <Route path="/explore/event/:slug" exact component={EventDetail} />
         <Route path="/verifikasi-email" exact component={EmailVerification} />
         <Route path="/:id/register" exact component={Register} />

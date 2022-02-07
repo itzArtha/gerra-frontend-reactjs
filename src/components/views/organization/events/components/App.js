@@ -23,15 +23,15 @@ const App = () => {
       case "dashboard":
         return <Dashboard />;
       case "pengurus":
-        return <Pengurus />;
+        return <Pengurus slug={slug} />;
       case "peserta":
-        return <Peserta />;
+        return <Peserta slug={slug} />;
       case "penjualan":
-        return <Penjualan />;
+        return <Penjualan slug={slug} />;
       case "presensi":
         return <Presensi />;
       default:
-        history.push(`./admin/event/${slug}?tab=dashboard`);
+        window.location.href = `${window.location.origin}/admin/event/${slug}?tab=dashboard`;
         break;
     }
   };

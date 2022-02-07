@@ -3,37 +3,67 @@ import TablePengurus from "../components/TablePengurus";
 import MainModal from "../../../modals/MainModal";
 import MainSearch from "../../../MainSearch";
 import Label from "../../../Label";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import apiClient from "../../../services/apiClient";
 import IconWithTitle from "../../IconWithTitle";
 import Checkbox from "../../../Checkbox";
 import SelectInput from "../../../SelectInput";
+import MainInput from "../../../MainInput";
+import handleSwal from "../../../handleSwal";
+import Skeleton from "../../../Skeleton";
 
-const Pengurus = () => {
+const Pengurus = ({ slug }) => {
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
+  const [data, setData] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [choosePart, setChoosePart] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    customId: "",
+    roles: "0",
+    userId: "",
+  });
 
-  const callback = useCallback((search) => {
-    setSearch(search);
+  const clickCallback = useCallback(() => {
+    fetchData();
   }, []);
 
-  const handleOpenAddModal = () => {
-    const fetchPartSearch = async () => {
-      await apiClient
-        .get("/api/v1/user/search")
-        .then((response) => {
-          setAllUsers(response.data.data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          //
-        });
-    };
-    fetchPartSearch();
-    setShowModal(true);
+  useEffect(() => {
+    setLoading(true);
+    fetchData();
+  }, [slug]);
+
+  const fetchData = () => {
+    apiClient
+      .get("/api/v1/organization/event/organizer?eventid=" + slug)
+      .then((response) => {
+        setData(response.data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setData([]);
+      });
+  };
+
+  const callback = useCallback(
+    (search) => {
+      setSearch(search);
+      if (allUsers.length === 0) {
+        fetchPartSearch();
+      }
+    },
+    [allUsers]
+  );
+
+  const fetchPartSearch = async () => {
+    setLoading(true);
+    await apiClient.get("/api/v1/user/search").then((response) => {
+      setAllUsers(response.data.data);
+      setLoading(false);
+    });
   };
 
   const filteredPersons = allUsers.filter((person) => {
@@ -48,7 +78,30 @@ const Pengurus = () => {
       newArray = newArray.filter((i) => i.id !== id);
     }
     setChoosePart(newArray);
-    // console.log(newArray);
+    setFormData({
+      ...formData,
+      userId: newArray.map((item) => item.res.id)[0],
+    });
+  };
+
+  const addOrganizer = () => {
+    setBtnLoading(true);
+    apiClient
+      .post("/api/v1/organization/event/organizer", {
+        user_id: formData.userId,
+        eventid: slug,
+        custom_id: formData.customId,
+        roles: formData.roles,
+      })
+      .then((response) => {
+        fetchData();
+        setBtnLoading(false);
+        setShowModal(false);
+      })
+      .catch((error) => {
+        handleSwal(error.response.data.message, "error");
+        setBtnLoading(false);
+      });
   };
 
   return (
@@ -57,9 +110,9 @@ const Pengurus = () => {
         title={"Tambah pengurus di event ini"}
         showModal={showModal}
         onClick={() => {
-          //
+          addOrganizer();
         }}
-        buttonLabel={"Tambahkan"}
+        buttonLabel={btnLoading ? "Loading..." : "Tambahkan"}
         handleClose={() => {
           setShowModal(false);
         }}
@@ -74,7 +127,12 @@ const Pengurus = () => {
           placeholder={"Cari pengurus..."}
         />
         <div>
-          <div className="overflow-auto h-64">
+          {loading && allUsers.length === 0 ? (
+            <span className="flex justify-center">Loading...</span>
+          ) : (
+            ""
+          )}
+          <div className="overflow-auto h-48">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {filteredPersons.map((item, i) => (
                 <label
@@ -101,19 +159,23 @@ const Pengurus = () => {
                         />
                       }
                     />
-                    <Checkbox
-                      checked={
-                        choosePart.filter(
-                          (c) => parseInt(c.id) === parseInt(item.id)
-                        ).length > 0
-                          ? true
-                          : false
-                      }
-                      onChange={handleSelectPart}
-                      value={item.id}
-                      className="my-4"
-                      id={`addTeamCheck${i}`}
-                    />
+                    {loading ? (
+                      ""
+                    ) : (
+                      <Checkbox
+                        checked={
+                          choosePart.filter(
+                            (c) => parseInt(c.id) === parseInt(item.id)
+                          ).length > 0
+                            ? true
+                            : false
+                        }
+                        onChange={handleSelectPart}
+                        value={item.id}
+                        className="my-4"
+                        id={`addTeamCheck${i}`}
+                      />
+                    )}
                   </div>
                 </label>
               ))}
@@ -125,24 +187,55 @@ const Pengurus = () => {
             <Label
               label={`Jabatan untuk ${choosePart.map((item) => item.res.name)}`}
             />
-            <SelectInput>
-              <option value="1">Admin</option>
+            <SelectInput
+              value={formData.roles}
+              onChange={(e) => {
+                setFormData({ ...formData, roles: e.target.value });
+              }}
+            >
+              <option key="0" value="0">
+                Admin
+              </option>
+              <option key="1" value="1">
+                Anggota
+              </option>
             </SelectInput>
+            <Label
+              label={`Custom ID untuk ${choosePart.map(
+                (item) => item.res.name
+              )}`}
+            />
+            <MainInput
+              onChange={(e) => {
+                setFormData({ ...formData, customId: e.target.value });
+              }}
+              placeholder="NIM/NIS/NIP/NIK"
+            />
           </div>
         ) : (
           ""
         )}
       </MainModal>
       <div className="my-4 flex justify-end">
-        <MainButton
-          onClick={() => {
-            handleOpenAddModal();
-          }}
-          label="Tambah Pengurus"
-        />
+        {loading ? (
+          <Skeleton className="w-48 h-10 rounded" count="1" />
+        ) : (
+          <MainButton
+            onClick={() => {
+              setShowModal(true);
+            }}
+            label="Tambah Pengurus"
+          />
+        )}
       </div>
-      <div title="table" className="my-4">
-        <TablePengurus />
+      <div title="Table" className="my-4">
+        {loading ? (
+          <div className="flex justify-center">Loading...</div>
+        ) : data.length > 0 ? (
+          <TablePengurus clickCallback={clickCallback} data={data} />
+        ) : (
+          <div className="flex justify-center">Belum ada data</div>
+        )}
       </div>
     </>
   );

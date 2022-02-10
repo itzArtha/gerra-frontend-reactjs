@@ -45,7 +45,7 @@ const TicketDetail = ({ transaction, loading, type }) => {
               <td>
                 <a
                   className="text-blue-500 hover:text-blue-600"
-                  href="https://www.instagram.com/gerra.co"
+                  href="https://www.instagram.com/watix.id"
                 >
                   Klik Link
                 </a>

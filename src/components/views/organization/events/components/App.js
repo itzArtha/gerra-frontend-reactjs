@@ -9,19 +9,37 @@ import Pengurus from "../Pengurus";
 import Peserta from "../Peserta";
 import Penjualan from "../Penjualan";
 import Presensi from "../Presensi";
+import apiClient from "../../../../services/apiClient";
 
 const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
   const query = useQuery();
   const history = useHistory();
   const router = query.get("tab");
   const { slug } = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await apiClient
+        .get("/api/v1/organization/event/" + slug)
+        .then((response) => {
+          setData(response.data.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+    };
+    fetchData();
+  }, [slug]);
+
   const handleContent = () => {
     switch (router) {
       case "dashboard":
-        return <Dashboard />;
+        return <Dashboard slug={slug} />;
       case "pengurus":
         return <Pengurus slug={slug} />;
       case "peserta":

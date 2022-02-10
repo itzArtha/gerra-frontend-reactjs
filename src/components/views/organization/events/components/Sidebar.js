@@ -5,24 +5,10 @@ import apiClient from "../../../../services/apiClient";
 import { useState } from "react";
 const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
   const history = useHistory();
-  const [isLoading, setLoading] = useState(false);
   const handleRoute = (e) => {
     setSidebarOpen(!sidebarOpen);
   };
-  const handleCreateEvent = async () => {
-    setLoading(true);
-    await apiClient
-      .post("/api/v1/organization/event")
-      .then((response) => {
-        if (response.status === 200) {
-          history.push("/manage/event/" + response.data.data.slug);
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        //
-      });
-  };
+
   return (
     <>
       <div
@@ -59,14 +45,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
               <Skeleton className="w-full h-4 rounded" count="1" />
             ) : (
               <div>
-                <h2 className="text-xl font-semibold">{data.name}</h2>
-                <p className="text-sm font-light">{data.description}</p>
+                <h2 className="text-xl font-semibold">{data.title}</h2>
+                <p className="text-sm font-light">
+                  {data.description.substring(0, 88) + "..."}
+                </p>
                 <a
-                  href={`/${data.slug}`}
+                  href={`/explore/event/${data.slug}`}
                   target={`_blank`}
                   className="text-sm font-semibold text-blue-500 underline"
                 >
-                  {`gerra.co/${data.slug}`}
+                  {`watix.id/explore/event/${data.slug}`}
                 </a>
               </div>
             )}
@@ -75,6 +63,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
 
         <div className="flex flex-col justify-between flex-1 mt-6">
           <nav>
+            <div
+              className="mb-2 last:mb-0"
+              onClick={() => {
+                window.location.href = "/manage/event/" + data.slug;
+              }}
+            >
+              <SecondaryButton
+                onClick={(e) => {
+                  handleRoute(e);
+                }}
+                className={`w-full py-4`}
+                label="Edit Event"
+              />
+            </div>
             <div className="mb-2 last:mb-0">
               <Link to="?tab=dashboard">
                 <SecondaryButton

@@ -46,7 +46,7 @@ const DetailPresensi = ({ data, eventSlug }) => {
       .replace("image/png", "image/octet-stream");
     let downloadLink = document.createElement("a");
     downloadLink.href = pngUrl;
-    downloadLink.download = `QrCode.png`;
+    downloadLink.download = `QrCode-Presensi.png`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -227,7 +227,7 @@ const DetailPresensi = ({ data, eventSlug }) => {
         <MainButton
           className="w-full"
           onClick={() => {
-            window.open("/overlay/1", "_blank");
+            window.open(`/overlay/${eventSlug}`, "_blank");
           }}
           label="Buka Overlay"
         />
@@ -258,7 +258,7 @@ const DetailPresensi = ({ data, eventSlug }) => {
           <div className="flex justify-center">
             <img
               className="w-40 h-40 rounded-full object-cover"
-              src="https://images.unsplash.com/photo-1640057692320-c88208a4c832?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+              src="https://avatars.dicebear.com/api/bottts/yusa.svg"
               alt="Profile"
             />
           </div>

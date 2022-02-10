@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ExportToExcel from "../../../ExportToExcel";
 import MainButton from "../../../MainButton";
 import SecondaryButton from "../../../SecondaryButton";
 import apiClient from "../../../services/apiClient";
-import Skeleton from "../../../Skeleton";
 import DetailPresensi from "../components/DetailPresensi";
 import TablePresensi from "../components/TablePresensi";
+import moment from "moment";
+import axios from "axios";
 
 const Presensi = () => {
   const [status, setStatus] = useState("detail");
+  const fileName = "data-presensi";
   const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [presence, setPresence] = useState();
+  const [dataPresence, setDataPresence] = useState([]);
+  const [exportData, setExportData] = useState([]);
   const { slug } = useParams();
 
   useEffect(() => {
@@ -25,9 +30,31 @@ const Presensi = () => {
       .then((response) => {
         setPresence(response.data.data);
         setLoading(false);
+        fetchDataPresence(response.data.data.id);
       })
       .catch((error) => {
         setLoading(false);
+      });
+  };
+
+  const fetchDataPresence = async (id) => {
+    await apiClient
+      .get("/api/v1/user/presence?presenceid=" + id)
+      .then((response) => {
+        setDataPresence(response.data.data);
+        let newArray = [];
+        // eslint-disable-next-line array-callback-return
+        response.data.data.map((item) => {
+          let obj = {
+            "ID Presensi": item.id,
+            "Nama Pesrta": item.name,
+            "Email Peserta": item.email,
+            "Waktu Presensi": moment(item.presence_at).format("lll"),
+            // "Tanda Tangan": item.signature,
+          };
+          newArray.push(obj);
+          setExportData(newArray);
+        });
       });
   };
 
@@ -109,10 +136,19 @@ const Presensi = () => {
           ) : (
             <div title="Tables">
               <div className="my-4 flex gap-2 justify-end">
-                <MainButton label="Export Data" />
+                <MainButton
+                  onClick={() => {
+                    ExportToExcel(exportData, fileName);
+                  }}
+                  label="Export Data"
+                />
               </div>
               <div title="table" className="my-4">
-                <TablePresensi />
+                {loading ? (
+                  <span className="flex justify-center">Loading...</span>
+                ) : (
+                  <TablePresensi data={dataPresence} />
+                )}
               </div>
             </div>
           )}

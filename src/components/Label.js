@@ -1,5 +1,5 @@
 import React from "react";
-const MainInput = (props) => {
+const Label = (props) => {
   return (
     <React.Fragment>
       <label
@@ -10,4 +10,4 @@ const MainInput = (props) => {
     </React.Fragment>
   );
 };
-export default MainInput;
+export default Label;

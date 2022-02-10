@@ -1250,7 +1250,7 @@ const ManageEvent = () => {
                             />
                             <div className="text-center">
                               <span className="text-xs">
-                                Powered by gerra.co
+                                Powered by watix.id
                               </span>
                             </div>
                           </div>

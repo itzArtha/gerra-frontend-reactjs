@@ -4,6 +4,7 @@ import MainButton from "../../../MainButton";
 import apiClient from "../../../services/apiClient";
 import TablePeserta from "../components/TablePeserta";
 import moment from "moment";
+import Skeleton from "../../../Skeleton";
 
 const Peserta = ({ slug }) => {
   const [data, setData] = useState([]);
@@ -46,12 +47,16 @@ const Peserta = ({ slug }) => {
   return (
     <div>
       <div className="my-4 flex justify-end">
-        <MainButton
-          onClick={() => {
-            ExportToExcel(exportData, fileName);
-          }}
-          label="Export Data"
-        />
+        {loading ? (
+          <Skeleton className="w-28 h-10 rounded" count="1" />
+        ) : (
+          <MainButton
+            onClick={() => {
+              ExportToExcel(exportData, fileName);
+            }}
+            label="Export Data"
+          />
+        )}
       </div>
       <div title="table" className="my-4">
         {loading ? (

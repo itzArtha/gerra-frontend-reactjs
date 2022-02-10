@@ -9,6 +9,7 @@ const MainTextArea = (props) => {
         name={props.name}
         onChange={props.onChange}
         defaultValue={props.value}
+        readOnly={props.readOnly}
       />
     </React.Fragment>
   );

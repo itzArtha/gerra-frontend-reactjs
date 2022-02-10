@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
 import Pusher from "pusher-js";
+import { useParams } from "react-router-dom";
 
 const OverlayPresensi = () => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState({
     name: "",
     eventName: "",
+    photoUrl: "",
   });
+  const { slug } = useParams();
 
   useEffect(() => {
     const pusher = new Pusher("b97c818f3ea7eb3a15fe", {
       cluster: "ap1",
     });
-    const channel = pusher.subscribe("overlay.1");
+    const channel = pusher.subscribe(`overlay.${slug}`);
     channel.bind("overlayHandler", (data) => {
-      setData({ name: data.data.name, eventName: data.data.eventName });
+      setData({
+        name: data.data.name,
+        eventName: data.data.eventName,
+        photoUrl: data.data.photoUrl,
+      });
       setShow(true);
       setTimeout(() => setShow(false), 5000);
     });
@@ -32,7 +39,7 @@ const OverlayPresensi = () => {
             <div className="flex justify-center">
               <img
                 className="w-40 h-40 rounded-full object-cover"
-                src="https://images.unsplash.com/photo-1640057692320-c88208a4c832?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                src={data.photoUrl}
                 alt="Profile"
               />
             </div>

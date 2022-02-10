@@ -18,7 +18,7 @@ const Footer = () => {
           <a
             target="_blank"
             rel="noreferrer"
-            href="https://www.instagram.com/gerra.co"
+            href="https://www.instagram.com/watix.id"
           >
             <p className="absolute font-semibold bottom-2 right-2">
               <svg

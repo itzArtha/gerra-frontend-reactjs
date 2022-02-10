@@ -22,6 +22,7 @@ import Notif from "../components/views/user/notifications/Dashboard";
 import PrivateUserRoute from "./PrivateUserRoute";
 import EventAdmin from "../components/views/organization/events/components/App";
 import OverlayPresensi from "../components/views/organization/events/OverlayPresensi";
+import UserPresensi from "../components/views/user/Presensi";
 
 const Router = () => {
   return (
@@ -38,6 +39,11 @@ const Router = () => {
         <PrivateUserRoute path="/explore/event" exact component={SearchEvent} />
         <PrivateUserRoute path="/payment" exact component={Payment} />
         <PrivateUserRoute path="/tickets/:router" exact component={Tickets} />
+        <PrivateUserRoute
+          path="/presence/:slug"
+          exact
+          component={UserPresensi}
+        />
         <PrivateUserRoute
           path="/notifications/:router"
           exact

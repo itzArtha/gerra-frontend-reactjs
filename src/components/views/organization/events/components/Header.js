@@ -40,17 +40,15 @@ function Header({ sidebarOpen, setSidebarOpen }) {
             </button>
           </div>
           <div>
-            <RoundedButton className="w-12 h-12 mx-1">
+            <RoundedButton
+              className="w-12 h-12 mx-1"
+              onClick={() => {
+                window.location.href = "/admin/dashboard";
+              }}
+            >
               <img
                 className="w-8 h-8 px-1"
-                src={process.env.PUBLIC_URL + "/bell.svg"}
-                alt="Icon"
-              />
-            </RoundedButton>
-            <RoundedButton onClick={handleLogout} className="w-12 h-12 mx-1">
-              <img
-                className="w-8 h-8 px-1"
-                src={process.env.PUBLIC_URL + "/logout.svg"}
+                src={process.env.PUBLIC_URL + "/home.svg"}
                 alt="Icon"
               />
             </RoundedButton>

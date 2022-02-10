@@ -1,8 +1,7 @@
 import moment from "moment";
 import { useState } from "react";
 
-const TablePresensi = () => {
-  const [data, setData] = useState([]);
+const TablePresensi = ({ data }) => {
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -27,6 +26,12 @@ const TablePresensi = () => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
+                    Email Peserta
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Waktu Presensi
                   </th>
                   <th
@@ -42,7 +47,7 @@ const TablePresensi = () => {
                   <tr key={person.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        ID
+                        {person.id}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
@@ -50,41 +55,29 @@ const TablePresensi = () => {
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
                             className="h-10 w-10 rounded-full"
-                            src={person.banner_url}
+                            src={person.photo_url}
                             alt=""
                           />
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {person.title}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            {person.owner}
+                            {person.name}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {moment(person.created_at).format("lll")}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <div className="flex-shrink-0 h-10 w-10">
-                        <img
-                          className="h-10 w-16"
-                          src={person.banner_url}
-                          alt="Tanda Tangan"
-                        />
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900">
+                        {person.email}
                       </div>
                     </td>
-                    <td
-                      className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium"
-                      onClick={() => {
-                        // history.push(`/manage/event/${item.slug}`);
-                      }}
-                    >
-                      <p className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
-                        Detail
-                      </p>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {moment(person.presence_at).format("lll")}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900">
+                        <img className="w-1/4" src={person.signature} alt="" />
+                      </div>
                     </td>
                   </tr>
                 ))}

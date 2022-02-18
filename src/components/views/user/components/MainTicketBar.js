@@ -48,10 +48,21 @@ const MainTicketBar = ({ data, loading }) => {
           {loading ? (
             <Skeleton className="w-1/2 h-4 rounded-full" count="1" />
           ) : (
-            <div className="my-2">
-              <h2 className="text-left text-sm font-semibold text-blue-500">
-                {data.format} | {data.is_online ? "Online" : "Offline"}
-              </h2>
+            <div className="my-2 flex gap-2">
+              <div>
+                <h2 className="text-left text-sm font-semibold text-blue-500">
+                  {data.format} | {data.is_online ? "Online" : "Offline"}
+                </h2>
+              </div>
+              <div>
+                {data.status === 2 ? (
+                  <span className="px-4 py-1 rounded-full text-xs bg-red-100 text-red-600">
+                    {"Berakhir"}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           )}
           <div className="flex items-center text-sm mt-4 text-gray-700 dark:text-gray-200">

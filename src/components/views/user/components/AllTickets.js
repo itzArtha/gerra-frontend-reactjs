@@ -1,13 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
-import MainSearch from "../../../MainSearch";
+import { useEffect, useState } from "react";
 import apiClient from "../../../services/apiClient";
 import TicketDetail from "./TicketDetail";
 
 const AllTickets = (props) => {
-  const callback = useCallback((search) => {
-    setSearch(search);
-  }, []);
-  const [search, setSearch] = useState();
   const [isEmpty, setEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);

@@ -1,12 +1,9 @@
-import MainLayout from "../../layouts/MainLayout";
 import Sidebar from "./components/Sidebar";
-import SecondaryButton from "../../SecondaryButton";
 import { useState, useEffect } from "react";
-import { useHistory, Link, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import apiClient from "../../services/apiClient";
 import Header from "./Profile/Header";
 import AllTickets from "./components/AllTickets";
-import isUser from "../../services/isUser";
 
 const Tickets = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,17 +19,8 @@ const Tickets = () => {
           setData(response.data.data);
           setLoading(false);
           document.getElementById("title").innerHTML =
-            response.data.data.name.split(" ")[0] + " - Gerra Technologies";
+            response.data.data.name.split(" ")[0] + " - exotix";
         })
-        .catch((error) => {
-          if (error.response.status === 401) {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("role");
-            history.push("/login");
-          } else {
-            //
-          }
-        });
     };
     handleFetchData();
   }, [setData]);

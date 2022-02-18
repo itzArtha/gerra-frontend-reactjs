@@ -14,7 +14,7 @@ const MainSearchBarWithSelect = ({ searchCallback, lastPath }) => {
   };
   return (
     <>
-      <div className="seacrh-bar mb-4">
+      <div className="search-bar mb-4">
         <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
           <div className="col-span-1">
             <SelectInput

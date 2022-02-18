@@ -5,6 +5,7 @@ const MainBox = (props) => {
   return (
     <React.Fragment>
       <motion.div
+          onClick={props.onClick}
         whileHover={{ scale: 1.01 }}
         className="rounded-xl overflow-hidden border-2 border-black hover:bg-yellow-400 duration-300 cursor-pointer"
       >

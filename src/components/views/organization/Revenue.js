@@ -12,6 +12,7 @@ import MainInput from "../../MainInput";
 import ErrorLabel from "../../ErrorLabel";
 import SelectInput from "../../SelectInput";
 import TableWithdraw from "./components/TableWithdraw";
+import handleSwal from "../../handleSwal";
 
 const Revenue = () => {
   const [status, setStatus] = useState("pemasukan");
@@ -89,11 +90,13 @@ const Revenue = () => {
         fetchWd();
         setShowModal(false);
         setFormData({ ...formData, amount: "", rekening: "" });
+        handleSwal(response.data.message);
         setProcessing(false);
         setStatus("penarikan");
       })
       .catch((error) => {
-        // console.log(error);
+        handleSwal(error.response.data.message, "error");
+        setProcessing(false);
       });
   };
 

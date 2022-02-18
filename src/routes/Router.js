@@ -23,20 +23,24 @@ import PrivateUserRoute from "./PrivateUserRoute";
 import EventAdmin from "../components/views/organization/events/components/App";
 import OverlayPresensi from "../components/views/organization/events/OverlayPresensi";
 import UserPresensi from "../components/views/user/Presensi";
+import About from "../components/views/user/About";
+import HowItWorks from "../components/views/user/HowItWorks";
 
 const Router = () => {
   return (
     <React.Fragment>
       <Switch>
+        <Route path="/forget-password" exact component={ResetPassword} />
+        <Route path="/password/reset" exact component={SetResetPassword} />
         <Route path="/login" exact component={OnBoarding} />
+        <Route path="/d/about" exact component={About} />
+        <Route path="/d/how-it-works" exact component={HowItWorks} />
         <PrivateOrgRoute
           path="/complete-profile"
           exact
           component={CompleteProfile}
         />
-        <PrivateUserRoute path="/" exact component={Home} />
         <PrivateUserRoute path="/profile/:router" exact component={Dashboard} />
-        <PrivateUserRoute path="/explore/event" exact component={SearchEvent} />
         <PrivateUserRoute path="/payment" exact component={Payment} />
         <PrivateUserRoute path="/tickets/:router" exact component={Tickets} />
         <PrivateUserRoute
@@ -44,11 +48,7 @@ const Router = () => {
           exact
           component={UserPresensi}
         />
-        <PrivateUserRoute
-          path="/notifications/:router"
-          exact
-          component={Notif}
-        />
+        <Route path="/notifications/:router" exact component={Notif} />
         <PrivateUserRoute
           path="/explore/organization"
           exact
@@ -69,13 +69,13 @@ const Router = () => {
         />
         <PrivateOrgRoute path="/admin/:router" exact component={App} />
 
+        <Route path="/" exact component={Home} />
+        <Route path="/explore/event" exact component={SearchEvent} />
         <Route path="/overlay/:slug" exact component={OverlayPresensi} />
         <Route path="/explore/event/:slug" exact component={EventDetail} />
         <Route path="/verifikasi-email" exact component={EmailVerification} />
-        <Route path="/:id/register" exact component={Register} />
-        <Route path="/:id/login" exact component={Login} />
-        <Route path="/forget-password" exact component={ResetPassword} />
-        <Route path="/password/reset" exact component={SetResetPassword} />
+        <Route path="/:id_params/register" exact component={Register} />
+        <Route path="/:id_params/login" exact component={Login} />
       </Switch>
     </React.Fragment>
   );

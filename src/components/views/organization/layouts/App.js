@@ -24,7 +24,7 @@ const App = () => {
           setData(response.data.data);
           setLoading(false);
           document.getElementById("title").innerHTML =
-            response.data.data.name.split(" ")[0] + " - Gerra Technologies";
+            response.data.data.name.split(" ")[0] + " - exotix";
         })
         .catch((error) => {
           if (error.response.status === 401) {

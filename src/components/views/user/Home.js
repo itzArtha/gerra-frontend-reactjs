@@ -3,38 +3,16 @@ import MainLayout from "../../layouts/MainLayout";
 import MainModal from "../../modals/MainModal";
 import apiClient from "../../services/apiClient";
 import MainButton from "../../MainButton";
-import SecondTicketBar from "./components/SecondTicketBar";
-import OrganizationBar from "./components/OrganizationBar";
 import { Link } from "react-router-dom";
 import MainTicketBar from "./components/MainTicketBar";
 import Skeleton from "../../Skeleton";
-import Logout from "../../auth/Logout";
-import isUser from "../../services/isUser";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [OrgLoading, setOrgLoading] = useState(false);
-  const [TrendLoading, setTrendLoading] = useState(false);
   const [RecLoading, setRecLoading] = useState(false);
-  const [TopOrg, setTopOrg] = useState(Array);
-  const [trend, setTrend] = useState(Array);
-  const [recom, setRec] = useState(Array);
+  const [recom, setRec] = useState([]);
   useEffect(() => {
-    const getTopOrg = async () => {
-      await apiClient
-        .get("api/v1/organization/top?limit=true")
-        .then((response) => {
-          setTopOrg(response.data.data);
-          setOrgLoading(false);
-        });
-    };
-    const getTrendNow = async () => {
-      await apiClient.get("api/v1/user/trend/event").then((response) => {
-        setTrend(response.data.data);
-        setTrendLoading(false);
-      });
-    };
     const getRec = async () => {
       await apiClient
         .get("api/v1/user/rekomendasi/event?limit=true")
@@ -46,12 +24,8 @@ const Home = () => {
     setLoading(true);
     setRecLoading(true);
     getRec();
-    setTrendLoading(true);
-    getTrendNow();
-    setOrgLoading(true);
-    getTopOrg();
     setLoading(false);
-  }, [setTopOrg, setTrend, setRec]);
+  }, [setRec]);
 
   return (
     <MainLayout top={true} footer={true} menu={true}>
@@ -76,7 +50,7 @@ const Home = () => {
             </>
           ) : (
             <h1 className="text-2xl font-medium text-gray-800 dark:text-white md:text-3xl">
-              Mo buat event ato nyari event? <br /> Gampang anj*r disini
+              Mo buat event ato nyari event? <br />
             </h1>
           )}
           <div className="grid grid-cols-2 gap-2 mt-4">
@@ -107,65 +81,29 @@ const Home = () => {
           </div>
         </div>
         <div className="mt-20">
-          {TrendLoading ? (
-            <Skeleton
-              className="w-36 mx-auto rounded-full h-4 mb-4"
-              count="1"
-            />
-          ) : (
-            <h2 className="font-bold text-2xl mb-4">Trend Now</h2>
-          )}
-          <div className="overflow-x-auto whitespace-nowrap overscroll-contain">
-            <div className="webkit-inline-box md:flex grid-cols-2 gap-2">
-              {TrendLoading ? (
-                <>
-                  <SecondTicketBar loading={TrendLoading} />
-                  <SecondTicketBar loading={TrendLoading} />
-                </>
-              ) : (
-                trend.map((item, i) => (
-                  <SecondTicketBar key={i} data={item} loading={TrendLoading} />
-                ))
-              )}
+          <h2 className="font-bold text-2xl mb-4">Kenapa harus exotix?</h2>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
+            <div className="md:w-4/6 w-4/6 mx-auto md:ml-auto">
+              <img src={process.env.PUBLIC_URL + "/surprise.svg"} alt="Icon" />
             </div>
-          </div>
-        </div>
-        <div className="mt-20">
-          {OrgLoading ? (
-            <Skeleton
-              className="w-48 mx-auto rounded-full h-4 mb-4"
-              count="1"
-            />
-          ) : (
-            <h2 className="font-bold text-2xl mb-4">Top Organizations</h2>
-          )}
-          {OrgLoading ? (
-            <Skeleton className="w-28 ml-auto rounded-full h-4" count="1" />
-          ) : (
-            <p className="text-right font-semibold text-blue-500 hover:text-blue-700 duration-500">
-              <Link to="/organization/top">Lihat Semua</Link>
-            </p>
-          )}
-          <div className="overflow-x-auto whitespace-nowrap overscroll-contain mt-4">
-            <div className="webkit-inline-box md:flex items-center justify-center gap-4">
-              {OrgLoading ? (
-                <>
-                  <OrganizationBar loading={OrgLoading} />
-                  <OrganizationBar loading={OrgLoading} />
-                  <OrganizationBar loading={OrgLoading} />
-                </>
-              ) : (
-                TopOrg.map((item, i) => (
-                  <OrganizationBar data={item} key={i} loading={OrgLoading} />
-                ))
-              )}
+            <div className="py-12">
+              <h2 className="text-justify font-small text-xl mb-4">
+                Exotix adalah platform trading, asekk. <br />
+                <b>Trading tiket</b> atau jual beli tiket, disini kamu bisa
+                menjual tiket misal organisasi kampus kamu mau jual tiket bisa
+                disini aja. Dan yang pasti <b>paperless, mudah, dan cepat</b>{" "}
+                <br /> <br />
+                Gak cuma itu karena kamu disini bisa beli tiket dan dapet{" "}
+                <b>promo2</b> juga, apalagi gen-z sekarang pemburu promo kan,
+                ewh -_-
+              </h2>
             </div>
           </div>
         </div>
         <div className="mt-20">
           {RecLoading ? (
             <Skeleton
-              className="w-1/3 mx-auto rounded-full h-4 mb-4"
+              className="w-1/3 mx-auto rounded-full h-6 mb-4"
               count="1"
             />
           ) : (
@@ -177,7 +115,7 @@ const Home = () => {
             <Skeleton className="w-28 ml-auto rounded-full h-4" count="1" />
           ) : (
             <p className="text-right font-semibold text-blue-500 hover:text-blue-700 duration-500">
-              <Link to="/event/rekomendasi">Lihat Semua</Link>
+              <Link to="/explore/event">Lihat Semua</Link>
             </p>
           )}
           <div className="overflow-x-auto overscroll-contain mt-4">
@@ -211,12 +149,12 @@ const Home = () => {
           )}
         </div>
         <div className="mt-20">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
             {loading ? (
               <Skeleton className="w-48 h-64 ml-auto rounded-lg" count="1" />
             ) : (
               <img
-                className="w-4/6 ml-auto"
+                className="w-4/6 md:ml-auto mx-auto"
                 src={process.env.PUBLIC_URL + "/drunk.svg"}
                 alt="Icon"
               />
@@ -228,20 +166,32 @@ const Home = () => {
                   <Skeleton className="w-1/4 h-4 rounded-full" count="1" />
                 </div>
               ) : (
-                <h2 className="font-bold text-4xl mb-4 text-left mt-8">
-                  Kamu masih bingung <br /> sama Gerra?
+                <h2 className="font-bold text-4xl mb-4 md:text-left text-center mt-8">
+                  Kamu masih bingung <br /> sama Exotix?
                 </h2>
               )}
-              <div className="grid grid-cols-4 gap-2 mt-12">
+              <div className="grid md:grid-cols-4 grid-cols-1 gap-2 mt-12">
                 {loading ? (
                   <Skeleton className="w-full h-12 rounded" count="1" />
                 ) : (
-                  <MainButton label="Tentang Kami" type="button" />
+                  <MainButton
+                    onClick={() => {
+                      window.location.href = "/d/about";
+                    }}
+                    label="Tentang Kami"
+                    type="button"
+                  />
                 )}
                 {loading ? (
                   <Skeleton className="w-full h-12 rounded" count="1" />
                 ) : (
-                  <MainButton label="Cara Kerja" type="button" />
+                  <MainButton
+                    onClick={() => {
+                      window.location.href = "/d/how-it-works";
+                    }}
+                    label="Cara Kerja"
+                    type="button"
+                  />
                 )}
               </div>
             </div>

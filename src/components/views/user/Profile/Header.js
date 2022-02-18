@@ -8,7 +8,7 @@ function Header({ sidebarOpen, setSidebarOpen, logout = true }) {
   const handleLogout = async () => {
     await apiClient.post("/api/v1/logout").then((response) => {
       if (response.status === 200) {
-        history.push("/login");
+        history.push("/");
       }
     });
   };

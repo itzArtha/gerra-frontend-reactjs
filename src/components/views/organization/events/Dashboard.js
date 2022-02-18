@@ -65,7 +65,7 @@ const Dashboard = ({ slug }) => {
         <span>Tempat: {data.location}</span>
       </div>
       <div className="my-4">
-        <span>Yukk beli cuma di watix.id</span>
+        <span>Yukk beli cuma di exotix.id</span>
       </div>
     </div>
   );

@@ -8,9 +8,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
   const handleLogout = async () => {
     await apiClient.post("/api/v1/logout").then((response) => {
       if (response.status === 200) {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("role");
-        history.push("/login");
+        history.push("/");
       }
     });
   };
@@ -40,7 +38,12 @@ function Header({ sidebarOpen, setSidebarOpen }) {
             </button>
           </div>
           <div>
-            <RoundedButton className="w-12 h-12 mx-1">
+            <RoundedButton
+              className="w-12 h-12 mx-1"
+              onClick={() => {
+                window.location.href = "/notifications/announcements";
+              }}
+            >
               <img
                 className="w-8 h-8 px-1"
                 src={process.env.PUBLIC_URL + "/bell.svg"}

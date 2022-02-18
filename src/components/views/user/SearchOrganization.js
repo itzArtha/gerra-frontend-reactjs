@@ -58,7 +58,7 @@ const SearchOrganization = () => {
   return (
     <MainLayout top={true}>
       <div className="mt-12 mx-4 md:mx-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-12">
+{/*        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-12">
           <MainButton
             type="button"
             className="mb-4 md:hidden"
@@ -66,8 +66,8 @@ const SearchOrganization = () => {
             onClick={() => {
               setHidden(hidden ? false : true);
             }}
-          />
-          <div className={`md:col-span-1 md:block ${hidden ? `hidden` : ``}`}>
+          />*/}
+{/*          <div className={`md:col-span-1 md:block ${hidden ? `hidden` : ``}`}>
             <form onSubmit={handleFilter}>
               <h2 className="font-semibold text-2xl mb-12 border-b pb-2">
                 Filter
@@ -107,7 +107,7 @@ const SearchOrganization = () => {
                 }}
               />
             </form>
-          </div>
+          </div>*/}
           <div className="md:col-span-3">
             <MainSearchBarWithSelect
               searchCallback={callback}
@@ -121,9 +121,10 @@ const SearchOrganization = () => {
               </div>
             )}
             <div className="products">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 {loading ? (
                   <>
+                    <MainOrganizationBar loading={loading} />
                     <MainOrganizationBar loading={loading} />
                     <MainOrganizationBar loading={loading} />
                   </>
@@ -140,7 +141,7 @@ const SearchOrganization = () => {
             </div>
           </div>
         </div>
-      </div>
+      {/*</div>*/}
     </MainLayout>
   );
 };

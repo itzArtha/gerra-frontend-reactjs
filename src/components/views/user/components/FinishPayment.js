@@ -85,7 +85,7 @@ const FinishPayment = () => {
             />
             <MainButton
               onClick={() => {
-                history.push("/tickets");
+                history.push("/tickets/all-tickets");
               }}
               label="Semua Tiket"
             />

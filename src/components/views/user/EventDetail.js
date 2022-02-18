@@ -3,7 +3,7 @@ import MainLayout from "../../layouts/MainLayout";
 import MainButton from "../../MainButton";
 import IconWithTitle from "../IconWithTitle";
 import RoundedButton from "../../RoundedButton";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Skeleton from "../../Skeleton";
 import apiClient from "../../services/apiClient";
 import Checkbox from "../../Checkbox";
@@ -22,11 +22,13 @@ import {
   TelegramIcon,
   TelegramShareButton,
 } from "react-share";
+import handleSwal from "../../handleSwal";
 
 const EventDetail = () => {
   const { slug } = useParams();
   const history = useHistory();
   const location = useLocation();
+  const scrollRef = useRef(null);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [showAddTeam, setShowAddTeam] = useState(false);
   const [showCoupon, setShowCoupon] = useState(false);
@@ -62,12 +64,22 @@ const EventDetail = () => {
     ktp: "",
     isKtpError: false,
     ktpErrorLabel: "KTP ga boleh kosong",
+    birthday: "",
+    isBirthdayError: false,
+    birthdayErrorLabel: "KTP ga boleh kosong",
+    instansi: "",
+    isInstansiError: false,
+    instansiErrorLabel: "KTP ga boleh kosong",
     searchPart: "",
     coupon: "",
     isCouponError: false,
     couponErrorLabel: "Coupon ga boleh kosong",
     discountCode: "",
   });
+
+  const handleClick = () => {
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,7 +93,7 @@ const EventDetail = () => {
           });
         })
         .catch((error) => {
-          //
+          handleSwal(error.response.data.message, "error");
         });
     };
 
@@ -133,7 +145,7 @@ const EventDetail = () => {
           setFormData({
             ...formData,
             isCouponError: true,
-            couponErrorLabel: "Yahh kodenya salah, gak dapet diskon deh :p",
+            couponErrorLabel: error.response.data,
           });
         }
       });
@@ -210,8 +222,10 @@ const EventDetail = () => {
   };
 
   const handleValidate = () => {
-    if (formData.name && formData.email && formData.hp) {
+    if (formData.name && formData.email && formData.hp && ticket.length > 0) {
       handleCheckout();
+    } else if (ticket.length <= 0) {
+      handleSwal("Kamu harus memilih tiket", "warning");
     } else if (!formData.name) {
       setFormData({ ...formData, isNameError: true });
     } else if (!formData.email) {
@@ -241,11 +255,13 @@ const EventDetail = () => {
         if (response.status === 200) {
           history.push("/payment");
           setCheckoutLoading(false);
+        } else if (response.status === 201) {
+          window.location = "/tickets/all-tickets";
         }
       })
       .catch((error) => {
-        // console.log(error);
         setCheckoutLoading(false);
+        handleSwal(error.response.data.message, "error");
       });
   };
 
@@ -263,14 +279,17 @@ const EventDetail = () => {
                 history.push("/manage/event/" + slug);
               }}
             />
-          ) : (
+          ) : data.status === 1 ? (
             <MainButton
               type="button"
               label={mode === 0 ? "Beli" : "Detail Event"}
               onClick={() => {
                 setMode(mode ? 0 : 1);
+                handleClick();
               }}
             />
+          ) : (
+            ""
           )}
         </div>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-5 gap-8">
@@ -325,10 +344,21 @@ const EventDetail = () => {
             {loading ? (
               <Skeleton className="w-36 h-4 rounded-full" count="1" />
             ) : (
-              <div className="my-2">
-                <h2 className="text-md font-semibold text-blue-500">
-                  {data.format} | {data.category}
-                </h2>
+              <div className="my-2 flex gap-2">
+                <div>
+                  <h2 className="text-md font-semibold text-blue-500">
+                    {data.format} | {data.category}
+                  </h2>
+                </div>
+                <div>
+                  {data.status === 2 ? (
+                    <span className="px-4 py-1 rounded-full text-sm bg-red-100 text-red-600">
+                      {"Event Berakhir"}
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             )}
             <div className="mt-4">
@@ -417,7 +447,7 @@ const EventDetail = () => {
         </div>
         {mode === 0 ? (
           <>
-            <div className="mt-24 flex justify-center gap-2">
+            <div className="mt-24 flex justify-center gap-2" ref={scrollRef}>
               <MainButton
                 type="button"
                 onClick={() => {
@@ -457,7 +487,7 @@ const EventDetail = () => {
           </>
         ) : (
           <>
-            <div className="mt-24 md:mx-24">
+            <div className="mt-24 md:mx-24" ref={scrollRef}>
               <h2 className="text-2xl text-center font-bold mt-12">
                 Daftar Tiket
               </h2>
@@ -499,7 +529,7 @@ const EventDetail = () => {
 
                       <h2 className="text-right font-semibold text-lg mt-10">
                         <CurrencyFormat
-                          value={loading ? 0 : data.ticket[0].price}
+                          value={loading ? 0 : item.price}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={"Rp"}
@@ -579,60 +609,106 @@ const EventDetail = () => {
                         ""
                       )}
                     </div>
-                    {data.APInformation.map((item, i) =>
-                      item.name === "sex" && item.status === 1 ? (
-                        <div className="pb-4">
-                          <Label label={"Jenis Kelamin"} />
-                          <div className="flex gap-4">
-                            <Radio
-                              onChange={(e) => {
-                                setFormData({
-                                  ...formData,
-                                  sex: e.target.value,
-                                });
-                              }}
-                              name="SexType"
-                              label={"Perempuan"}
-                              value="0"
-                              checked={
-                                parseInt(formData.sex) === 0 ? true : false
-                              }
-                            />
-                            <Radio
-                              onChange={(e) => {
-                                setFormData({
-                                  ...formData,
-                                  sex: e.target.value,
-                                });
-                              }}
-                              name="SexType"
-                              label={"Laki - Laki"}
-                              value="1"
-                              checked={
-                                parseInt(formData.sex) === 1 ? true : false
-                              }
-                            />
-                          </div>
-                        </div>
-                      ) : item.name === "ktp" && item.status === 1 ? (
-                        <div className="pb-4">
-                          <Label label={"KTP"} />
-                          <MainInput
-                            value={formData.ktp}
-                            type={"text"}
+                    {data.APInformation.sex ? (
+                      <div className="pb-4">
+                        <Label label={"Jenis Kelamin"} />
+                        <div className="flex gap-4">
+                          <Radio
                             onChange={(e) => {
-                              setFormData({ ...formData, ktp: e.target.value });
+                              setFormData({
+                                ...formData,
+                                sex: e.target.value,
+                              });
                             }}
+                            name="SexType"
+                            label={"Perempuan"}
+                            value="0"
+                            checked={
+                              parseInt(formData.sex) === 0 ? true : false
+                            }
                           />
-                          {formData.isKtpError ? (
-                            <ErrorLabel label={formData.ktpErrorLabel} />
-                          ) : (
-                            ""
-                          )}
+                          <Radio
+                            onChange={(e) => {
+                              setFormData({
+                                ...formData,
+                                sex: e.target.value,
+                              });
+                            }}
+                            name="SexType"
+                            label={"Laki - Laki"}
+                            value="1"
+                            checked={
+                              parseInt(formData.sex) === 1 ? true : false
+                            }
+                          />
                         </div>
-                      ) : (
-                        ""
-                      )
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    {data.APInformation.instansi ? (
+                      <div className="pb-4">
+                        <Label label={"Instansi"} />
+                        <MainInput
+                          value={formData.instansi}
+                          type={"text"}
+                          onChange={(e) => {
+                            setFormData({
+                              ...formData,
+                              instansi: e.target.value,
+                            });
+                          }}
+                        />
+                        {formData.isInstansiError ? (
+                          <ErrorLabel label={formData.instansiErrorLabel} />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {data.APInformation.birthday ? (
+                      <div className="pb-4">
+                        <Label label={"Tanggal Lahir"} />
+                        <MainInput
+                          value={formData.birthday}
+                          type={"date"}
+                          onChange={(e) => {
+                            setFormData({
+                              ...formData,
+                              birthday: e.target.value,
+                            });
+                          }}
+                        />
+                        {formData.isBirthdayError ? (
+                          <ErrorLabel label={formData.birthdayErrorLabel} />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {data.APInformation.ktp ? (
+                      <div className="pb-4">
+                        <Label label={"KTP"} />
+                        <MainInput
+                          value={formData.ktp}
+                          type={"text"}
+                          onChange={(e) => {
+                            setFormData({ ...formData, ktp: e.target.value });
+                          }}
+                        />
+                        {formData.isKtpError ? (
+                          <ErrorLabel label={formData.ktpErrorLabel} />
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ) : (
+                      ""
                     )}
                   </div>
                   {ticket.filter((i) => i.price.type === 1).length > 0 ? (

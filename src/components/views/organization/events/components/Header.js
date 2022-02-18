@@ -10,7 +10,7 @@ function Header({ sidebarOpen, setSidebarOpen }) {
       if (response.status === 200) {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("role");
-        history.push("/login");
+        history.push("/");
       }
     });
   };

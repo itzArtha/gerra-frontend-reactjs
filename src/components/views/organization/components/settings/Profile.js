@@ -299,7 +299,7 @@ const Profile = () => {
             id="qr-download"
             size="256"
             renderAs="canvas"
-            value={`https://watix.id/${data.slug}`}
+            value={`https://exotix.id/${data.slug}`}
           />
         </div>
         <div className="text-center m-4">
@@ -420,7 +420,7 @@ const Profile = () => {
                     type="button"
                     className="mr-2"
                     disabled={isLoading}
-                    label="watix.id/"
+                    label="exotix.id/"
                   />
                   <MainInput
                     value={formData.domain}
@@ -757,7 +757,7 @@ const Profile = () => {
                       to={`/${data.slug}`}
                       className="font-normal text-xl col-span-2 underline text-blue-500 cursor-pointer"
                     >
-                      {`watix.id/${data.slug}`}
+                      {`exotix.id/${data.slug}`}
                     </Link>
                     <TransparentButton
                       label="QR"

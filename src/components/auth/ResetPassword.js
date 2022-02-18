@@ -127,7 +127,7 @@ const ResetPassword = () => {
                     className="w-full"
                     disabled={isLoading}
                     onClick={() => {
-                      history.push("/login");
+                      history.push("/");
                     }}
                   />
                   {complete ? (

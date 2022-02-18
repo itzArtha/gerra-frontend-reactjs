@@ -1250,7 +1250,7 @@ const ManageEvent = () => {
                             />
                             <div className="text-center">
                               <span className="text-xs">
-                                Powered by watix.id
+                                Powered by exotix.id
                               </span>
                             </div>
                           </div>

@@ -13,12 +13,12 @@ const Footer = () => {
             />
           </svg>
           <p className="absolute font-semibold bottom-2 left-2 text-xs md:text-base">
-            Copyright Gerra 2021 | An Artha's Production
+            Copyright Exotix {new Date().getFullYear()} | An Artha's Production
           </p>
           <a
             target="_blank"
             rel="noreferrer"
-            href="https://www.instagram.com/watix.id"
+            href="https://www.instagram.com/exotix.id"
           >
             <p className="absolute font-semibold bottom-2 right-2">
               <svg

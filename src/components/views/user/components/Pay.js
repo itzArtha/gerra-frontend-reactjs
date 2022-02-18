@@ -19,7 +19,7 @@ const Pay = () => {
     const pusher = new Pusher("b97c818f3ea7eb3a15fe", {
       cluster: "ap1",
     });
-    const channel = pusher.subscribe("payment");
+    const channel = pusher.subscribe(`payment.${query.get("ref_id")}`);
     channel.bind("Handler", (data) => {
       fetchData();
       if (data.transaction === "settlement") {
@@ -342,7 +342,9 @@ const Pay = () => {
         {data.status === "pending" ? (
           <div>
             <div className="my-4">
-              <h4 className="text-2xl font-medium">Silakan bayar mengunakan</h4>
+              <h4 className="text-2xl font-medium">
+                Silakan bayar menggunakan
+              </h4>
               <div className="my-2 flex justify-center">
                 {loading ? (
                   <Skeleton className="w-28 h-8 rounded" count="1" />
@@ -430,6 +432,8 @@ const Pay = () => {
               Pembayaran sudah dilakukan, mantap gan!
             </h4>
           </div>
+        ) : loading ? (
+          ""
         ) : (
           <div>
             <h4 className="text-2xl font-medium">

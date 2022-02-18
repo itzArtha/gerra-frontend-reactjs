@@ -5,6 +5,7 @@ import NotifBar from "../components/NotifBar";
 const Content = (props) => {
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [sort, setSort] = useState(props.sort);
 
   const callback = useCallback((id) => {
     handleRead(id);
@@ -18,6 +19,7 @@ const Content = (props) => {
         .then((response) => {
           setData(response.data.data);
           setLoading(false);
+          setSort(props.sort);
         })
         .catch((error) => {
           //   console.log(error);
@@ -29,7 +31,7 @@ const Content = (props) => {
 
   const fetchData = async () => {
     await apiClient
-      .get("/api/v1/user/notifications/" + props.sort)
+      .get("/api/v1/user/notifications/" + sort)
       .then((response) => {
         setData(response.data.data);
       })

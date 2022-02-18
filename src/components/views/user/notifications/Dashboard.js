@@ -4,12 +4,11 @@ import { useHistory, Link, useParams } from "react-router-dom";
 import apiClient from "../../../services/apiClient";
 import Header from "../Profile/Header";
 import Content from "./Content";
-import isUser from "../../../services/isUser";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const { router } = useParams();
   const history = useHistory();
   useEffect(() => {
@@ -20,12 +19,10 @@ const Dashboard = () => {
           setData(response.data.data);
           setLoading(false);
           document.getElementById("title").innerHTML =
-            response.data.data.name.split(" ")[0] + " - Gerra Technologies";
+            response.data.data.name.split(" ")[0] + " - exotix";
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("role");
             history.push("/login");
           } else {
             //

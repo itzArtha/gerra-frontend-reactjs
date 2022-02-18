@@ -54,7 +54,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                   target={`_blank`}
                   className="text-sm font-semibold text-blue-500 underline"
                 >
-                  {`watix.id/explore/event/${data.slug}`}
+                  {`exotix.id/explore/event/${data.slug}`}
                 </a>
               </div>
             )}

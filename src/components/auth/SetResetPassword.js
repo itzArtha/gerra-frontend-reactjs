@@ -197,7 +197,7 @@ const SetResetPassword = () => {
                       className="w-full"
                       type="button"
                       onClick={() => {
-                        history.push("/login");
+                        history.push("/");
                       }}
                       disabled={isLoading}
                       label={"Ok"}

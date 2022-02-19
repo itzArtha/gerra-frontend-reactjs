@@ -25,6 +25,7 @@ import OverlayPresensi from "../components/views/organization/events/OverlayPres
 import UserPresensi from "../components/views/user/Presensi";
 import About from "../components/views/user/About";
 import HowItWorks from "../components/views/user/HowItWorks";
+import NotFound from "../components/errors/NotFound";
 
 const Router = () => {
   return (
@@ -76,6 +77,8 @@ const Router = () => {
         <Route path="/verifikasi-email" exact component={EmailVerification} />
         <Route path="/:id_params/register" exact component={Register} />
         <Route path="/:id_params/login" exact component={Login} />
+
+        <Route path="/e/notfound" component={NotFound} />
       </Switch>
     </React.Fragment>
   );

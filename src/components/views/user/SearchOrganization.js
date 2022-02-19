@@ -34,6 +34,7 @@ const SearchOrganization = () => {
 
   useEffect(() => {
     setLoading(true);
+    isUser()
     fetchData();
   }, [setData]);
 

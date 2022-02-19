@@ -49,6 +49,7 @@ const EventDetail = () => {
   const [choosePart, setChoosePart] = useState([]);
   const [formData, setFormData] = useState({
     id: 0,
+    roles: 0,
     name: "",
     isNameError: false,
     nameErrorLabel: "Nama lengkap ga boleh kosong",
@@ -94,6 +95,9 @@ const EventDetail = () => {
         })
         .catch((error) => {
           handleSwal(error.response.data.message, "error");
+          if(error.response.status === 401) {
+            window.location.href = "/login";
+          }
         });
     };
 
@@ -107,6 +111,7 @@ const EventDetail = () => {
           email: response.data.data.email,
           sex: response.data.data.sex,
           id: response.data.data.id,
+          roles: response.data.data.roles,
         });
       });
     };
@@ -279,7 +284,7 @@ const EventDetail = () => {
                 history.push("/manage/event/" + slug);
               }}
             />
-          ) : data.status === 1 ? (
+          ) : data.status === 1 && formData.roles === 1 ? (
             <MainButton
               type="button"
               label={mode === 0 ? "Beli" : "Detail Event"}

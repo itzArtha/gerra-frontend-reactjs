@@ -50,9 +50,9 @@ const Login = ({id, callback}) => {
                 .then((response) => {
                     setLoading(false);
                     if (response.status === 200) {
-                        return id_params !== "undefined" ? window.location.reload() : history.push(
+                        return (["/user/login", "/organization/login"].includes(path)) ? history.push(
                             id === "user" ? "/" : "/complete-profile"
-                        );
+                        ) : window.location.reload()
                     }
                 })
                 .catch((error) => {
@@ -217,7 +217,7 @@ const Login = ({id, callback}) => {
                                 <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"/>
 
                                 <p onClick={() => {
-                                    ["/user/login", "/organization/login"].includes(path) ? history.push( "/" + id + "/register") : callback("register")
+                                    history.push( "/" + id + "/register")
                                 }}
                                    className="text-xs cursor-pointer text-gray-500 uppercase dark:text-gray-400 hover:underline">
                                     or sign up

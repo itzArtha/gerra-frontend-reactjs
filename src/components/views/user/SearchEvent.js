@@ -39,6 +39,7 @@ const SearchEvent = () => {
 
     useEffect(() => {
         setLoading(true);
+        isUser()
         searchData();
     }, [setEvent]);
 

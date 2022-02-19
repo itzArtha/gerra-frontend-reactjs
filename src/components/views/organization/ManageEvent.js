@@ -171,7 +171,9 @@ const ManageEvent = () => {
           setLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          if(error.response.status === 404) {
+            window.location.href = "/e/notfound"
+          }
         });
     };
     const fetchAllCategoryFormat = async () => {

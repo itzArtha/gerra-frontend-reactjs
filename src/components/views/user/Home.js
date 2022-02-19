@@ -6,6 +6,7 @@ import MainButton from "../../MainButton";
 import { Link } from "react-router-dom";
 import MainTicketBar from "./components/MainTicketBar";
 import Skeleton from "../../Skeleton";
+import isUser from "../../services/isUser";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
@@ -21,6 +22,7 @@ const Home = () => {
           setRecLoading(false);
         });
     };
+    isUser()
     setLoading(true);
     setRecLoading(true);
     getRec();

@@ -297,7 +297,7 @@ const Profile = () => {
         <div className="flex justify-center">
           <QRCode
             id="qr-download"
-            size="256"
+            size="80"
             renderAs="canvas"
             value={`https://exotix.id/${data.slug}`}
           />

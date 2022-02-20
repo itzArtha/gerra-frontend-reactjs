@@ -111,7 +111,7 @@ const EventDetail = () => {
           email: response.data.data.email,
           sex: response.data.data.sex,
           id: response.data.data.id,
-          roles: response.data.data.roles,
+          roles: parseInt(response.data.data.roles),
         });
       });
     };

@@ -34,8 +34,6 @@ const Router = () => {
         <Route path="/forget-password" exact component={ResetPassword} />
         <Route path="/password/reset" exact component={SetResetPassword} />
         <Route path="/login" exact component={OnBoarding} />
-        <Route path="/d/about" exact component={About} />
-        <Route path="/d/how-it-works" exact component={HowItWorks} />
         <PrivateOrgRoute
           path="/complete-profile"
           exact
@@ -71,6 +69,8 @@ const Router = () => {
         <PrivateOrgRoute path="/admin/:router" exact component={App} />
 
         <Route path="/" exact component={Home} />
+        <Route path="/d/about" exact component={About} />
+        <Route path="/d/how-it-works" exact component={HowItWorks} />
         <Route path="/explore/event" exact component={SearchEvent} />
         <Route path="/overlay/:slug" exact component={OverlayPresensi} />
         <Route path="/explore/event/:slug" exact component={EventDetail} />

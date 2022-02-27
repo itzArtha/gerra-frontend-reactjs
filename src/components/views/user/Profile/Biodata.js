@@ -363,7 +363,7 @@ const Biodata = () => {
                     name="SexType"
                     label={"Perempuan"}
                     value="0"
-                    checked={parseInt(formData.sex) === 0 ? true : false}
+                    checked={parseInt(formData.sex) === 0}
                   />
                   <Radio
                     onChange={(e) => {
@@ -522,11 +522,11 @@ const Biodata = () => {
                   <Skeleton className="w-full h-6 rounded" count={1} />
                 ) : (
                   <span className="font-normal text-xl col-span-2">
-                    {data.name}
+                    {data.name.length > 20 ? data.name.substring(0, 20) + "..." : data.name}
                   </span>
                 )}
               </div>
-              <div className="grid grid-cols-3 my-1">
+              <div className="grid grid-cols-3 my-2">
                 <h2 className="font-semibold text-xl">Tanggal Lahir</h2>
                 {isLoading ? (
                   <Skeleton className="w-5/6 h-6 rounded" count={1} />
@@ -536,7 +536,7 @@ const Biodata = () => {
                   </span>
                 )}
               </div>
-              <div className="grid grid-cols-3 my-1">
+              <div className="grid grid-cols-3 my-2">
                 <h2 className="font-semibold text-xl">Jenis Kelamin</h2>
                 {isLoading ? (
                   <Skeleton className="w-3/5 h-6 rounded" count={1} />
@@ -571,7 +571,7 @@ const Biodata = () => {
                 ) : (
                   <div className="flex">
                     <span className="font-normal text-xl col-span-2">
-                      {data.email}
+                      {data.email.length > 12 ? data.email.substring(0, 12) + "..." : data.email}
                     </span>
                     {isLoading
                       ? ""
@@ -587,7 +587,7 @@ const Biodata = () => {
                   </div>
                 )}
               </div>
-              <div className="grid grid-cols-3">
+              <div className="grid grid-cols-3 my-2">
                 <h2 className="font-semibold text-xl">No. Telepon</h2>
                 {isLoading ? (
                   <Skeleton className="w-1/2 h-6 rounded" count={1} />

@@ -11,6 +11,7 @@ import Register from "../auth/Register";
 const TopNav = () => {
     const [showLogin, setLogin] = useState(false);
     const [LoginType, setLoginType] = useState("");
+    const [LoginId, setLoginId] = useState("");
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState(Object);
     const [isAuth, setAuth] = useState(true);
@@ -40,17 +41,17 @@ const TopNav = () => {
         getData();
     }, [setUser]);
 
-    const callback = useCallback((data) => {
-        setLoginType(data)
-        console.log(data)
+    const callback = useCallback((type, id) => {
+        setLoginType(type)
+        setLoginId(id)
     }, [])
 
     return (<>
         <LoginModal showModal={showLogin} handleClose={() => {
             setLogin(false)
         }}>
-            {LoginType === "register" ? <Register callback={callback} id={LoginType}/> : LoginType ?
-                <Login callback={callback} id={LoginType}/> : <OnBoarding callback={callback}/>}
+            {LoginType === "register" ? <Register callback={callback} id={LoginId}/> : LoginType ?
+                <Login callback={callback} id={LoginId}/> : <OnBoarding callback={callback}/>}
         </LoginModal>
         <nav className="bg-white shadow dark:bg-gray-800">
             <div className="container px-6 py-4 mx-auto">

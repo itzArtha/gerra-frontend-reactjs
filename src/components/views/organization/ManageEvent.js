@@ -836,11 +836,11 @@ const ManageEvent = () => {
               />
             </div>
             <div className="my-2">
-              <Label label="Nama Tempat" />
+              <Label label={`Nama ${isOnline ? `Platform` : `Tempat`}`} />
               <MainInput
                 type="text"
                 placeholder={
-                  isOnline ? "Google Meet" : "Aula Maven Technologies"
+                  isOnline ? "Ex: Google Meet" : "Ex: Aula Exotix Technologies"
                 }
                 name="location"
                 value={formData.location}
@@ -873,9 +873,9 @@ const ManageEvent = () => {
               </div>
             ) : (
               <div>
-                <div className="mt-4">
+{/*                <div className="mt-4">
                   <div className="w-full h-64 bg-gray-200"></div>
-                </div>
+                </div>*/}
               </div>
             )}
           </div>

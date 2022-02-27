@@ -8,10 +8,16 @@ const Menu = () => {
     const [countNotif, setCountNotif] = useState(0);
     const [showScanner, setShowScanner] = useState(false);
     const [dataScan, setDataScan] = useState(false);
+    const [isAuth, setAuth] = useState(false);
     useEffect(() => {
         const countNotif = () => {
             apiClient.get("/api/v1/user/count/notifications").then((response) => {
                 setCountNotif(response.data.data);
+                setAuth(true)
+            }).catch((error) => {
+                if(error.response.status === 401) {
+                    setAuth(false)
+                }
             });
         };
         countNotif();
@@ -20,6 +26,7 @@ const Menu = () => {
     const handleScan = (result) => {
         console.log(result)
     }
+
 
     return (
         <>
@@ -104,7 +111,7 @@ const Menu = () => {
 
                 </div>
                 <div title="Tiket" className="text-center cursor-pointer md:mx-2 mx-1">
-                    <Link to="/tickets/all-tickets">
+                    <Link to={!isAuth ? "/login" : "/tickets/all-tickets"}>
                         <div
                             className="shadow-lg rounded-full bg-yellow-400 duration-200 transform hover:bg-yellow-300 md:p-4 pb-2 px-2 h-12 w-12 md:h-20 md:w-20  md:mx-2 mx-1 border-black border-2">
                             <img
@@ -120,7 +127,7 @@ const Menu = () => {
                     </Link>
                 </div>
                 <div title="Notif" className="text-center cursor-pointer md:mx-2 mx-1">
-                    <Link to="/notifications/announcements">
+                    <Link to={!isAuth ? "/login" : "/notifications/announcements"}>
                         <div
                             className="shadow-lg rounded-full bg-yellow-400 duration-200 transform hover:bg-yellow-300 md:p-4 pb-2 px-2 h-12 w-12 md:h-20 md:w-20 md:mx-2 mx-1 border-black border-2">
                             <img

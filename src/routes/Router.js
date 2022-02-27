@@ -48,11 +48,6 @@ const Router = () => {
           component={UserPresensi}
         />
         <Route path="/notifications/:router" exact component={Notif} />
-        <PrivateUserRoute
-          path="/explore/organization"
-          exact
-          component={SearchOrganization}
-        />
 
         <Route path="/:username" exact component={PublicProfileView} />
 
@@ -71,6 +66,11 @@ const Router = () => {
         <Route path="/" exact component={Home} />
         <Route path="/d/about" exact component={About} />
         <Route path="/d/how-it-works" exact component={HowItWorks} />
+        <Route
+            path="/explore/organization"
+            exact
+            component={SearchOrganization}
+        />
         <Route path="/explore/event" exact component={SearchEvent} />
         <Route path="/overlay/:slug" exact component={OverlayPresensi} />
         <Route path="/explore/event/:slug" exact component={EventDetail} />

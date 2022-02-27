@@ -63,7 +63,6 @@ const Register = ({id, callback}) => {
                             .then((response) => {
                                 setLoading(false);
                                 if (response.status === 200) {
-
                                     return (["/user/register", "/organization/register"].includes(path)) ? history.push(id === "user" ? "/" : "/complete-profile") : window.location.reload()
                                 }
                             });

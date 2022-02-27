@@ -7,25 +7,25 @@ const About = () => {
   const founders = [
     {
       name: "Artha",
-      pics: "https://ui-avatars.com/api/?bold=true&name=Artha&background=random&?size=128&length=1",
+      pics: "https://assets-gerra.s3.ap-southeast-1.amazonaws.com/teams/artha.JPG",
       motto: "Lagi nyari chindo",
-      level: "Founder, CEO & CTO",
+      level: "Yang buat, mikir, ngoding, & stress",
     },
     {
       name: "Yusa",
-      pics: "https://ui-avatars.com/api/?bold=true&name=Yusa&background=random&?size=128&length=1",
+      pics: "https://assets-gerra.s3.ap-southeast-1.amazonaws.com/teams/yusa.jpeg",
       motto: "Maaf sedang self healing",
       level: "Nonton jojo pas meeting",
     },
     {
       name: "Krisna",
-      pics: "https://ui-avatars.com/api/?bold=true&name=Krisna&background=random&?size=128&length=1",
+      pics: "https://assets-gerra.s3.ap-southeast-1.amazonaws.com/teams/krisna.jpeg",
       motto: "Antos, nu moto",
       level: "Ga ngapa-ngapain",
     },
     {
       name: "Mamet",
-      pics: "https://ui-avatars.com/api/?bold=true&name=Mamet&background=random&?size=128&length=1",
+      pics: "https://assets-gerra.s3.ap-southeast-1.amazonaws.com/teams/mamet.JPG",
       motto: "Rahasia",
       level: "Masih kekeh sama nama watix",
     },
@@ -110,7 +110,7 @@ const About = () => {
               <div key={i} className={`founder-${i} my-8`}>
                 <div className="w-40 h-40 mx-auto">
                   <img
-                    className="w-full rounded-full"
+                    className="w-40 h-40 object-cover rounded-full"
                     src={item.pics}
                     alt="PP"
                   />

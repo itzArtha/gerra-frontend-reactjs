@@ -8,6 +8,7 @@ const isUser = async () => {
         } else if (response.data === 401) {
             if (window.location.pathname === "/") {
                 // handleSwal("Silakan login terlebih dahulu", "error")
+                return 0;
             } else {
                 window.location.pathname = "/login";
             }

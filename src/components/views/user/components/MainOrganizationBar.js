@@ -13,7 +13,7 @@ const MainOrganizationBar = ({ data, loading }) => {
         <div className="top px-6 py-4 flex gap-4">
           <div className="profile-picture">
             <ProfilePicture
-              link={`/organization/${loading ? "" : data.slug}`}
+              link={`/${loading ? "" : data.slug}`}
               transform="w-20 h-20 md:w-32 md:h-32"
               data={data}
               loading={loading}
@@ -23,7 +23,7 @@ const MainOrganizationBar = ({ data, loading }) => {
             {loading ? (
               <Skeleton className="w-32 h-4 rounded-full" count="1" />
             ) : (
-              <Link to={`/organization/${data.slug}`}>
+              <Link to={`/${data.slug}`}>
                 <h1 className="text-xl text-left font-semibold text-gray-800 dark:text-white">
                   {data.name}
                 </h1>

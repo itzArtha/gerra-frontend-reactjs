@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import MainLayout from "../../layouts/MainLayout";
-import MainModal from "../../modals/MainModal";
 import apiClient from "../../services/apiClient";
 import MainButton from "../../MainButton";
 import { Link } from "react-router-dom";
 import MainTicketBar from "./components/MainTicketBar";
 import Skeleton from "../../Skeleton";
 import isUser from "../../services/isUser";
+import useQuery from "../../useQuery";
+import handleSwal from "../../handleSwal";
+import InfoModal from "../../modals/InfoModal";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [RecLoading, setRecLoading] = useState(false);
   const [recom, setRec] = useState([]);
+  const query = useQuery();
   useEffect(() => {
     const getRec = async () => {
       await apiClient
@@ -22,6 +25,13 @@ const Home = () => {
           setRecLoading(false);
         });
     };
+
+
+    if(query.get("result") === "success") {
+      handleSwal("Berhasil memverifikasi email");
+      window.history.replaceState({}, document.title, "/");
+    }
+
     isUser()
     setLoading(true);
     setRecLoading(true);
@@ -29,20 +39,18 @@ const Home = () => {
     setLoading(false);
   }, [setRec]);
 
+
   return (
     <MainLayout top={true} footer={true} menu={true}>
-      <MainModal
+      <InfoModal
         showModal={showModal}
         title="Kamu bukan organizer lo..."
-        onClick={() => {
-          // Logout();
-        }}
         handleClose={() => {
           setShowModal(false);
         }}
       >
         Hehe kalo mau buat event, login sebagai organisasi dulu yuk
-      </MainModal>
+      </InfoModal>
       <div className="container px-6 py-16 mx-auto text-center">
         <div className="max-w-lg mx-auto">
           {loading ? (

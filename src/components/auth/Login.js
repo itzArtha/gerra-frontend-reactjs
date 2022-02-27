@@ -217,7 +217,8 @@ const Login = ({id, callback}) => {
                                 <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"/>
 
                                 <p onClick={() => {
-                                    history.push( "/" + id + "/register")
+                                    ["/user/login", "/organization/login"].includes(path) ? history.push( "/" + id + "/register") : callback("register", id)
+
                                 }}
                                    className="text-xs cursor-pointer text-gray-500 uppercase dark:text-gray-400 hover:underline">
                                     or sign up

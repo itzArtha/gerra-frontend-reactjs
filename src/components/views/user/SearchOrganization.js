@@ -6,7 +6,6 @@ import { useLocation, useHistory } from "react-router-dom";
 import MainOrganizationBar from "./components/MainOrganizationBar";
 import MainButton from "../../MainButton";
 import apiClient from "../../services/apiClient";
-import isUser from "../../services/isUser";
 
 const SearchOrganization = () => {
   const [search, setSearch] = useState("");
@@ -34,7 +33,6 @@ const SearchOrganization = () => {
 
   useEffect(() => {
     setLoading(true);
-    isUser()
     fetchData();
   }, [setData]);
 

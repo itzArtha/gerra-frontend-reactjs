@@ -6,7 +6,6 @@ import {useState, useCallback, useEffect} from "react";
 import {useLocation, useHistory} from "react-router-dom";
 import MainButton from "../../MainButton";
 import apiClient from "../../services/apiClient";
-import isUser from "../../services/isUser";
 
 const SearchEvent = () => {
     const [search, setSearch] = useState("");
@@ -39,7 +38,6 @@ const SearchEvent = () => {
 
     useEffect(() => {
         setLoading(true);
-        isUser()
         searchData();
     }, [setEvent]);
 

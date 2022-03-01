@@ -70,13 +70,13 @@ const Register = ({id, callback}) => {
                 })
                 .catch((error) => {
                     setLoading(false);
-                    if (error.response.status === 401) {
+                    if (error.response.status === 422) {
                         setformData({
-                            ...formData, isNameError: true, emailErrorLabel: error.response.data.message,
+                            ...formData, isEmailError: true, emailErrorLabel: "Email telah digunakan, pake yang lain!",
                         });
                     } else {
                         setformData({
-                            ...formData, isNameError: true, emailErrorLabel: error.response.data.message,
+                            ...formData, isEmailError: true, emailErrorLabel: error.response.data.message,
                         });
                     }
                 });

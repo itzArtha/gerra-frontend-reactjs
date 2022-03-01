@@ -41,7 +41,8 @@ const Rekening = () => {
           }
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
+          setLoading(false);
         });
     };
     setLoading(true);
@@ -78,8 +79,10 @@ const Rekening = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        setLoading(false);
       });
+
   };
 
   const showEditBank = async (id) => {

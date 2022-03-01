@@ -78,7 +78,7 @@ const Router = () => {
         <Route path="/:id_params/register" exact component={Register} />
         <Route path="/:id_params/login" exact component={Login} />
 
-        <Route path="/e/notfound" component={NotFound} />
+        <Route component={NotFound} />
       </Switch>
     </React.Fragment>
   );

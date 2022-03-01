@@ -13,6 +13,7 @@ import QRCode from "qrcode.react";
 import Swal from "sweetalert2";
 import moment from "moment";
 import Radio from "../../../Radio";
+import CurrencyFormat from "react-currency-format";
 
 const Biodata = () => {
   const [isTextLoading, setTextLoading] = useState(false);
@@ -57,9 +58,10 @@ const Biodata = () => {
           setformData({
             name: response.data.data.name,
             email: response.data.data.email,
-            phone: response.data.data.phone,
+            phone: response.data.data.phone ?? "",
             birthday: response.data.data.birthday,
             sex: response.data.data.sex,
+            verified: response.data.data.verified,
           });
           setLoading(false);
         })
@@ -92,7 +94,7 @@ const Biodata = () => {
   };
 
   const handleSubmitContact = () => {
-    if (formData.email) {
+    if (formData.email && formData.phone) {
       setformData({
         ...formData,
         isEmailError: false,
@@ -102,7 +104,13 @@ const Biodata = () => {
       setformData({
         ...formData,
         isEmailError: true,
-        emailErrorLabel: "Dibilangin email ga boleh kosong",
+        emailErrorLabel: "Email itu ga boleh kosong ya adick - adick!",
+      });
+    } else if (!formData.phone) {
+      setformData({
+        ...formData,
+        isPhoneError: true,
+        phoneErrorLabel: "No. telepon ga boleh kosong!",
       });
     }
   };
@@ -301,6 +309,7 @@ const Biodata = () => {
                 <Skeleton className="w-full h-10 rounded" count={1} />
               ) : (
                 <MainInput
+                  maxLength={30}
                   value={formData.name}
                   onChange={(e) =>
                     setformData({
@@ -372,7 +381,7 @@ const Biodata = () => {
                     name="SexType"
                     label={"Laki - Laki"}
                     value="1"
-                    checked={parseInt(formData.sex) === 1 ? true : false}
+                    checked={parseInt(formData.sex) === 1}
                   />
                 </div>
               )}
@@ -416,17 +425,16 @@ const Biodata = () => {
               {isLoading ? (
                 <Skeleton className="w-full h-10 rounded" count={1} />
               ) : (
-                <MainInput
-                  value={formData.phone}
-                  type="text"
-                  onChange={(e) => {
-                    setformData({
-                      ...formData,
-                      phone: e.target.value,
-                      isPhoneError: false,
-                    });
-                  }}
-                />
+                  <CurrencyFormat customInput={MainInput} value={formData.phone}
+                                  type="text"
+                                  onChange={(e) => {
+                                    setformData({
+                                      ...formData,
+                                      phone: e.target.value,
+                                      isPhoneError: false,
+                                    });
+                                  }} />
+
               )}
               {formData.isPhoneError ? (
                 <ErrorLabel label={formData.phoneErrorLabel} />
@@ -575,7 +583,7 @@ const Biodata = () => {
                     </span>
                     {isLoading
                       ? ""
-                      : !data.email_verified_at && (
+                      : !data.verified && (
                           <TransparentButton
                             label={isTextLoading ? "Loading..." : "Verifikasi"}
                             onClick={() => {

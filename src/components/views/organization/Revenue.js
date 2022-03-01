@@ -43,6 +43,7 @@ const Revenue = () => {
         })
         .catch((error) => {
           // console.log(error.response.data);
+          setLoading(false);
         });
     };
 

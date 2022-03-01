@@ -26,12 +26,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
   return (
     <>
       <div
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className={`fixed inset-0 bg-gray-900 bg-opacity-30 z-40 md:hidden md:z-auto transition-opacity duration-200 ${
-          sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-        aria-hidden="true"
-      ></div>
+    onClick={() => setSidebarOpen(!sidebarOpen)}
+    className={`fixed inset-0 bg-gray-900 bg-opacity-30 z-40 md:hidden md:z-auto transition-opacity duration-200 ${
+        sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+    }`}
+    aria-hidden="true"
+    />
       <div
         className={`flex flex-col fixed z-40 left-0 top-0 md:left-auto md:top-auto md:translate-x-0 transform h-screen overflow-y-scroll md:overflow-y-auto no-scrollbar w-64 lg:w-72 flex-shrink-0 bg-white p-4 transition-all duration-200 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-64"
@@ -77,7 +77,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
             ) : (
               <div>
                 <h2 className="text-xl font-semibold">{data.name}</h2>
-                <p className="text-sm font-light">{data.description}</p>
+                <p className="text-sm font-light">{data.description ? data.description.substring(0, 100) : data.description }</p>
                 <a
                   href={`/${data.slug}`}
                   target={`_blank`}

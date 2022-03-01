@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import apiClient from "../../services/apiClient";
 import Header from "./Profile/Header";
 import AllTickets from "./components/AllTickets";
+import MainLayout from "../../layouts/MainLayout";
 
 const Tickets = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -58,7 +59,7 @@ const Tickets = () => {
     }
   };
   return (
-    <>
+    <MainLayout menu={true}>
       <div className="flex">
         <Sidebar
           sidebarOpen={sidebarOpen}
@@ -82,7 +83,7 @@ const Tickets = () => {
           </main>
         </div>
       </div>
-    </>
+    </MainLayout>
   );
 };
 export default Tickets;

@@ -12,6 +12,7 @@ import MainTextArea from "../../../../MainTextArea";
 import apiClient from "../../../../services/apiClient";
 import QRCode from "qrcode.react";
 import Swal from "sweetalert2";
+import CurrencyFormat from "react-currency-format";
 
 const Profile = () => {
   const [isTextLoading, setTextLoading] = useState(false);
@@ -34,6 +35,9 @@ const Profile = () => {
     name: "",
     isNameError: false,
     nameErrorLabel: "",
+    alamat: "",
+    isAlamatError: false,
+    alamatErrorLabel: "",
     email: "",
     isEMailError: false,
     emailErrorLabel: "",
@@ -55,33 +59,37 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      await apiClient
-        .get("api/v1/organization")
-        .then((response) => {
-          setData(response.data.data);
-          setformData({
-            name: response.data.data.name,
-            tagline: response.data.data.tagline
-              ? response.data.data.tagline
-              : "",
-            domain: response.data.data.slug,
-            description: response.data.data.description
-              ? response.data.data.description
-              : "",
-            email: response.data.data.email,
-            phone: response.data.data.phone,
-          });
-          setLoading(false);
-        })
-        .catch((error) => {
-          //
-        });
-    };
 
     setLoading(true);
     fetchData();
   }, [setData]);
+
+
+    const fetchData = async () => {
+      await apiClient
+          .get("api/v1/organization")
+          .then((response) => {
+            setData(response.data.data);
+            setformData({
+              name: response.data.data.name,
+              tagline: response.data.data.tagline
+                  ? response.data.data.tagline
+                  : "",
+              domain: response.data.data.slug,
+              description: response.data.data.description
+                  ? response.data.data.description
+                  : "",
+              email: response.data.data.email,
+              phone: response.data.data.phone ?? "",
+              email_verified_at: response.data.data.email_verified_at,
+              alamat: response.data.data.address,
+            });
+            setLoading(false);
+          })
+          .catch((error) => {
+            //
+          });
+    };
 
   const handleSubmitContact = () => {
     if (formData.email) {
@@ -142,6 +150,7 @@ const Profile = () => {
         phone: formData.phone,
       })
       .then((response) => {
+        fetchData();
         handleSwal(response.data.message);
         setShowContactModal(false);
       })
@@ -173,10 +182,12 @@ const Profile = () => {
       .put("api/v1/organization/profile", {
         name: formData.name,
         username: formData.domain,
+        address: formData.alamat,
         tagline: formData.tagline,
         description: formData.description,
       })
       .then((response) => {
+        fetchData();
         handleSwal(response.data.message);
         setShowProfileModal(false);
       })
@@ -336,6 +347,7 @@ const Profile = () => {
                 <Skeleton className="w-full h-10 rounded" count={1} />
               ) : (
                 <MainInput
+                    maxLength={30}
                   value={formData.name}
                   onChange={(e) =>
                     setformData({
@@ -350,6 +362,35 @@ const Profile = () => {
               )}
               {formData.isNameError ? (
                 <ErrorLabel label={formData.nameErrorLabel} />
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="mt-4">
+              {isLoading ? (
+                <Skeleton className="w-14 h-2 rounded" count={1} />
+              ) : (
+                <Label label="Alamat" />
+              )}
+              {isLoading ? (
+                <Skeleton className="w-full h-10 rounded" count={1} />
+              ) : (
+                <MainInput
+                    maxLength={30}
+                  value={formData.alamat}
+                  onChange={(e) =>
+                    setformData({
+                      ...formData,
+                      alamat: e.target.value,
+                      isAlamatError: false,
+                    })
+                  }
+                  name="alamat"
+                  type="text"
+                />
+              )}
+              {formData.isAlamatError ? (
+                <ErrorLabel label={formData.alamatErrorLabel} />
               ) : (
                 ""
               )}
@@ -561,17 +602,16 @@ const Profile = () => {
               {isLoading ? (
                 <Skeleton className="w-full h-10 rounded" count={1} />
               ) : (
-                <MainInput
-                  value={formData.phone}
-                  type="text"
-                  onChange={(e) => {
-                    setformData({
-                      ...formData,
-                      phone: e.target.value,
-                      isPhoneError: false,
-                    });
-                  }}
-                />
+                  <CurrencyFormat customInput={MainInput}                   value={formData.phone.toString()}
+                                  type="text"
+                                  onChange={(e) => {
+                                    setformData({
+                                      ...formData,
+                                      phone: e.target.value,
+                                      isPhoneError: false,
+                                    });
+                                  }} />
+
               )}
               {formData.isPhoneError ? (
                 <ErrorLabel label={formData.phoneErrorLabel} />
@@ -738,6 +778,16 @@ const Profile = () => {
                 )}
               </div>
               <div className="grid grid-cols-3">
+                <h2 className="font-semibold text-xl">Alamat</h2>
+                {isLoading ? (
+                  <Skeleton className="w-full h-6 rounded" count={1} />
+                ) : (
+                  <span className="font-normal text-xl col-span-2">
+                    {data.alamat}
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-cols-3">
                 <h2 className="font-semibold text-xl">Tagline</h2>
                 {isLoading ? (
                   <Skeleton className="w-5/6 h-6 rounded" count={1} />
@@ -774,7 +824,7 @@ const Profile = () => {
                 {isLoading ? (
                   <Skeleton className="w-3/5 h-6 rounded" count={1} />
                 ) : (
-                  <span className="font-normal text-xl col-span-2">
+                  <span className="font-normal text-xl col-span-2 md:mr-12 text-justify">
                     {data.description}
                   </span>
                 )}

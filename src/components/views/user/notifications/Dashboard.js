@@ -4,6 +4,7 @@ import { useHistory, Link, useParams } from "react-router-dom";
 import apiClient from "../../../services/apiClient";
 import Header from "../Profile/Header";
 import Content from "./Content";
+import MainLayout from "../../../layouts/MainLayout";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -60,7 +61,7 @@ const Dashboard = () => {
     }
   };
   return (
-    <>
+    <MainLayout menu={true}>
       <div className="flex">
         <Sidebar
           sidebarOpen={sidebarOpen}
@@ -84,7 +85,7 @@ const Dashboard = () => {
           </main>
         </div>
       </div>
-    </>
+    </MainLayout>
   );
 };
 export default Dashboard;

@@ -12,6 +12,7 @@ const MainInput = (props) => {
         onKeyDown={props.onKeyPress}
         placeholder={props.placeholder}
         disabled={props.disabled}
+        min={props.min}
       />
     </React.Fragment>
   );

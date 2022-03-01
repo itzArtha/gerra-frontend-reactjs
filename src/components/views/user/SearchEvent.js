@@ -80,7 +80,7 @@ const SearchEvent = () => {
     };
     return (
         <>
-            <MainLayout top={true}>
+            <MainLayout top={true} menu={true}>
                 <div className="mt-12 mx-4 md:mx-12">
 {/*                    <div className="grid grid-cols-1 md:grid-cols-4 md:gap-12">
                         <MainButton

@@ -611,17 +611,15 @@ const EventDetail = () => {
                                         </div>
                                         <div className="pb-4">
                                             <Label label={"No. Telepon"}/>
-                                            <MainInput
-                                                value={formData.hp}
-                                                type={"text"}
-                                                onChange={(e) => {
-                                                    setFormData({
-                                                        ...formData,
-                                                        hp: e.target.value,
-                                                        isHpError: false,
-                                                    });
-                                                }}
-                                            />
+                                            <CurrencyFormat customInput={MainInput}
+                                                            value={formData.hp}
+                                                            onChange={(e) => {
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    hp: e.target.value,
+                                                                    isHpError: false,
+                                                                });
+                                                            }}/>
                                             {formData.isHpError ? (
                                                 <ErrorLabel label={formData.hpErrorLabel}/>
                                             ) : (

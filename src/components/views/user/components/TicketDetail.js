@@ -43,9 +43,9 @@ const TicketDetail = ({ transaction, loading, type }) => {
             <tr className="flex justify-between border-b py-2">
               <td>Link Conference</td>
               <td>
-                <a
+                <a target={"_blank"}
                   className="text-blue-500 hover:text-blue-600"
-                  href="https://www.instagram.com/exotix.id"
+                  href={data.event.stream_url}
                 >
                   Klik Link
                 </a>

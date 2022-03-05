@@ -43,7 +43,8 @@ const TicketDetail = ({ transaction, loading, type }) => {
             <tr className="flex justify-between border-b py-2">
               <td>Link Conference</td>
               <td>
-                <a target={"_blank"}
+                <a
+                  target={"_blank"}
                   className="text-blue-500 hover:text-blue-600"
                   href={data.event.stream_url}
                 >
@@ -131,9 +132,9 @@ const TicketDetail = ({ transaction, loading, type }) => {
           </div>
           {transaction.status === "pending" ? (
             <div>
-              <Link to={transaction.payment.path}>
+              <a target={"_blank"} href={transaction.payment.path}>
                 <MainButton label="Bayar" />
-              </Link>
+              </a>
             </div>
           ) : (
             ""

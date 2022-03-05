@@ -23,7 +23,8 @@ const Pay = () => {
     channel.bind("Handler", (data) => {
       fetchData();
       if (data.transaction === "settlement") {
-        history.push(`/payment?ref_id=${query.get("ref_id")}&status=success`);
+        // history.push(`/payment?ref_id=${query.get("ref_id")}&status=success`);
+        history.push(`/tickets/all-tickets`);
       }
     });
 

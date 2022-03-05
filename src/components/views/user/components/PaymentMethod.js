@@ -47,8 +47,8 @@ const PaymentMethod = () => {
         return "QRIS";
       case "bni":
         return "Bank BNI";
-      case "permata":
-        return "Bank Permata";
+      case "other_va":
+        return "Bank Lainnya";
       default:
         return "Error";
     }
@@ -63,7 +63,8 @@ const PaymentMethod = () => {
         })
         .then((response) => {
           if (response.status === 200) {
-            history.push("payment?ref_id=" + response.data);
+            // history.push("payment?ref_id=" + response.data);
+            window.location.href = response.data;
             setPayLoading(false);
           }
         })
@@ -103,11 +104,11 @@ const PaymentMethod = () => {
           </div>
           <div
             onClick={() => {
-              handlePaymentMethod("permata");
+              handlePaymentMethod("other_va");
             }}
             className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
           >
-            <span>Bank Permata</span>
+            <span>Bank Lainnya</span>
           </div>
         </div>
       </InfoModal>

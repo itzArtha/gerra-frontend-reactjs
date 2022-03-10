@@ -47,6 +47,26 @@ const HowItWorks = () => {
           />
         </div>
         <h2 className="font-semibold text-3xl my-8">How it Works?</h2>
+        <div className={"flex justify-center gap-4"}>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/VS2aUsQlLJ8"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/7oPovYnX1vI"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
         <div className="grid md:grid-cols-3 grid-cols-1 gap-2">
           {ways.map((item, i) => (
             <div key={i} className={`step-${i} my-12`}>
@@ -54,7 +74,7 @@ const HowItWorks = () => {
                 <span className="font-semibold text-3xl">{i + 1}</span>
               </div>
               <div className="images p-4">
-                <div className="h-64 w-full bg-gray-400"></div>
+                <div className="h-64 w-full bg-gray-400" />
               </div>
               <div className="text">
                 <h2 className="font-semibold text-lg my-2">{item.title}</h2>

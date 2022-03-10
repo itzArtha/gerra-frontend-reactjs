@@ -109,7 +109,7 @@ const Dashboard = ({ slug }) => {
       .then((response) => {
         handleSwal("Berhasil mengirim pengumuman");
       });
-    file.value = "";
+    setFile("");
     setAnnouncement({ to: "0", subject: "", message: "" });
     setShowModalAnnouncement(false);
   };
@@ -172,7 +172,7 @@ const Dashboard = ({ slug }) => {
                 value={announcement.to}
               >
                 <option value="0">Semua Peserta</option>
-                <option value="1">Semua Pengurus</option>
+                {/*<option value="1">Semua Pengurus</option>*/}
               </SelectInput>
             </div>
             <div className="my-2">

@@ -48,9 +48,27 @@ const About = () => {
       icon: process.env.PUBLIC_URL + "/rich.svg",
     },
   ];
+  const contacts = [
+    {
+      name: "Email",
+      link: "mailto:ternakayam.company@gmail.com",
+      value: "ternakayam.company@gmail.com",
+    },
+    {
+      name: "DM Instagram",
+      link: "https://www.instagram.com/exotix.id",
+      value: "exotix.id",
+    },
+    {
+      name: "Email (Alternative)",
+      link: "mailto:exovaindonesia@gmail.com",
+      value: "exovaindonesia@gmail.com",
+    },
+  ];
   const scrollTentang = useRef(null);
   const scrollTim = useRef(null);
   const scrollPencapaian = useRef(null);
+  const scrollContact = useRef(null);
 
   const handleScrollTentang = () => {
     scrollTentang.current.scrollIntoView({ behavior: "smooth" });
@@ -62,6 +80,9 @@ const About = () => {
 
   const handleScrollPencapaian = () => {
     scrollPencapaian.current.scrollIntoView({ behavior: "smooth" });
+  };
+  const handleScrollContact = () => {
+    scrollContact.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -81,6 +102,7 @@ const About = () => {
           <MainButton onClick={handleScrollTentang} label="Tentang" />
           <MainButton onClick={handleScrollTim} label="Tim" />
           <MainButton onClick={handleScrollPencapaian} label="Pencapaian" />
+          <MainButton onClick={handleScrollContact} label="Kontak" />
         </div>
         {/* Tentang */}
         <div className="about flex justify-center my-12" ref={scrollTentang}>
@@ -143,6 +165,28 @@ const About = () => {
                 <div className="my-4">
                   <h2 className="font-semibold text-xl">{item.name}</h2>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Kontak */}
+        <div className="tim my-24" ref={scrollContact}>
+          <h2 className="font-semibold text-3xl my-8">Kontak</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+            {contacts.map((item, i) => (
+              <div key={i} className={`contact-${i} my-8`}>
+                <div>
+                  <span>
+                    <span className={"font-light text-base"}>{item.name}</span>
+                  </span>
+                </div>
+                <a
+                  className={"text-blue-600 hover:text-blue-400 duration-500"}
+                  href={item.link}
+                  target={"_blank"}
+                >
+                  <span className={"font-bold text-lg"}>{item.value}</span>
+                </a>
               </div>
             ))}
           </div>

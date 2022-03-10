@@ -211,6 +211,9 @@ const EventDetail = () => {
 
   const handleSelectTicket = (e) => {
     setFormData({ ...formData, discountCode: "" });
+    setCalculate({
+      fee: 0,
+    });
     const id = e.target.value;
     const price = data.ticket.filter((i) => i.id === parseInt(id))[0];
     let newArray = [...ticket, { id, price }];
@@ -227,7 +230,7 @@ const EventDetail = () => {
       fee = 0,
       total = 0;
     newArray.map((item, i) => (subtotal += parseInt(item.price.price)));
-    fee = subtotal * 0.05;
+    fee = subtotal * 0.05 + (subtotal > 0 ? 5000 : 0);
     discount = subtotal * discount;
     total = subtotal + fee - discount;
     setCalculate({
@@ -537,8 +540,6 @@ const EventDetail = () => {
                               ticket.filter(
                                 (c) => parseInt(c.id) === parseInt(item.id)
                               ).length > 0
-                                ? true
-                                : false
                             }
                           />
                         </div>
@@ -577,6 +578,7 @@ const EventDetail = () => {
                     <div className="pb-4">
                       <Label label={"Nama Lengkap"} />
                       <MainInput
+                        disabled={auth}
                         value={formData.name}
                         type={"text"}
                         onChange={(e) => {
@@ -596,6 +598,7 @@ const EventDetail = () => {
                     <div className="pb-4">
                       <Label label={"Email"} />
                       <MainInput
+                        disabled={auth}
                         value={formData.email}
                         type={"text"}
                         onChange={(e) => {
@@ -645,9 +648,7 @@ const EventDetail = () => {
                             name="SexType"
                             label={"Perempuan"}
                             value="0"
-                            checked={
-                              parseInt(formData.sex) === 0 ? true : false
-                            }
+                            checked={parseInt(formData.sex) === 0}
                           />
                           <Radio
                             onChange={(e) => {
@@ -659,9 +660,7 @@ const EventDetail = () => {
                             name="SexType"
                             label={"Laki - Laki"}
                             value="1"
-                            checked={
-                              parseInt(formData.sex) === 1 ? true : false
-                            }
+                            checked={parseInt(formData.sex) === 1}
                           />
                         </div>
                       </div>

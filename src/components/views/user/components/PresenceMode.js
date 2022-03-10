@@ -49,7 +49,7 @@ const PresenceMode = ({ status, slug, clickCallback }) => {
   const addPresence = async () => {
     setBtnLoading(true);
     await apiClient
-      .post("/api/v1/user/presence/", {
+      .post("/api/v1/user/presence", {
         signature: imageURL,
         slug: slug,
       })

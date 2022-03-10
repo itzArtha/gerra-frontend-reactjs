@@ -54,10 +54,14 @@ const DetailPresensi = ({ data, eventSlug }) => {
 
   const testOverlay = () => {
     setBtnLoading(true);
-    apiClient.post("/api/v1/user/overlay/test/presence").then((response) => {
-      handleSwal(response.data.message);
-      setBtnLoading(false);
-    });
+    apiClient
+      .post("/api/v1/user/overlay/test/presence", {
+        slug: data.slug,
+      })
+      .then((response) => {
+        handleSwal(response.data.message);
+        setBtnLoading(false);
+      });
   };
 
   const uploadCertFile = (e) => {

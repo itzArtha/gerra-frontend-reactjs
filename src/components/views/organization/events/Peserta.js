@@ -32,7 +32,7 @@ const Peserta = ({ slug }) => {
               "Jenis Kelamin": parsedData.sex === 0 ? "Wanita" : "Pria",
               "Tanggal Lahir": parsedData.birthday,
               KTP: parsedData.ktp,
-              "No. Telepon": item.phone,
+              "No. Telepon": parsedData.hp,
               Tiket: item.ticket,
               "Tanggal Registrasi": moment(item.created_at).format("lll"),
             };

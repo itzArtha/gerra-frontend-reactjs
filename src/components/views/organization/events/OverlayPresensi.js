@@ -27,6 +27,21 @@ const OverlayPresensi = () => {
     });
   }, []);
 
+  const getDay = () => {
+    let result = "";
+    const hours = new Date().getHours();
+    if (hours >= 0 && hours < 12) {
+      result = "pagi";
+    } else if (hours >= 12 && hours < 16) {
+      result = "siang";
+    } else if (hours >= 16 && hours < 18) {
+      result = "sore";
+    } else {
+      result = "malam";
+    }
+    return result;
+  };
+
   return (
     <>
       {show ? (
@@ -46,8 +61,8 @@ const OverlayPresensi = () => {
             <div className="flex justify-center my-4">
               <div className="border-2 border-black bg-yellow-400 rounded p-4 w-full">
                 <h2 className="font-semibold text-4xl text-center leading-relaxed">
-                  Selamat pagi {data.name}, <br /> dan selamat datang di acara{" "}
-                  {data.eventName}
+                  Selamat {getDay()} {data.name}, <br /> dan selamat datang di
+                  acara {data.eventName}
                   <br />
                 </h2>
                 <span className="font-light text-3xl flex justify-center leading-relaxed">

@@ -55,6 +55,9 @@ const Presensi = () => {
           newArray.push(obj);
           setExportData(newArray);
         });
+      })
+      .catch((err) => {
+        // console.log(err);
       });
   };
 
@@ -146,8 +149,10 @@ const Presensi = () => {
               <div title="table" className="my-4">
                 {loading ? (
                   <span className="flex justify-center">Loading...</span>
-                ) : (
+                ) : dataPresence.length > 0 ? (
                   <TablePresensi data={dataPresence} />
+                ) : (
+                  <div className={"flex justify-center"}>Belum ada data</div>
                 )}
               </div>
             </div>

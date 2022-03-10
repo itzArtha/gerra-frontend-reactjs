@@ -26,6 +26,7 @@ import UserPresensi from "../components/views/user/Presensi";
 import About from "../components/views/user/About";
 import HowItWorks from "../components/views/user/HowItWorks";
 import NotFound from "../components/errors/NotFound";
+import Terms from "../components/views/terms/Terms";
 
 const Router = () => {
   return (
@@ -64,12 +65,13 @@ const Router = () => {
         <PrivateOrgRoute path="/admin/:router" exact component={App} />
 
         <Route path="/" exact component={Home} />
+        <Route path="/d/terms-condition" exact component={Terms} />
         <Route path="/d/about" exact component={About} />
         <Route path="/d/how-it-works" exact component={HowItWorks} />
         <Route
-            path="/explore/organization"
-            exact
-            component={SearchOrganization}
+          path="/explore/organization"
+          exact
+          component={SearchOrganization}
         />
         <Route path="/explore/event" exact component={SearchEvent} />
         <Route path="/overlay/:slug" exact component={OverlayPresensi} />

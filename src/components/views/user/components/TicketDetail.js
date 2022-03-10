@@ -30,7 +30,7 @@ const TicketDetail = ({ transaction, loading, type }) => {
             <td>Waktu Selesai</td>
             <td>{moment(data.end_at).format("llll")}</td>
           </tr>
-          <tr className="flex justify-between border-b py-2">
+          {/*<tr className="flex justify-between border-b py-2">
             <td>Invoice Pembelian</td>
             <td className="text-blue-500 hover:text-blue-600 cursor-pointer">
               <a href={transaction.invoice.path}>
@@ -38,7 +38,7 @@ const TicketDetail = ({ transaction, loading, type }) => {
                 {transaction.invoice.id}
               </a>
             </td>
-          </tr>
+          </tr>*/}
           {data.event.is_online ? (
             <tr className="flex justify-between border-b py-2">
               <td>Link Conference</td>

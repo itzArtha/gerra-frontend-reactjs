@@ -47,10 +47,9 @@ const HowItWorks = () => {
           />
         </div>
         <h2 className="font-semibold text-3xl my-8">How it Works?</h2>
-        <div className={"flex justify-center gap-4"}>
+        <div className={"grid md:grid-cols-2 grid-cols-1 justify-center gap-4"}>
           <iframe
-            width="560"
-            height="315"
+            className={"w-full h-72"}
             src="https://www.youtube.com/embed/VS2aUsQlLJ8"
             title="YouTube video player"
             frameBorder="0"
@@ -58,8 +57,7 @@ const HowItWorks = () => {
             allowFullScreen
           />
           <iframe
-            width="560"
-            height="315"
+            className={"w-full h-72"}
             src="https://www.youtube.com/embed/7oPovYnX1vI"
             title="YouTube video player"
             frameBorder="0"

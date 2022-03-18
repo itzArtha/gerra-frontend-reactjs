@@ -98,7 +98,7 @@ const About = () => {
             alt="Logo"
           />
         </div>
-        <div className="buttons flex gap-2 justify-center">
+        <div className="buttons grid grid-cols-2 md:grid-cols-4 gap-2 justify-center">
           <MainButton onClick={handleScrollTentang} label="Tentang" />
           <MainButton onClick={handleScrollTim} label="Tim" />
           <MainButton onClick={handleScrollPencapaian} label="Pencapaian" />

@@ -20,7 +20,9 @@ const Dashboard = () => {
           setData(response.data.data);
           setLoading(false);
           document.getElementById("title").innerHTML =
-            response.data.data.name.split(" ")[0] + " - " + document.title;
+            response.data.data.name.split(" ")[0] +
+            " - " +
+            "Exotix | Warung Tiket Mahasiswa Abadi";
         })
         .catch((error) => {
           if (error.response.status === 401) {

@@ -2,11 +2,12 @@ import IconWithTitle from "../../IconWithTitle";
 import RoundedButton from "../../../RoundedButton";
 import MainButton from "../../../MainButton";
 import InfoModal from "../../../modals/InfoModal";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 const TicketDetail = ({ transaction, loading, type }) => {
   const [showTicketModal, setShowTicketModal] = useState(false);
+  const history = useHistory();
   const data = transaction.ticket;
   return (
     <>
@@ -140,12 +141,37 @@ const TicketDetail = ({ transaction, loading, type }) => {
             ""
           )}
           {transaction.status === "settlement" ? (
-            <div>
+            <div className={"flex gap-2"}>
+              <MainButton
+                onClick={() => {
+                  history.push("/pdf/ticket/" + transaction.participant_id);
+                }}
+                label={
+                  <div>
+                    <img
+                      className={"lg:hidden w-4 h-4"}
+                      src={process.env.PUBLIC_URL + "/download.svg"}
+                    />
+                    <span className={"hidden lg:block"}>Download Tiket</span>
+                  </div>
+                }
+              />
+
               <MainButton
                 onClick={() => {
                   setShowTicketModal(true);
                 }}
-                label="Lihat Detail Tiket"
+                label={
+                  <div>
+                    <img
+                      className={"lg:hidden w-4 h-4"}
+                      src={process.env.PUBLIC_URL + "/eye.svg"}
+                    />
+                    <span className={"hidden lg:block"}>
+                      Lihat Detail Tiket
+                    </span>
+                  </div>
+                }
               />
             </div>
           ) : (

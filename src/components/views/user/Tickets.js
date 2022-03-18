@@ -14,14 +14,14 @@ const Tickets = () => {
   const history = useHistory();
   useEffect(() => {
     const handleFetchData = () => {
-      apiClient
-        .get("/api/v1/user")
-        .then((response) => {
-          setData(response.data.data);
-          setLoading(false);
-          document.getElementById("title").innerHTML =
-            response.data.data.name.split(" ")[0] + " - " + document.title;
-        })
+      apiClient.get("/api/v1/user").then((response) => {
+        setData(response.data.data);
+        setLoading(false);
+        document.getElementById("title").innerHTML =
+          response.data.data.name.split(" ")[0] +
+          " - " +
+          "Exotix | Warung Tiket Mahasiswa Abadi";
+      });
     };
     handleFetchData();
   }, [setData]);

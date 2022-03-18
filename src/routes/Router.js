@@ -27,6 +27,7 @@ import About from "../components/views/user/About";
 import HowItWorks from "../components/views/user/HowItWorks";
 import NotFound from "../components/errors/NotFound";
 import Terms from "../components/views/terms/Terms";
+import TicketPdf from "../components/views/user/components/TicketPdf";
 
 const Router = () => {
   return (
@@ -68,6 +69,7 @@ const Router = () => {
         <Route path="/d/terms-condition" exact component={Terms} />
         <Route path="/d/about" exact component={About} />
         <Route path="/d/how-it-works" exact component={HowItWorks} />
+        <Route path="/pdf/ticket/:ticketId" exact component={TicketPdf} />
         <Route
           path="/explore/organization"
           exact

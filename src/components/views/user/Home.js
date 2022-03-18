@@ -26,19 +26,17 @@ const Home = () => {
         });
     };
 
-
-    if(query.get("result") === "success") {
+    if (query.get("result") === "success") {
       handleSwal("Berhasil memverifikasi email");
       window.history.replaceState({}, document.title, "/");
     }
 
-    isUser()
+    isUser();
     setLoading(true);
     setRecLoading(true);
     getRec();
     setLoading(false);
   }, [setRec]);
-
 
   return (
     <MainLayout top={true} footer={true} menu={true}>
@@ -60,7 +58,7 @@ const Home = () => {
             </>
           ) : (
             <h1 className="text-2xl font-medium text-gray-800 dark:text-white md:text-3xl">
-              Mo buat event ato nyari event? <br />
+              Mau buat event / nyari event? <br />
             </h1>
           )}
           <div className="grid grid-cols-2 gap-2 mt-4">

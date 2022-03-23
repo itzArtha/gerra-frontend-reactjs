@@ -23,6 +23,7 @@ import {
   TelegramShareButton,
 } from "react-share";
 import handleSwal from "../../handleSwal";
+import { convertFromHTML } from "draft-js";
 
 const EventDetail = () => {
   const { slug } = useParams();
@@ -504,9 +505,13 @@ const EventDetail = () => {
               {loading ? (
                 <Skeleton className="w-full h-4 rounded-full" count="5" />
               ) : choice === 0 ? (
-                <p className="mt-4">{data.description}</p>
+                <p className="mt-4">
+                  <div dangerouslySetInnerHTML={{ __html: data.description }} />
+                </p>
               ) : (
-                <p className="mt-4">{data.terms}</p>
+                <p className="mt-4">
+                  <div dangerouslySetInnerHTML={{ __html: data.terms }} />
+                </p>
               )}
             </div>
           </>

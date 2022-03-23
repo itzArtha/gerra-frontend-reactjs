@@ -81,11 +81,20 @@ const Register = ({ id, callback }) => {
         .catch((error) => {
           setLoading(false);
           if (error.response.status === 422) {
-            setformData({
-              ...formData,
-              isEmailError: true,
-              emailErrorLabel: "Email telah digunakan, pake yang lain!",
-            });
+            if (error.response.data.email) {
+              setformData({
+                ...formData,
+                isEmailError: true,
+                emailErrorLabel: "Email telah digunakan, pake yang lain!",
+              });
+            }
+            if (error.response.data.name) {
+              setformData({
+                ...formData,
+                isNameError: true,
+                nameErrorLabel: "Nama terlalu panjang kawan",
+              });
+            }
           } else {
             setformData({
               ...formData,

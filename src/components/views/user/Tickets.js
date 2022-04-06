@@ -20,7 +20,7 @@ const Tickets = () => {
         document.getElementById("title").innerHTML =
           response.data.data.name.split(" ")[0] +
           " - " +
-          "Exotix | Warung Tiket Mahasiswa Abadi";
+          "Toko Tiket Mahasiswa";
       });
     };
     handleFetchData();

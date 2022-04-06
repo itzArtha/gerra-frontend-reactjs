@@ -909,7 +909,9 @@ const ManageEvent = () => {
               <MainInput
                 type="text"
                 placeholder={
-                  isOnline ? "Ex: Google Meet" : "Ex: Aula Exotix Technologies"
+                  isOnline
+                    ? "Ex: Google Meet"
+                    : "Ex: Aula Tokoevent Technologies"
                 }
                 name="location"
                 value={formData.location}
@@ -1324,7 +1326,7 @@ const ManageEvent = () => {
                             />
                             <div className="text-center">
                               <span className="text-xs">
-                                Powered by exotix.id
+                                Powered by tokotiket
                               </span>
                             </div>
                           </div>

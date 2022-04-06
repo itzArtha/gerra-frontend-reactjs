@@ -172,7 +172,7 @@ const TicketPdf = () => {
           <footer className="bg-white dark:bg-gray-800 bottom-0 left-0 relative w-full">
             <div className="pt-8 mx-auto">
               <p className="font-semibold text-center bottom-2 left-2 text-xs md:text-base">
-                Copyright Exotix {new Date().getFullYear()}
+                Copyright Tokoevent {new Date().getFullYear()}
               </p>
             </div>
           </footer>

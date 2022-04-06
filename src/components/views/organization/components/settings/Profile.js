@@ -59,37 +59,33 @@ const Profile = () => {
   });
 
   useEffect(() => {
-
     setLoading(true);
     fetchData();
   }, [setData]);
 
-
-    const fetchData = async () => {
-      await apiClient
-          .get("api/v1/organization")
-          .then((response) => {
-            setData(response.data.data);
-            setformData({
-              name: response.data.data.name,
-              tagline: response.data.data.tagline
-                  ? response.data.data.tagline
-                  : "",
-              domain: response.data.data.slug,
-              description: response.data.data.description
-                  ? response.data.data.description
-                  : "",
-              email: response.data.data.email,
-              phone: response.data.data.phone ?? "",
-              email_verified_at: response.data.data.email_verified_at,
-              alamat: response.data.data.address,
-            });
-            setLoading(false);
-          })
-          .catch((error) => {
-            //
-          });
-    };
+  const fetchData = async () => {
+    await apiClient
+      .get("api/v1/organization")
+      .then((response) => {
+        setData(response.data.data);
+        setformData({
+          name: response.data.data.name,
+          tagline: response.data.data.tagline ? response.data.data.tagline : "",
+          domain: response.data.data.slug,
+          description: response.data.data.description
+            ? response.data.data.description
+            : "",
+          email: response.data.data.email,
+          phone: response.data.data.phone ?? "",
+          email_verified_at: response.data.data.email_verified_at,
+          alamat: response.data.data.address,
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        //
+      });
+  };
 
   const handleSubmitContact = () => {
     if (formData.email) {
@@ -310,7 +306,7 @@ const Profile = () => {
             id="qr-download"
             size="80"
             renderAs="canvas"
-            value={`https://exotix.id/${data.slug}`}
+            value={`https://tokoevent.id/${data.slug}`}
           />
         </div>
         <div className="text-center m-4">
@@ -347,7 +343,7 @@ const Profile = () => {
                 <Skeleton className="w-full h-10 rounded" count={1} />
               ) : (
                 <MainInput
-                    maxLength={30}
+                  maxLength={30}
                   value={formData.name}
                   onChange={(e) =>
                     setformData({
@@ -376,7 +372,7 @@ const Profile = () => {
                 <Skeleton className="w-full h-10 rounded" count={1} />
               ) : (
                 <MainInput
-                    maxLength={30}
+                  maxLength={30}
                   value={formData.alamat}
                   onChange={(e) =>
                     setformData({
@@ -461,7 +457,7 @@ const Profile = () => {
                     type="button"
                     className="mr-2"
                     disabled={isLoading}
-                    label="exotix.id/"
+                    label="tokoevent.id/"
                   />
                   <MainInput
                     value={formData.domain}
@@ -602,16 +598,18 @@ const Profile = () => {
               {isLoading ? (
                 <Skeleton className="w-full h-10 rounded" count={1} />
               ) : (
-                  <CurrencyFormat customInput={MainInput}                   value={formData.phone.toString()}
-                                  type="text"
-                                  onChange={(e) => {
-                                    setformData({
-                                      ...formData,
-                                      phone: e.target.value,
-                                      isPhoneError: false,
-                                    });
-                                  }} />
-
+                <CurrencyFormat
+                  customInput={MainInput}
+                  value={formData.phone.toString()}
+                  type="text"
+                  onChange={(e) => {
+                    setformData({
+                      ...formData,
+                      phone: e.target.value,
+                      isPhoneError: false,
+                    });
+                  }}
+                />
               )}
               {formData.isPhoneError ? (
                 <ErrorLabel label={formData.phoneErrorLabel} />
@@ -807,7 +805,7 @@ const Profile = () => {
                       to={`/${data.slug}`}
                       className="font-normal text-xl col-span-2 underline text-blue-500 cursor-pointer"
                     >
-                      {`exotix.id/${data.slug}`}
+                      {`tokoevent.id/${data.slug}`}
                     </Link>
                     <TransparentButton
                       label="QR"

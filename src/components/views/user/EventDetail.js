@@ -388,7 +388,7 @@ const EventDetail = () => {
               </div>
             )}
             <div className="mt-4">
-              <Link to={`/organization/${loading ? `` : data.owner_username}`}>
+              <Link to={`/${loading ? `` : data.owner_username}`}>
                 <IconWithTitle
                   title={loading ? "" : data.owner}
                   loading={loading}

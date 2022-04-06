@@ -54,7 +54,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                   target={`_blank`}
                   className="text-sm font-semibold text-blue-500 underline"
                 >
-                  {`exotix.id/explore/event/${data.slug}`}
+                  {`tokoevent.id/explore/event/${data.slug}`}
                 </a>
               </div>
             )}
@@ -90,7 +90,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                 />
               </Link>
             </div>
-{/*            <div className="mb-2 last:mb-0">
+            {/*            <div className="mb-2 last:mb-0">
               <Link to="?tab=pengurus">
                 <SecondaryButton
                   onClick={(e) => {

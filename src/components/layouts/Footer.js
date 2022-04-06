@@ -13,7 +13,8 @@ const Footer = () => {
             />
           </svg>
           <p className="absolute font-semibold bottom-2 left-2 text-xs md:text-base">
-            Copyright Exotix {new Date().getFullYear()} | An Artha's Production
+            Copyright Tokoevent {new Date().getFullYear()} | An Artha's
+            Production
           </p>
           <div className={"absolute flex gap-3 bottom-2 right-2"}>
             {/*            <a
@@ -31,7 +32,7 @@ const Footer = () => {
             <a
               target="_blank"
               rel="noreferrer"
-              href="https://www.instagram.com/exotix.id"
+              href="https://www.instagram.com/tokoevent"
             >
               <p className="mt-2">
                 <svg

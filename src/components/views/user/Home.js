@@ -89,21 +89,23 @@ const Home = () => {
           </div>
         </div>
         <div className="mt-20">
-          <h2 className="font-bold text-2xl mb-4">Kenapa harus exotix?</h2>
+          <h2 className="font-bold text-2xl mb-4">Kenapa harus tokoevent?</h2>
           <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
             <div className="md:w-4/6 w-4/6 mx-auto md:ml-auto">
               <img src={process.env.PUBLIC_URL + "/surprise.svg"} alt="Icon" />
             </div>
             <div className="py-12">
               <h2 className="text-justify font-small text-xl mb-4">
-                Exotix adalah platform trading, asekk. <br />
-                <b>Trading tiket</b> atau jual beli tiket, disini kamu bisa
-                menjual tiket misal organisasi kampus kamu mau jual tiket bisa
-                disini aja. Dan yang pasti <b>paperless, mudah, dan cepat</b>{" "}
-                <br /> <br />
+                Tokoevent adalah platform trading, asekk. <br />
+                Trading <b>tiket event</b> atau jual beli tiket event, disini
+                kamu bisa menjual tiket misal organisasi kampus kamu mau ngadain
+                event & jual tiket bisa disini aja. Dan yang pasti{" "}
+                <b>paperless, mudah, aman, dan cepat</b> <br /> <br />
                 Gak cuma itu karena kamu disini bisa beli tiket dan dapet{" "}
-                <b>promo2</b> juga, apalagi gen-z sekarang pemburu promo kan,
-                ewh -_-
+                <b>promo2</b> juga, apalagi gen-z sekarang pemburu promo kan{" "}
+                <br />
+                <br />
+                <b>#DariMahasiswaUntukBangsa</b>
               </h2>
             </div>
           </div>
@@ -175,7 +177,7 @@ const Home = () => {
                 </div>
               ) : (
                 <h2 className="font-bold text-4xl mb-4 md:text-left text-center mt-8">
-                  Kamu masih bingung <br /> sama Exotix?
+                  Kamu masih bingung <br /> sama tokoevent?
                 </h2>
               )}
               <div className="grid md:grid-cols-4 grid-cols-1 gap-2 mt-12">

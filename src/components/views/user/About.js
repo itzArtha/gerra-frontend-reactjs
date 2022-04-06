@@ -56,8 +56,8 @@ const About = () => {
     },
     {
       name: "DM Instagram",
-      link: "https://www.instagram.com/exotix.id",
-      value: "exotix.id",
+      link: "https://www.instagram.com/tokoevent",
+      value: "tokoevent",
     },
     {
       name: "Email (Alternative)",
@@ -112,14 +112,16 @@ const About = () => {
             </div>
             <div className="py-12">
               <h2 className="text-justify font-small text-xl mb-4">
-                Exotix adalah platform trading, asekk. <br />
-                <b>Trading tiket</b> atau jual beli tiket, disini kamu bisa
-                menjual tiket misal organisasi kampus kamu mau jual tiket bisa
-                disini aja. Dan yang pasti <b>paperless, mudah, dan cepat</b>{" "}
-                <br /> <br />
+                Tokoevent adalah platform trading, asekk. <br />
+                Trading <b>tiket event</b> atau jual beli tiket event, disini
+                kamu bisa menjual tiket misal organisasi kampus kamu mau ngadain
+                event & jual tiket bisa disini aja. Dan yang pasti{" "}
+                <b>paperless, mudah, aman, dan cepat</b> <br /> <br />
                 Gak cuma itu karena kamu disini bisa beli tiket dan dapet{" "}
-                <b>promo2</b> juga, apalagi gen-z sekarang pemburu promo kan,
-                ewh -_-
+                <b>promo2</b> juga, apalagi gen-z sekarang pemburu promo kan{" "}
+                <br />
+                <br />
+                <b>#DariMahasiswaUntukBangsa</b>
               </h2>
             </div>
           </div>

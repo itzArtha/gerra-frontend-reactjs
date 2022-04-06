@@ -356,7 +356,7 @@ const CompleteProfile = () => {
                     type="button"
                     className="mr-2"
                     disabled={isLoading}
-                    label="exotix.id/"
+                    label="tokoevent.id/"
                   />
                   <Input
                     value={formData.domain}

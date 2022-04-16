@@ -1591,7 +1591,7 @@ const ManageEvent = () => {
                           formData.isDescriptionOverChar ? "text-red-600" : ""
                         }`}
                       >
-                        {formData.description.length}/1808
+                        {formData.description.length}/201808
                       </span>
                     </div>
                   </div>
@@ -1639,7 +1639,7 @@ const ManageEvent = () => {
                           formData.isTermsOverChar ? "text-red-600" : ""
                         }`}
                       >
-                        {formData.terms.length}/1808
+                        {formData.terms.length}/201808
                       </span>
                     </div>
                   </div>

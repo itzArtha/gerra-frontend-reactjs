@@ -21,7 +21,7 @@ const EventBox = ({ data, loading }) => {
             style={{
               backgroundImage: `url(${data.banner_url})`,
             }}
-          ></div>
+          />
         )}
 
         <div className="w-2/3 p-4 md:p-4">

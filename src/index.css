@@ -43,3 +43,7 @@ body {
 ::-webkit-scrollbar-corner {
   background-color: transparent;
 }
+
+pre {
+  font-family: Quicksand;
+}

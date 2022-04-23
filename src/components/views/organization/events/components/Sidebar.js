@@ -1,8 +1,6 @@
 import SecondaryButton from "../../../../SecondaryButton";
 import { Link, useHistory } from "react-router-dom";
 import Skeleton from "../../../../Skeleton";
-import apiClient from "../../../../services/apiClient";
-import { useState } from "react";
 const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
   const history = useHistory();
   const handleRoute = (e) => {
@@ -17,7 +15,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
           sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         aria-hidden="true"
-      ></div>
+      />
       <div
         className={`flex flex-col fixed z-40 left-0 top-0 md:left-auto md:top-auto md:translate-x-0 transform h-screen overflow-y-scroll md:overflow-y-auto no-scrollbar w-64 lg:w-72 flex-shrink-0 bg-white p-4 transition-all duration-200 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-64"

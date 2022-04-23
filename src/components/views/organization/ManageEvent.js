@@ -15,16 +15,6 @@ import CurrencyFormat from "react-currency-format";
 import moment from "moment";
 import Swal from "sweetalert2";
 import Skeleton from "../../Skeleton";
-import { Editor } from "react-draft-wysiwyg";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromHTML,
-} from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 
 const ManageEvent = () => {
   // const inputFile = useRef(null);
@@ -136,30 +126,6 @@ const ManageEvent = () => {
     ktp: false,
   });
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const [editorTermsState, setEditorTermsState] = useState(() =>
-    EditorState.createEmpty()
-  );
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      description: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-      isDescriptionOverChar: false,
-      isDescriptionError: false,
-    });
-  }, [editorState]);
-
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      terms: draftToHtml(convertToRaw(editorTermsState.getCurrentContent())),
-      isTermsOverChar: false,
-      isTermsError: false,
-    });
-  }, [editorTermsState]);
-
   const [ticket, setTicket] = useState([]);
   const [info, setInfo] = useState([]);
   const [catFor, setAllCatFor] = useState([]);
@@ -203,20 +169,6 @@ const ManageEvent = () => {
           setTicket(response.data.data.ticket);
           setInfo(response.data.data.APInformation);
           setLoading(false);
-          setEditorState(
-            EditorState.createWithContent(
-              ContentState.createFromBlockArray(
-                convertFromHTML(response.data.data.description)
-              )
-            )
-          );
-          setEditorTermsState(
-            EditorState.createWithContent(
-              ContentState.createFromBlockArray(
-                convertFromHTML(response.data.data.terms)
-              )
-            )
-          );
         })
         .catch((error) => {
           if (error.response.status === 404) {
@@ -909,9 +861,7 @@ const ManageEvent = () => {
               <MainInput
                 type="text"
                 placeholder={
-                  isOnline
-                    ? "Ex: Google Meet"
-                    : "Ex: Aula Tokoevent Technologies"
+                  isOnline ? "Ex: Google Meet" : "Ex: Aula Ternak Ayam Holdings"
                 }
                 name="location"
                 value={formData.location}
@@ -1326,7 +1276,7 @@ const ManageEvent = () => {
                             />
                             <div className="text-center">
                               <span className="text-xs">
-                                Powered by tokotiket
+                                Powered by Tokoevent
                               </span>
                             </div>
                           </div>
@@ -1547,12 +1497,7 @@ const ManageEvent = () => {
                   <Skeleton className="w-full h-24 rounded" count="1" />
                 ) : choice === 0 ? (
                   <div>
-                    <Editor
-                      defaultEditorState={formData.description}
-                      editorState={editorState}
-                      onEditorStateChange={setEditorState}
-                    />
-                    {/*<MainTextArea
+                    <MainTextArea
                       className="h-48"
                       key="1"
                       type="text"
@@ -1576,7 +1521,7 @@ const ManageEvent = () => {
                           });
                         }
                       }}
-                    />*/}
+                    />
                     <div className="flex justify-between">
                       <ErrorLabel
                         label={
@@ -1591,13 +1536,13 @@ const ManageEvent = () => {
                           formData.isDescriptionOverChar ? "text-red-600" : ""
                         }`}
                       >
-                        {formData.description.length}/201808
+                        {formData.description.length}/1808
                       </span>
                     </div>
                   </div>
                 ) : (
                   <div>
-                    {/*<MainTextArea
+                    <MainTextArea
                       className="h-48"
                       key="2"
                       type="text"
@@ -1621,11 +1566,6 @@ const ManageEvent = () => {
                           });
                         }
                       }}
-                    />*/}
-                    <Editor
-                      defaultEditorState={formData.terms}
-                      editorState={editorTermsState}
-                      onEditorStateChange={setEditorTermsState}
                     />
                     <div className="flex justify-between">
                       <ErrorLabel
@@ -1639,7 +1579,7 @@ const ManageEvent = () => {
                           formData.isTermsOverChar ? "text-red-600" : ""
                         }`}
                       >
-                        {formData.terms.length}/201808
+                        {formData.terms.length}/1808
                       </span>
                     </div>
                   </div>

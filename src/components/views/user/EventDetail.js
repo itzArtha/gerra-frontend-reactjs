@@ -23,7 +23,6 @@ import {
   TelegramShareButton,
 } from "react-share";
 import handleSwal from "../../handleSwal";
-import { convertFromHTML } from "draft-js";
 
 const EventDetail = () => {
   const { slug } = useParams();
@@ -506,11 +505,11 @@ const EventDetail = () => {
                 <Skeleton className="w-full h-4 rounded-full" count="5" />
               ) : choice === 0 ? (
                 <p className="mt-4">
-                  <div dangerouslySetInnerHTML={{ __html: data.description }} />
+                  <pre>{data.description}</pre>
                 </p>
               ) : (
                 <p className="mt-4">
-                  <div dangerouslySetInnerHTML={{ __html: data.terms }} />
+                  <pre>{data.terms}</pre>
                 </p>
               )}
             </div>
@@ -955,8 +954,6 @@ const EventDetail = () => {
                                 choosePart.filter(
                                   (c) => parseInt(c.id) === parseInt(item.id)
                                 ).length > 0
-                                  ? true
-                                  : false
                               }
                               onChange={handleSelectPart}
                               value={item.id}

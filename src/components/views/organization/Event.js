@@ -22,6 +22,7 @@ const Event = () => {
           if (error.response.status === 421) {
             history.push("/login");
           }
+          setLoading(false);
         });
     };
     fetchData();

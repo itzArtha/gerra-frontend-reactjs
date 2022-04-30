@@ -504,13 +504,9 @@ const EventDetail = () => {
               {loading ? (
                 <Skeleton className="w-full h-4 rounded-full" count="5" />
               ) : choice === 0 ? (
-                <p className="mt-4">
-                  <pre>{data.description}</pre>
-                </p>
+                <p className="mt-4">{data.description}</p>
               ) : (
-                <p className="mt-4">
-                  <pre>{data.terms}</pre>
-                </p>
+                <p className="mt-4">{data.terms}</p>
               )}
             </div>
           </>

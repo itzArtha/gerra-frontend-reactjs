@@ -47,3 +47,7 @@ body {
 pre {
   font-family: Quicksand;
 }
+
+p {
+  white-space: pre-line !important;
+}

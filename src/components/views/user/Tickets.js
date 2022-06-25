@@ -18,9 +18,7 @@ const Tickets = () => {
         setData(response.data.data);
         setLoading(false);
         document.getElementById("title").innerHTML =
-          response.data.data.name.split(" ")[0] +
-          " - " +
-          "Toko Tiket Mahasiswa";
+          response.data.data.name.split(" ")[0] + " - " + "Tokevent Mahasiswa";
       });
     };
     handleFetchData();

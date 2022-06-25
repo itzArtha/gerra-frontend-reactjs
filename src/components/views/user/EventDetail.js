@@ -532,16 +532,18 @@ const EventDetail = () => {
                     >
                       <div className="flex justify-between">
                         <div>
-                          <Checkbox
-                            value={item.id}
-                            id={`checkbox${i}`}
-                            onChange={handleSelectTicket}
-                            checked={
-                              ticket.filter(
-                                (c) => parseInt(c.id) === parseInt(item.id)
-                              ).length > 0
-                            }
-                          />
+                          {item.amount > 0 ? (
+                            <Checkbox
+                              value={item.id}
+                              id={`checkbox${i}`}
+                              onChange={handleSelectTicket}
+                              checked={
+                                ticket.filter(
+                                  (c) => parseInt(c.id) === parseInt(item.id)
+                                ).length > 0
+                              }
+                            />
+                          ) : null}
                         </div>
                         <div>
                           <h2 className="text-right font-semibold text-lg">
@@ -550,18 +552,27 @@ const EventDetail = () => {
                         </div>
                       </div>
 
-                      <h2 className="text-right font-semibold text-lg mt-10">
-                        <CurrencyFormat
-                          value={loading ? 0 : item.price}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          prefix={"Rp"}
-                        />
-                        /
-                        <span className="text-sm">
-                          {item.type === 0 ? "Person" : "Tim"}
-                        </span>
-                      </h2>
+                      <div className={"flex justify-between"}>
+                        <div>
+                          <h2 className={"font-semibold text-sm mt-10"}>
+                            Stok: {item.amount}
+                          </h2>
+                        </div>
+                        <div>
+                          <h2 className="font-semibold text-lg mt-10">
+                            <CurrencyFormat
+                              value={loading ? 0 : item.price}
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              prefix={"Rp"}
+                            />
+                            /
+                            <span className="text-sm">
+                              {item.type === 0 ? "Person" : "Tim"}
+                            </span>
+                          </h2>
+                        </div>
+                      </div>
                     </label>
                   ))}
                 </div>

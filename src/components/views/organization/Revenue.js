@@ -16,11 +16,13 @@ import handleSwal from "../../handleSwal";
 
 const Revenue = () => {
   const [status, setStatus] = useState("pemasukan");
+  const [type, setType] = useState("revenue");
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [rek, setRek] = useState([]);
   const [balance, setBalance] = useState(0);
+  const [bonus, setBonus] = useState(0);
   const [data, setData] = useState([]);
   const [wdData, setWdData] = useState([]);
   const [formData, setFormData] = useState({
@@ -68,7 +70,7 @@ const Revenue = () => {
   const fetchWd = async () => {
     setLoading(true);
     await apiClient
-      .get("/api/v1/organization/withdraw")
+      .get(`/api/v1/organization/withdraw`)
       .then((response) => {
         setWdData(response.data.data);
         setLoading(false);
@@ -82,7 +84,7 @@ const Revenue = () => {
     setProcessing(true);
     let amount = formData.amount.replace(/\D/g, "");
     await apiClient
-      .post("/api/v1/organization/withdraw", {
+      .post(`/api/v1/organization/${type}/withdraw`, {
         amount: amount,
         bank_id: formData.rekening,
       })
@@ -156,14 +158,32 @@ const Revenue = () => {
           <div className="font-semibold text-5xl pb-4">
             {" "}
             <CurrencyFormat
-              value={balance}
+              value={bonus}
               displayType={"text"}
               thousandSeparator={true}
               prefix={"Rp"}
             />
           </div>
           <div className="font-light text-lg pt-4">
-            Total saldo yang telah masuk ke akun kamu
+            Total bonus dari transaksi,{" "}
+            <a
+              className={"text-blue-600 font-semibold text-sm hover:underline"}
+              target={"_blank"}
+              href="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/TokoeventBonus.pdf"
+            >
+              Pelajari selengkapnya
+            </a>
+          </div>
+          <div className="text-right">
+            <SecondaryButton
+              className="mt-4"
+              type="button"
+              onClick={() => {
+                setType("bonus");
+                setShowModal(true);
+              }}
+              label="Tarik Bonus"
+            />
           </div>
         </MainBox>
         <MainBox className="bg-red-400 hover:bg-red-300 pt-8">
@@ -177,13 +197,14 @@ const Revenue = () => {
             />
           </div>
           <div className="font-light text-lg pt-4">
-            Saldo ini adalah saldo yang sudah bisa kamu tarik
+            Total saldo pendapatan penjualan
           </div>
           <div className="text-right">
             <MainButton
               className="mt-4"
               type="button"
               onClick={() => {
+                setType("revenue");
                 setShowModal(true);
               }}
               label="Tarik Dana"

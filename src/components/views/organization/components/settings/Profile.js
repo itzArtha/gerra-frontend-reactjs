@@ -304,7 +304,7 @@ const Profile = () => {
         <div className="flex justify-center">
           <QRCode
             id="qr-download"
-            size="80"
+            size="140"
             renderAs="canvas"
             value={`https://tokoevent.id/${data.slug}`}
           />
@@ -638,7 +638,7 @@ const Profile = () => {
                       ? formData.bannerUrl
                       : data.banner_url
                       ? data.banner_url
-                      : `https://cdn.tuk.dev/assets/webapp/forms/form_layouts/form1.jpg`
+                      : process.env.REACT_APP_DEFAULT_BANNER
                   }
                   alt="Banner"
                   className="w-full h-full object-cover rounded absolute shadow"

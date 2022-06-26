@@ -77,11 +77,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
             ) : (
               <div>
                 <h2 className="text-xl font-semibold">{data.name}</h2>
-                <p className="text-sm font-light">
+                <span className="text-sm font-light">
                   {data.description
                     ? data.description.substring(0, 100)
                     : data.description}
-                </p>
+                </span>
                 <a
                   href={`/${data.slug}`}
                   target={`_blank`}

@@ -38,6 +38,12 @@ const TableWithdraw = ({ data }) => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
+                    Tipe
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Status
                   </th>
                   <th
@@ -80,6 +86,13 @@ const TableWithdraw = ({ data }) => {
                           thousandSeparator={true}
                           prefix={"Rp"}
                         />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-900">
+                          {person.type}
+                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

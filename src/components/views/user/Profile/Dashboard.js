@@ -24,7 +24,7 @@ const Dashboard = () => {
           document.getElementById("title").innerHTML =
             response.data.data.name.split(" ")[0] +
             " - " +
-            "Toko Tiket Mahasiswa";
+            "Tokoevent Mahasiswa";
         })
         .catch((error) => {
           if (error.response.status === 401) {

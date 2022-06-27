@@ -1441,7 +1441,7 @@ const ManageEvent = () => {
                       name="ktp"
                       onChange={handleUpdate}
                       checked={dataPeserta.ktp}
-                      label={"Foto KTP"}
+                      label={"No. KTP"}
                       disabled={false}
                     />
                   </div>

@@ -29,7 +29,7 @@ const Peserta = ({ slug }) => {
               "Nama Peserta": item.name,
               Email: item.email,
               Instansi: parsedData.instansi,
-              "Jenis Kelamin": parsedData.sex === 0 ? "Wanita" : "Pria",
+              "Jenis Kelamin": parsedData.sex === 0 ? "Wanita" : parsedData.sex === 1 ? "Pria" : null,
               "Tanggal Lahir": parsedData.birthday,
               KTP: parsedData.ktp,
               "No. Telepon": parsedData.hp,

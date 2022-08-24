@@ -798,7 +798,7 @@ const EventDetail = () => {
                   <div className="mt-4">
                     <MainButton
                       type="button"
-                      label="Apakah kamu punya kupon?"
+                      label="Masukkan Kode Kupon"
                       onClick={() => {
                         setShowCoupon(true);
                       }}

@@ -59,11 +59,18 @@ const Revenue = () => {
     fetchBalance();
     fetchWd();
     fetchRevenue();
+    fetchBonus();
   }, []);
 
   const fetchBalance = async () => {
     await apiClient.get("/api/v1/organization").then((response) => {
       setBalance(response.data.data.balance);
+    });
+  };
+
+  const fetchBonus = async () => {
+    await apiClient.get("/api/v1/organization/bonuses").then((response) => {
+      setBonus(response.data.data);
     });
   };
 

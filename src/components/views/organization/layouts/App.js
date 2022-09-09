@@ -8,6 +8,7 @@ import Setting from "../Setting";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import apiClient from "../../../services/apiClient";
+import ScanQR from "./components/ScanQR";
 
 const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -72,6 +73,7 @@ const App = () => {
             <h2 className="capitalize font-semibold text-2xl">{router}</h2>
             <div className="mt-4">{handleContent(data)}</div>
           </main>
+          <ScanQR />
         </div>
       </div>
     </>

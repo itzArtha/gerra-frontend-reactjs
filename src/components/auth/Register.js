@@ -173,7 +173,7 @@ const Register = ({ id, callback }) => {
           >
             <div className="w-full px-6 py-8 md:px-8">
               <h2 className="text-2xl font-semibold text-center text-gray-700 dark:text-white">
-                Daftar Sebagai {id === "user" ? "Pengguna" : "Organisasi"}
+                Daftar Sebagai {id === "user" ? "Pembeli" : "Organisasi"}
               </h2>
 
               <div className="text-sm text-center text-gray-600 dark:text-gray-200 py-4">
@@ -277,7 +277,9 @@ const Register = ({ id, callback }) => {
                       Dengan ini saya telah membaca & setuju dengan{" "}
                       <a
                         target={"_blank"}
-                        href={"/d/terms-condition"}
+                        href={
+                          "https://assets-gerra.s3.ap-southeast-1.amazonaws.com/TERMS+TOKOEVENT.pdf"
+                        }
                         className={
                           "font-semibold text-blue-600 hover:text-blue-400 duration-500"
                         }

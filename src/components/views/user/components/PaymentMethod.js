@@ -48,7 +48,7 @@ const PaymentMethod = () => {
       case "bni":
         return "Bank BNI";
       case "other_va":
-        return "Bank Lainnya";
+        return "BRI, Mandiri, OVO, ShopeePay, Dll";
       default:
         return "Error";
     }
@@ -92,7 +92,7 @@ const PaymentMethod = () => {
             }}
             className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
           >
-            <span>QRIS</span>
+            <span>QRIS/Gopay</span>
           </div>
           <div
             onClick={() => {
@@ -100,7 +100,7 @@ const PaymentMethod = () => {
             }}
             className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
           >
-            <span>Bank BNI</span>
+            <span>BNI Virtual Account</span>
           </div>
           <div
             onClick={() => {
@@ -108,7 +108,7 @@ const PaymentMethod = () => {
             }}
             className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
           >
-            <span>Bank Lainnya</span>
+            <span>BRI, Mandiri, OVO, ShopeePay, Dll</span>
           </div>
         </div>
       </InfoModal>
@@ -116,7 +116,7 @@ const PaymentMethod = () => {
         <div className="my-4">
           <h2 className="text-2xl font-bold mt-12">Total yang harus dibayar</h2>
         </div>
-        <div className="mt-4 mb-12">
+        <div className="mt-4 mb-8">
           <h2 className="md:text-5xl text-3xl font-bold mt-12 animate-pulse">
             {isLoading ? (
               ""
@@ -129,6 +129,11 @@ const PaymentMethod = () => {
               />
             )}
           </h2>
+        </div>
+        <div className={"mb-12"}>
+          <span className={"mt-12 font-semibold text-lg"}>
+            Sudah Termasuk Biaya Transfer
+          </span>
         </div>
         <div className="my-4 flex justify-center">
           {isLoading ? (

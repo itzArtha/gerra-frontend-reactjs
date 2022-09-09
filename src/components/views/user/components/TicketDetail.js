@@ -5,6 +5,7 @@ import InfoModal from "../../../modals/InfoModal";
 import { useRef, useState } from "react";
 import moment from "moment";
 import { Link, useHistory } from "react-router-dom";
+import QRCode from "qrcode.react";
 const TicketDetail = ({ transaction, loading, type }) => {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const history = useHistory();
@@ -31,15 +32,6 @@ const TicketDetail = ({ transaction, loading, type }) => {
             <td>Waktu Selesai</td>
             <td>{moment(data.end_at).format("llll")}</td>
           </tr>
-          {/*<tr className="flex justify-between border-b py-2">
-            <td>Invoice Pembelian</td>
-            <td className="text-blue-500 hover:text-blue-600 cursor-pointer">
-              <a href={transaction.invoice.path}>
-                GR-EX-{transaction.created_at.split("T")[0]}-
-                {transaction.invoice.id}
-              </a>
-            </td>
-          </tr>*/}
           {data.event.is_online ? (
             <tr className="flex justify-between border-b py-2">
               <td>Link Conference</td>
@@ -59,6 +51,21 @@ const TicketDetail = ({ transaction, loading, type }) => {
               <td>{data.event.location}</td>
             </tr>
           )}
+
+          <tr className={"flex justify-center mt-4"}>
+            <QRCode
+              value={JSON.stringify({
+                event_id: data.event.id,
+                participant_id: transaction.participant_id,
+              })}
+              id="qr-download"
+              size={256}
+              renderAs="canvas"
+            />
+          </tr>
+          <tr className={"mt-2 text-red-500 flex justify-center text-center"}>
+            Silakan Berikan QRCode ini kepada petugas saat akan memasuki event
+          </tr>
         </div>
       </InfoModal>
       <div className="p-4 border rounded">
@@ -67,23 +74,10 @@ const TicketDetail = ({ transaction, loading, type }) => {
             <div>
               <span className="text-lg font-semibold">{data.title}</span>
             </div>
-            <div>
-              <span
-                class={`px-3 py-1 text-xs rounded-full ${
-                  transaction.status === "pending"
-                    ? "text-yellow-600 bg-yellow-200"
-                    : transaction.status === "settlement"
-                    ? "text-green-600 bg-green-200"
-                    : "text-red-600 bg-red-200"
-                }`}
-              >
-                {transaction.status}
-              </span>
-            </div>
           </div>
           <div>
-            <span className="text-lg font-light">
-              {moment(data.start_at).format("lll")}
+            <span className="text-xs md:text-base font-light">
+              {moment(data.start_at).format("ll")}
             </span>
           </div>
         </div>
@@ -131,52 +125,60 @@ const TicketDetail = ({ transaction, loading, type }) => {
               }
             />
           </div>
-          {transaction.status === "pending" ? (
-            <div>
-              <a target={"_blank"} href={transaction.payment.path}>
-                <MainButton label="Bayar" />
-              </a>
-            </div>
-          ) : (
-            ""
-          )}
-          {transaction.status === "settlement" ? (
-            <div className={"flex gap-2"}>
-              <MainButton
-                onClick={() => {
-                  history.push("/pdf/ticket/" + transaction.participant_id);
-                }}
-                label={
-                  <div>
-                    <img
-                      className={"lg:hidden w-4 h-4"}
-                      src={process.env.PUBLIC_URL + "/download.svg"}
-                    />
-                    <span className={"hidden lg:block"}>Download Tiket</span>
-                  </div>
-                }
-              />
+        </div>
+        <div className={"flex justify-between"}>
+          <div className={"mt-auto"}>
+            <span
+              className={`px-3 py-1 text-xs rounded-full ${
+                transaction.status === "pending"
+                  ? "text-yellow-600 bg-yellow-200"
+                  : transaction.status === "settlement"
+                  ? "text-green-600 bg-green-200"
+                  : "text-red-600 bg-red-200"
+              }`}
+            >
+              {transaction.status}
+            </span>
+          </div>
 
-              <MainButton
-                onClick={() => {
-                  setShowTicketModal(true);
-                }}
-                label={
-                  <div>
-                    <img
-                      className={"lg:hidden w-4 h-4"}
-                      src={process.env.PUBLIC_URL + "/eye.svg"}
-                    />
-                    <span className={"hidden lg:block"}>
-                      Lihat Detail Tiket
-                    </span>
-                  </div>
-                }
-              />
-            </div>
-          ) : (
-            ""
-          )}
+          <div className={"flex justify-end mt-8"}>
+            {transaction.status === "pending" ? (
+              <div>
+                <a target={"_blank"} href={transaction.payment.path}>
+                  <MainButton label="Bayar" />
+                </a>
+              </div>
+            ) : (
+              ""
+            )}
+            {transaction.status === "settlement" ? (
+              <div className={"flex gap-2"}>
+                {/*<MainButton*/}
+                {/*  onClick={() => {*/}
+                {/*    history.push("/pdf/ticket/" + transaction.participant_id);*/}
+                {/*  }}*/}
+                {/*  label={*/}
+                {/*    <div>*/}
+                {/*      <span className={"block"}>Download</span>*/}
+                {/*    </div>*/}
+                {/*  }*/}
+                {/*/>*/}
+
+                <MainButton
+                  onClick={() => {
+                    setShowTicketModal(true);
+                  }}
+                  label={
+                    <div>
+                      <span className={"block"}>Detail Tiket</span>
+                    </div>
+                  }
+                />
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
       </div>
     </>

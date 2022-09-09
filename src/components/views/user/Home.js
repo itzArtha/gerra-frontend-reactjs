@@ -9,6 +9,7 @@ import isUser from "../../services/isUser";
 import useQuery from "../../useQuery";
 import handleSwal from "../../handleSwal";
 import InfoModal from "../../modals/InfoModal";
+import InstallPWA from "./components/InstallPWA";
 
 const Home = () => {
   const [showModal, setShowModal] = useState(false);
@@ -40,6 +41,7 @@ const Home = () => {
 
   return (
     <MainLayout top={true} footer={true} menu={true}>
+      <InstallPWA />
       <InfoModal
         showModal={showModal}
         title="Kamu bukan organizer lo..."
@@ -158,7 +160,55 @@ const Home = () => {
             </h2>
           )}
         </div>
-        <div className="mt-20">
+        <div className={"mt-48"}>
+          <h2 className="font-bold text-4xl mb-4 text-center mt-8">
+            Partners & Supports
+          </h2>
+          <div className={"mt-12"}>
+            <div
+              className={
+                "md:flex md:justify-center md:gap-8 grid grid-cols-2 gap-4"
+              }
+            >
+              <div className={"my-auto"}>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://i.ibb.co/gmv85S0/Untitled-1.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48"}
+                  src="https://www.stikom-bali.ac.id/id/wp-content/uploads/2020/07/ITB-RESMI-300x300.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div className={"my-auto"}>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://yt3.ggpht.com/CBOVsvx28XnvYNCcmkmWGkz2xWv1hK5lBkj8VY4Cp1k951kGgmE300s8JQywb3uN8BIFjmVA=s900-c-k-c0x00ffffff-no-rj"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://www.ibt.stikom-bali.ac.id/inbis/img/works/full/Logo%20Inkubator%20Bisnis%20STIKOM%20Bali.jpg"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div className={"my-auto"}>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://i.ibb.co/sWqy6z6/gerra-13-Artboard-1.png"
+                  alt="Logo"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-48">
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
             {loading ? (
               <Skeleton className="w-48 h-64 ml-auto rounded-lg" count="1" />

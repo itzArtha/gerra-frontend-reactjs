@@ -82,6 +82,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                     ? data.description.substring(0, 100)
                     : data.description}
                 </span>
+                <br />
                 <a
                   href={`/${data.slug}`}
                   target={`_blank`}

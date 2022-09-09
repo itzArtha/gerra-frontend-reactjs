@@ -23,6 +23,7 @@ import {
   TelegramShareButton,
 } from "react-share";
 import handleSwal from "../../handleSwal";
+import "../../../index.css";
 
 const EventDetail = () => {
   const { slug } = useParams();
@@ -78,6 +79,9 @@ const EventDetail = () => {
     couponErrorLabel: "Coupon ga boleh kosong",
     discountCode: "",
   });
+
+  const [quantity, setQuantity] = useState(0);
+  const [couponValue, setCouponValue] = useState(0);
 
   const handleClick = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -149,12 +153,10 @@ const EventDetail = () => {
     await apiClient
       .get("/api/v1/user/voucher/" + formData.coupon)
       .then((response) => {
-        setCalculate({
-          ...calculate,
-          discount: response.data.amount,
-        });
+        setCouponValue(response.data.amount);
         setFormData({ ...formData, discountCode: formData.coupon });
-        handleLogic(ticket, response.data.amount);
+
+        handleLogic(ticket, response.data.amount, quantity);
         setShowCoupon(false);
       })
       .catch((error) => {
@@ -209,28 +211,53 @@ const EventDetail = () => {
     // console.log(newArray);
   };
 
+  const handleIncreaseQuantity = () => {
+    if (quantity >= 5) return;
+    if (ticket.length === 0) handleSwal("Pilih na tiketmu dulu yangg", "error");
+
+    let qty = quantity + 1;
+
+    setQuantity(qty);
+    handleLogic(ticket, couponValue, qty);
+  };
+
+  const handleDecreaseQuantity = () => {
+    if (quantity === 0) return;
+    let qty = quantity - 1;
+
+    setQuantity(qty);
+    handleLogic(ticket, couponValue, qty);
+  };
+
   const handleSelectTicket = (e) => {
+    let newArray = [];
     setFormData({ ...formData, discountCode: "" });
     setCalculate({
       fee: 0,
     });
+
+    let quantity = 1;
+
     const id = e.target.value;
     const price = data.ticket.filter((i) => i.id === parseInt(id))[0];
-    let newArray = [...ticket, { id, price }];
+    newArray = [...newArray, { id, price }];
     if (ticket.filter((i) => i.id === id).length > 0) {
       newArray = newArray.filter((i) => i.id !== id);
     }
     setTicket(newArray);
+    setQuantity(quantity);
+    setCouponValue(0);
     // Logic
-    handleLogic(newArray, calculate.discount);
+    handleLogic(newArray, 0, quantity);
   };
 
-  const handleLogic = (newArray, discount) => {
+  const handleLogic = (newArray, discount = 0, quantity) => {
     let subtotal = 0,
       fee = 0,
       total = 0;
-    newArray.map((item, i) => (subtotal += parseInt(item.price.price)));
-    fee = subtotal * 0.05 + (subtotal > 0 ? 5000 : 0);
+    newArray.map(
+      (item, i) => (subtotal += parseInt(item.price.price) * quantity)
+    );
     discount = subtotal * discount;
     total = subtotal + fee - discount;
     setCalculate({
@@ -266,6 +293,7 @@ const EventDetail = () => {
         user_id: formData.id,
         event_id: data.id,
         ticket: ticket,
+        quantity: quantity,
         discount_id: formData.discountCode,
         data: {
           name: formData.name,
@@ -292,31 +320,6 @@ const EventDetail = () => {
   return (
     <MainLayout top={true} footer={true}>
       <div className="mt-12 mx-4 md:mx-12">
-        <div className="text-right">
-          {loading ? (
-            <Skeleton className="ml-auto w-20 h-12 rounded" count={1} />
-          ) : data.is_mine ? (
-            <MainButton
-              type="button"
-              label="Edit"
-              onClick={() => {
-                history.push("/manage/event/" + slug);
-              }}
-            />
-          ) : (parseInt(data.status) === 1 && parseInt(formData.roles) === 1) ||
-            (!auth && parseInt(data.status) === 1) ? (
-            <MainButton
-              type="button"
-              label={mode === 0 ? "Beli" : "Detail Event"}
-              onClick={() => {
-                setMode(mode ? 0 : 1);
-                handleClick();
-              }}
-            />
-          ) : (
-            ""
-          )}
-        </div>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
             {loading ? (
@@ -543,7 +546,11 @@ const EventDetail = () => {
                                 ).length > 0
                               }
                             />
-                          ) : null}
+                          ) : (
+                            <div className={"p-2 bg-red-500 text-white"}>
+                              Sold out
+                            </div>
+                          )}
                         </div>
                         <div>
                           <h2 className="text-right font-semibold text-lg">
@@ -553,11 +560,46 @@ const EventDetail = () => {
                       </div>
 
                       <div className={"flex justify-between"}>
-                        <div>
-                          <h2 className={"font-semibold text-sm mt-10"}>
-                            Stok: {item.amount}
-                          </h2>
-                        </div>
+                        {item.amount > 0 ? (
+                          <div className={"flex gap-2"}>
+                            <div className="custom-number-input h-10 w-32 mt-4">
+                              <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                                <MainButton
+                                  onClick={() => {
+                                    handleDecreaseQuantity(quantity - 1);
+                                  }}
+                                  label={"-"}
+                                />
+                                <input
+                                  type="number"
+                                  className="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
+                                  name="custom-input-quantity"
+                                  value={
+                                    ticket.filter(
+                                      (c) =>
+                                        parseInt(c.id) === parseInt(item.id)
+                                    ).length > 0
+                                      ? quantity
+                                      : 0
+                                  }
+                                />
+                                <MainButton
+                                  onClick={() => {
+                                    handleIncreaseQuantity(quantity + 1);
+                                  }}
+                                  label={"+"}
+                                />
+                              </div>
+                            </div>
+                            {/*                      <div>
+                            <h2 className={"font-semibold text-sm mt-10"}>
+                              Sisa: {item.amount}
+                            </h2>
+                          </div>*/}
+                          </div>
+                        ) : (
+                          <div />
+                        )}
                         <div>
                           <h2 className="font-semibold text-lg mt-10">
                             <CurrencyFormat
@@ -645,7 +687,7 @@ const EventDetail = () => {
                         ""
                       )}
                     </div>
-                    {data.APInformation.sex ? (
+                    {/*                    {data.APInformation.sex ? (
                       <div className="pb-4">
                         <Label label={"Jenis Kelamin"} />
                         <div className="flex gap-4">
@@ -741,7 +783,7 @@ const EventDetail = () => {
                       </div>
                     ) : (
                       ""
-                    )}
+                    )}*/}
                   </div>
                   {ticket.filter((i) => i.price.type === 1).length > 0 ? (
                     <div className="w-full">
@@ -821,7 +863,7 @@ const EventDetail = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="flex justify-between my-1">
+                      {/*                      <div className="flex justify-between my-1">
                         <div>
                           <span className="text-xl">Biaya Admin</span>
                         </div>
@@ -835,7 +877,7 @@ const EventDetail = () => {
                             />
                           </span>
                         </div>
-                      </div>
+                      </div>*/}
                       <div
                         className={`flex justify-between my-1 ${
                           calculate.discount > 0 ? "animate-pulse" : ""
@@ -998,6 +1040,31 @@ const EventDetail = () => {
               )}
             </MainModal>
           </>
+        )}
+      </div>
+      <div className={"px-4 fixed w-full z-10 bottom-4 flex justify-center"}>
+        {loading ? null : data.is_mine ? (
+          <MainButton
+            className={"w-full md:w-48"}
+            type="button"
+            label="Edit"
+            onClick={() => {
+              history.push("/manage/event/" + slug);
+            }}
+          />
+        ) : (parseInt(data.status) === 1 && parseInt(formData.roles) === 1) ||
+          (!auth && parseInt(data.status) === 1) ? (
+          <MainButton
+            className={"w-full md:w-48"}
+            type="button"
+            label={mode === 0 ? "Beli Tiket" : "Detail Event"}
+            onClick={() => {
+              setMode(mode ? 0 : 1);
+              handleClick();
+            }}
+          />
+        ) : (
+          ""
         )}
       </div>
     </MainLayout>

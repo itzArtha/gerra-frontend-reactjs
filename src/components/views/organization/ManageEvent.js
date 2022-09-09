@@ -1249,6 +1249,56 @@ const ManageEvent = () => {
                     </div>
                   </div>
                 </div>
+                {/*<div className="grid md:grid-cols-2 grid-cols-1 md:gap-2">
+                  <div className="my-2">
+                    {isLoading ? (
+                      <Skeleton className="w-24 h-4 rounded" count="1" />
+                    ) : (
+                      <Label label="Whatsapp Penyelenggara" />
+                    )}
+                    {isLoading ? (
+                      <Skeleton className="w-full h-10 rounded" count="1" />
+                    ) : (
+                      <MainInput
+                        type="text"
+                        name="info"
+                        value={formData.title}
+                        onChange={(e) => {
+                          setFormData({ ...formData, title: e.target.value });
+                        }}
+                      />
+                    )}
+                    {formData.isTitleError ? (
+                      <ErrorLabel label={formData.titleErrorLabel} />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="my-2">
+                    {isLoading ? (
+                      <Skeleton className="w-24 h-4 rounded" count="1" />
+                    ) : (
+                      <Label label="Instagram Penyelenggara (Optional)" />
+                    )}
+                    {isLoading ? (
+                      <Skeleton className="w-full h-10 rounded" count="1" />
+                    ) : (
+                      <MainInput
+                        type="text"
+                        name="info"
+                        value={formData.title}
+                        onChange={(e) => {
+                          setFormData({ ...formData, title: e.target.value });
+                        }}
+                      />
+                    )}
+                    {formData.isTitleError ? (
+                      <ErrorLabel label={formData.titleErrorLabel} />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>*/}
               </div>
             </div>
 
@@ -1409,7 +1459,7 @@ const ManageEvent = () => {
                       disabled={true}
                     />
                   </div>
-                  <div className="flex">
+                  {/*<div className="flex">
                     <Checkbox
                       name="instansi"
                       onChange={handleUpdate}
@@ -1444,7 +1494,7 @@ const ManageEvent = () => {
                       label={"No. KTP"}
                       disabled={false}
                     />
-                  </div>
+                  </div>*/}
                 </div>
 
                 {/* <div className="flex justify-center my-4">

@@ -10,7 +10,7 @@ import moment from "moment";
 import axios from "axios";
 
 const Presensi = () => {
-  const [status, setStatus] = useState("detail");
+  const [status, setStatus] = useState("presensi");
   const fileName = "data-presensi";
   const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -108,7 +108,7 @@ const Presensi = () => {
         <div>
           <div className="py-4">
             <div className="my-4 flex gap-2 justify-start">
-              <div title="Detail">
+              {/*              <div title="Detail">
                 {status === "detail" ? (
                   <MainButton label="Detail & QR" />
                 ) : (
@@ -119,7 +119,7 @@ const Presensi = () => {
                     label="Detail & QR"
                   />
                 )}
-              </div>
+              </div>*/}
               <div title="Presensi">
                 {status === "presensi" ? (
                   <MainButton label="Data Presensi" />

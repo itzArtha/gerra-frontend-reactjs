@@ -71,8 +71,7 @@ const EventDetail = () => {
     isBirthdayError: false,
     birthdayErrorLabel: "KTP ga boleh kosong",
     instansi: "",
-    isInstansiError: false,
-    instansiErrorLabel: "KTP ga boleh kosong",
+    nim: "",
     searchPart: "",
     coupon: "",
     isCouponError: false,
@@ -115,7 +114,7 @@ const EventDetail = () => {
           setFormData({
             ...formData,
             name: response.data.data.name,
-            hp: response.data.data.hp,
+            hp: response.data.data.phone,
             email: response.data.data.email,
             sex: response.data.data.sex,
             id: response.data.data.id,
@@ -301,6 +300,7 @@ const EventDetail = () => {
           hp: formData.hp,
           sex: formData.sex,
           ktp: formData.ktp,
+          nim: formData.nim,
         },
       })
       .then((response) => {
@@ -687,7 +687,24 @@ const EventDetail = () => {
                         ""
                       )}
                     </div>
-                    {/*                    {data.APInformation.sex ? (
+                    {data.APInformation.nim ? (
+                      <div className="pb-4">
+                        <Label label={"NIM (Optional)"} />
+                        <MainInput
+                          value={formData.nim}
+                          type={"text"}
+                          onChange={(e) => {
+                            setFormData({
+                              ...formData,
+                              nim: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {/*{data.APInformation.sex ? (
                       <div className="pb-4">
                         <Label label={"Jenis Kelamin"} />
                         <div className="flex gap-4">
@@ -719,8 +736,8 @@ const EventDetail = () => {
                       </div>
                     ) : (
                       ""
-                    )}
-
+                    )}*/}
+                    {/*
                     {data.APInformation.instansi ? (
                       <div className="pb-4">
                         <Label label={"Instansi"} />

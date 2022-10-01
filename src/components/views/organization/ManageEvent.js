@@ -124,6 +124,7 @@ const ManageEvent = () => {
     sex: false,
     birthday: false,
     ktp: false,
+    nim: false,
   });
 
   const [ticket, setTicket] = useState([]);
@@ -1457,6 +1458,15 @@ const ManageEvent = () => {
                       checked={dataPeserta.hp}
                       label={"No. Telepon"}
                       disabled={true}
+                    />
+                  </div>
+                  <div className="flex">
+                    <Checkbox
+                      name="nim"
+                      onChange={handleUpdate}
+                      checked={dataPeserta.nim}
+                      label={"NIM (Optional)"}
+                      disabled={false}
                     />
                   </div>
                   {/*<div className="flex">

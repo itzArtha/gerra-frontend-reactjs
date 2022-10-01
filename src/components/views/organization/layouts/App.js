@@ -42,16 +42,12 @@ const App = () => {
     switch (router) {
       case "dashboard":
         return <Dashboard />;
-        break;
       case "pemasukan":
         return <Revenue />;
-        break;
       case "event":
         return <Event />;
-        break;
       case "pengaturan":
         return <Setting />;
-        break;
       default:
         history.push("./dashboard");
         break;
@@ -73,7 +69,7 @@ const App = () => {
             <h2 className="capitalize font-semibold text-2xl">{router}</h2>
             <div className="mt-4">{handleContent(data)}</div>
           </main>
-          <ScanQR />
+          {router === "dashboard" ? <ScanQR /> : null}
         </div>
       </div>
     </>

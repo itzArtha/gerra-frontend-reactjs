@@ -73,7 +73,7 @@ const App = () => {
             <h2 className="capitalize font-semibold text-2xl">{router}</h2>
             <div className="mt-4">{handleContent(data)}</div>
           </main>
-          <ScanQR />
+          {router === "dashboard" ? <ScanQR /> : null}
         </div>
       </div>
     </>

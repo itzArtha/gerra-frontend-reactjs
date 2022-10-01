@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import apiClient from "../../../services/apiClient";
-import { QrReader } from "react-qr-reader";
-import InfoModal from "../../../modals/InfoModal";
-import { Html5Qrcode } from "html5-qrcode";
 
 const Menu = () => {
   const [countNotif, setCountNotif] = useState(0);

@@ -2,10 +2,18 @@ import InfoModal from "../../../../modals/InfoModal";
 import { Html5Qrcode } from "html5-qrcode";
 import { useState } from "react";
 import apiClient from "../../../../services/apiClient";
-import handleSwal from "../../../../handleSwal";
+import register from "../../../../auth/Register";
 
 const ScanQR = () => {
   const [showScanner, setShowScanner] = useState(false);
+  const [showParticipant, setShowParticipant] = useState({
+    condition: false,
+    message: "",
+    registered: false,
+  });
+  const [data, setData] = useState({});
+
+  let [count, setCount] = useState("readyScan");
 
   const handleStopScan = () => {
     setShowScanner(false);
@@ -42,21 +50,11 @@ const ScanQR = () => {
               },
               (decodedText, decodedResult) => {
                 decodedText = JSON.parse(decodedText);
-                apiClient
-                  .post("/api/v1/user/presence", {
-                    event_id: decodedText.event_id,
-                    participant_id: decodedText.participant_id,
-                  })
-                  .then((response) => {
-                    handleSwal("Peserta terdaftar", "success");
-                  })
-                  .catch((err) => {
-                    if (err.response.status === 403) {
-                      handleSwal("Bukan peserta event ini", "error");
-                    } else if (err.response.status === 401) {
-                      handleSwal("Peserta sudah masuk event", "error");
-                    }
-                  });
+
+                if (count === "readyScan") {
+                  setCount("scanned");
+                  handlePresenceRequest(decodedText);
+                }
               },
               (errorMessage) => {
                 // console.log(errorMessage);
@@ -71,6 +69,43 @@ const ScanQR = () => {
         // handle err
       });
   };
+
+  const handleBackParticipant = () => {
+    setCount("readyScan");
+    setShowParticipant({ condition: false, message: "", registered: false });
+  };
+
+  const handlePresenceRequest = (decodedText) => {
+    apiClient
+      .post("/api/v1/user/presence", {
+        event_id: decodedText.event_id,
+        participant_id: decodedText.participant_id,
+      })
+      .then((response) => {
+        setData(response.data.data);
+        setShowParticipant({
+          message: "Peserta terdaftar",
+          condition: true,
+          registered: true,
+        });
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          setShowParticipant({
+            message: "Peserta tidak terdaftar",
+            condition: true,
+            registered: false,
+          });
+        } else if (err.response.status === 401) {
+          setShowParticipant({
+            message: "Peserta sudah masuk event",
+            condition: true,
+            registered: false,
+          });
+        }
+      });
+  };
+
   return (
     <div className="h-24 p-2 md:mb-20 mb-12 fixed w-full z-10 bottom-0 flex justify-center">
       {showScanner ? (
@@ -88,6 +123,33 @@ const ScanQR = () => {
       ) : (
         ""
       )}
+
+      <InfoModal
+        title={showParticipant.message}
+        handleClose={() => {
+          handleBackParticipant();
+        }}
+        showModal={showParticipant.condition}
+      >
+        <div className={"text-center"}>
+          {showParticipant.registered ? (
+            <div>
+              <img
+                className={"w-24 h-24 mx-auto"}
+                src={data.photoUrl}
+                alt={data.name}
+              />
+              <div className={"mt-4"}>
+                <p>
+                  Halo <b>{data.name}</b>, Silakan masuk
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div>{showParticipant.message}</div>
+          )}
+        </div>
+      </InfoModal>
 
       <div title="Scan" className="text-center cursor-pointer md:mx-2 mx-1">
         <div

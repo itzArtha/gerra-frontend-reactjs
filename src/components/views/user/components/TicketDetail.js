@@ -21,16 +21,16 @@ const TicketDetail = ({ transaction, loading, type }) => {
       >
         <div>
           <tr className="flex justify-between border-b py-2">
+            <td>ID Peserta</td>
+            <td>{transaction.participant_id}</td>
+          </tr>
+          <tr className="flex justify-between border-b py-2">
             <td>Nama Tiket</td>
             <td>{data.title}</td>
           </tr>
           <tr className="flex justify-between border-b py-2">
             <td>Waktu Mulai</td>
-            <td>{moment(data.start_at).format("llll")}</td>
-          </tr>
-          <tr className="flex justify-between border-b py-2">
-            <td>Waktu Selesai</td>
-            <td>{moment(data.end_at).format("llll")}</td>
+            <td>{moment(data.start_at).format("ll")}</td>
           </tr>
           {data.event.is_online ? (
             <tr className="flex justify-between border-b py-2">

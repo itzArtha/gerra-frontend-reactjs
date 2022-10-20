@@ -159,10 +159,14 @@ const PublicProfileView = () => {
                 <h2 className="font-semibold text-2xl">{data.eventCreated}</h2>
                 <h2 className="font-light text-2xl">Event Terbuat</h2>
               </div>
-              <div className="text-center my-2">
-                <h2 className="font-semibold text-2xl">{data.countSales}</h2>
-                <h2 className="font-light text-2xl">Tiket Terjual</h2>
-              </div>
+
+              {/*{data.viewSalesCount ? (*/}
+              {/*  <div className="text-center my-2">*/}
+              {/*    <h2 className="font-semibold text-2xl">{data.countSales}</h2>*/}
+              {/*    <h2 className="font-light text-2xl">Tiket Terjual</h2>*/}
+              {/*  </div>*/}
+              {/*) : null}*/}
+
               <div className="text-center my-2">
                 <h2 className="font-semibold text-2xl">{data.eventOngoing}</h2>
                 <h2 className="font-light text-2xl">Event Berlangsung</h2>

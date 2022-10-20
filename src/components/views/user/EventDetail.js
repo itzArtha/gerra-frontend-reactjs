@@ -114,7 +114,7 @@ const EventDetail = () => {
           setFormData({
             ...formData,
             name: response.data.data.name,
-            hp: response.data.data.phone,
+            hp: response.data.data.hp,
             email: response.data.data.email,
             sex: response.data.data.sex,
             id: response.data.data.id,

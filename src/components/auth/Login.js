@@ -73,7 +73,7 @@ const Login = ({ id, callback }) => {
   const loginGoogle = async () => {
     setLoading(true);
     await apiClient.get("/sanctum/csrf-cookie").then((response) => {
-      apiClient.get("/api/v1/auth/google").then((response) => {
+      apiClient.get("/api/v1/user/google").then((response) => {
         window.location.href = response.data;
       });
     });
@@ -130,30 +130,30 @@ const Login = ({ id, callback }) => {
           >
             <div className="w-full px-6 py-8 md:px-8">
               <h2 className="text-2xl font-semibold text-center text-gray-700 dark:text-white">
-                Login Sebagai {id === "user" ? "Pembeli" : "Organisasi"}
+                Login Sebagai {id === "user" ? "Pembeli" : "Penyelenggara"}
               </h2>
 
               <div className="text-sm text-center text-gray-600 dark:text-gray-200 py-4">
-                "Sulit dimengerti, semoga harimu senin terus"
+                "Jangan lupa dengarkan will be fine 🙏🏻"
               </div>
-              {/*
-                    <GoogleBtn
-                        type="button"
-                        label={isLoading ? `Loading...` : `Masuk dengan Google`}
-                        disabled={isLoading}
-                        onClick={() => {
-                            loginGoogle();
-                        }}
-                    />
-                    <div className="flex items-center justify-between mt-4">
-                        <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/4"></span>
 
-                        <div className="text-xs text-center text-gray-500 uppercase dark:text-gray-400">
-                            or login with email
-                        </div>
+              {/*             <GoogleBtn
+                type="button"
+                label={isLoading ? `Loading...` : `Masuk dengan Google`}
+                disabled={isLoading}
+                onClick={() => {
+                  loginGoogle();
+                }}
+              />
+              <div className="flex items-center justify-between mt-4">
+                <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/4"></span>
 
-                        <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
-                    </div>*/}
+                <div className="text-xs text-center text-gray-500 uppercase dark:text-gray-400">
+                  or login with email
+                </div>
+
+                <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
+              </div>*/}
 
               <form onSubmit={handleSubmit} method="post">
                 <div className="pt-4">

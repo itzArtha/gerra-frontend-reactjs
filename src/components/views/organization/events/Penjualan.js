@@ -32,6 +32,7 @@ const Penjualan = ({ slug }) => {
               Status: item.status,
               "Tanggal Transaksi": moment(item.created_at).format("lll"),
             };
+
             newArray.push(obj);
             setExportData(newArray);
           });

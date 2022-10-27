@@ -37,7 +37,7 @@ const OnBoarding = ({ callback }) => {
                 : callback("login", "organization");
             }}
           >
-            Login sebagai organisasi
+            Login sebagai penyelenggara
           </MainBox>
         </div>
       </React.Fragment>

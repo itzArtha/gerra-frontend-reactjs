@@ -42,16 +42,12 @@ const App = () => {
     switch (router) {
       case "dashboard":
         return <Dashboard />;
-        break;
       case "pemasukan":
         return <Revenue />;
-        break;
       case "event":
         return <Event />;
-        break;
       case "pengaturan":
         return <Setting />;
-        break;
       default:
         history.push("./dashboard");
         break;

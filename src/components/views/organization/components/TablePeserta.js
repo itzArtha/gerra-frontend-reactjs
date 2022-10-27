@@ -36,19 +36,7 @@ const TablePeserta = ({ data }) => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Instansi
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Jenis Kel.
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    No. KTP
+                    NIM
                   </th>
                   <th
                     scope="col"
@@ -100,17 +88,7 @@ const TablePeserta = ({ data }) => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {JSON.parse(person.data).instansi}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {JSON.parse(person.data).sex === 0 ? "Wanita" : JSON.parse(person.data).sex === 1 ? "Pria" : null}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {JSON.parse(person.data).ktp}
+                        {JSON.parse(person.data).nim}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

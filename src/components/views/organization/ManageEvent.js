@@ -45,6 +45,21 @@ const ManageEvent = () => {
     title: "",
     isTitleError: false,
     titleErrorLabel: "",
+    whatsapp: "",
+    isWhatsappError: false,
+    whatsappErrorLabel: "",
+    instagram: "",
+    isInstagramError: false,
+    instagramErrorLabel: "",
+    booking: null,
+    isBookingError: false,
+    bookingErrorLabel: "",
+    ktp: null,
+    isKtpError: false,
+    ktpErrorLabel: "",
+    izin: null,
+    isIzinError: false,
+    izinErrorLabel: "",
     description: "",
     isDescriptionError: false,
     descriptionErrorLabel: "",
@@ -142,6 +157,8 @@ const ManageEvent = () => {
             owner: response.data.data.owner,
             bannerUrl: response.data.data.banner_url,
             title: response.data.data.title,
+            whatsapp: response.data.data.whatsapp,
+            instagram: response.data.data.instagram,
             description: response.data.data.description
               ? response.data.data.description
               : "",
@@ -295,6 +312,38 @@ const ManageEvent = () => {
       handleSwal("Cuma boleh jpeg, jpg, atau png aja dibilangin!", "error");
     } else {
       handleSwal("File sizenya kegedean anj. Maks 5MB", "error");
+    }
+  };
+
+  const handleUploadIzin = (e) => {
+    const file = e.target.files[0];
+    if (
+      file.size <= 5000000 &&
+      ["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(
+        file.type
+      )
+    ) {
+      const data = new FormData();
+
+      data.append(e.target.name, file);
+
+      apiClient.post(
+        `api/v1/organization/izin/event/${slug}/${e.target.name}`,
+        data,
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        }
+      );
+    } else if (
+      !["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(
+        file.type
+      )
+    ) {
+      handleSwal("Cuma boleh jpeg, jpg, png, atau pdf aja!", "error");
+    } else {
+      handleSwal("File sizenya kegedean. Maks 5MB", "error");
     }
   };
 
@@ -599,6 +648,8 @@ const ManageEvent = () => {
       handleSwal("Isi nae kategori & format juga!", "warning");
     } else if (!formData.location) {
       handleSwal("Lokasi dimana nih? kok gaisi", "warning");
+    } else if (!formData.whatsapp) {
+      handleSwal("Mohon isi No. whatsapp penyelenggara ya", "warning");
     } else if (ticket.length < 1) {
       handleSwal(
         "Kamu ga jual tiket? Masa engga, aneh banget ni event",
@@ -610,19 +661,19 @@ const ManageEvent = () => {
       if (formData.description && formData.terms && formData.title) {
         await apiClient
           .put("/api/v1/organization/event/" + slug, {
-            status: id,
+            // status: id,
             title: formData.title,
             description: formData.description,
             terms: formData.terms,
+            whatsapp: formData.whatsapp,
+            instagram: formData.instagram,
           })
           .then((response) => {
             handleSwal(response.data.message);
             history.push("/admin/event");
-            // console.log(response.data);
           })
           .catch((error) => {
-            // console.log(error.response);
-            handleSwal("Terjadi kesalahan pada server", "error");
+            handleSwal(error.response.data.message, "warning");
           });
       } else if (!formData.description) {
         handleSwal(
@@ -1249,7 +1300,7 @@ const ManageEvent = () => {
                     </div>
                   </div>
                 </div>
-                {/*<div className="grid md:grid-cols-2 grid-cols-1 md:gap-2">
+                <div className="grid md:grid-cols-2 grid-cols-1 md:gap-2">
                   <div className="my-2">
                     {isLoading ? (
                       <Skeleton className="w-24 h-4 rounded" count="1" />
@@ -1262,14 +1313,17 @@ const ManageEvent = () => {
                       <MainInput
                         type="text"
                         name="info"
-                        value={formData.title}
+                        value={formData.whatsapp}
                         onChange={(e) => {
-                          setFormData({ ...formData, title: e.target.value });
+                          setFormData({
+                            ...formData,
+                            whatsapp: e.target.value,
+                          });
                         }}
                       />
                     )}
-                    {formData.isTitleError ? (
-                      <ErrorLabel label={formData.titleErrorLabel} />
+                    {formData.isWhatsappError ? (
+                      <ErrorLabel label={formData.whatsappErrorLabel} />
                     ) : (
                       ""
                     )}
@@ -1286,19 +1340,22 @@ const ManageEvent = () => {
                       <MainInput
                         type="text"
                         name="info"
-                        value={formData.title}
+                        value={formData.instagram}
                         onChange={(e) => {
-                          setFormData({ ...formData, title: e.target.value });
+                          setFormData({
+                            ...formData,
+                            instagram: e.target.value,
+                          });
                         }}
                       />
                     )}
-                    {formData.isTitleError ? (
-                      <ErrorLabel label={formData.titleErrorLabel} />
+                    {formData.isInstagramError ? (
+                      <ErrorLabel label={formData.instagramErrorLabel} />
                     ) : (
                       ""
                     )}
                   </div>
-                </div>*/}
+                </div>
               </div>
             </div>
 
@@ -1432,6 +1489,83 @@ const ManageEvent = () => {
                 ) : (
                   ""
                 )}
+              </div>
+            </div>
+            <div className="mt-16">
+              <h2 className="font-bold text-2xl">Info penyelenggaran event</h2>
+              <div className="grid md:grid-cols-3 grid-cols-2 md:gap-2">
+                <div className="my-2">
+                  {isLoading ? (
+                    <Skeleton className="w-24 h-4 rounded" count="1" />
+                  ) : (
+                    <Label label="KTP Penanggung Jawab" />
+                  )}
+                  {isLoading ? (
+                    <Skeleton className="w-full h-10 rounded" count="1" />
+                  ) : (
+                    <MainInput
+                      type="file"
+                      name={"ktp"}
+                      value={formData.ktp}
+                      onChange={(e) => {
+                        handleUploadIzin(e);
+                      }}
+                    />
+                  )}
+                  {formData.isKtpError ? (
+                    <ErrorLabel label={formData.ktpErrorLabel} />
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="my-2">
+                  {isLoading ? (
+                    <Skeleton className="w-24 h-4 rounded" count="1" />
+                  ) : (
+                    <Label label="Izin Penyelenggaraan Event" />
+                  )}
+                  {isLoading ? (
+                    <Skeleton className="w-full h-10 rounded" count="1" />
+                  ) : (
+                    <MainInput
+                      type="file"
+                      name={"izin"}
+                      value={formData.izin}
+                      onChange={(e) => {
+                        handleUploadIzin(e);
+                      }}
+                    />
+                  )}
+                  {formData.isIzinError ? (
+                    <ErrorLabel label={formData.izinErrorLabel} />
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="my-2">
+                  {isLoading ? (
+                    <Skeleton className="w-24 h-4 rounded" count="1" />
+                  ) : (
+                    <Label label="Bukti Booking Pengisi Acara" />
+                  )}
+                  {isLoading ? (
+                    <Skeleton className="w-full h-10 rounded" count="1" />
+                  ) : (
+                    <MainInput
+                      type="file"
+                      name={"booking"}
+                      value={formData.booking}
+                      onChange={(e) => {
+                        handleUploadIzin(e);
+                      }}
+                    />
+                  )}
+                  {formData.isBookingError ? (
+                    <ErrorLabel label={formData.bookingErrorLabel} />
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
             <div className="mt-16">

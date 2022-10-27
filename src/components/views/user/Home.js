@@ -231,7 +231,7 @@ const Home = () => {
                 </h2>
               )}
               <div className="grid md:grid-cols-4 grid-cols-1 gap-2 mt-12">
-                {loading ? (
+                {/*                {loading ? (
                   <Skeleton className="w-full h-12 rounded" count="1" />
                 ) : (
                   <MainButton
@@ -241,7 +241,7 @@ const Home = () => {
                     label="Tentang Kami"
                     type="button"
                   />
-                )}
+                )}*/}
                 {loading ? (
                   <Skeleton className="w-full h-12 rounded" count="1" />
                 ) : (

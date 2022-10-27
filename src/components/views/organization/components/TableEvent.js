@@ -118,7 +118,7 @@ const TableEvent = ({ callback, data }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          item.status === 0
+                          item.status === 0 || item.status === 3
                             ? "bg-yellow-100 text-yellow-800"
                             : item.status === 1
                             ? "bg-green-100 text-green-800"
@@ -129,7 +129,11 @@ const TableEvent = ({ callback, data }) => {
                           ? "Draf"
                           : item.status === 1
                           ? "Aktif"
-                          : "Berakhir"}
+                          : item.status === 2
+                          ? "Berakhir"
+                          : item.status === 3
+                          ? "Menunggu Verifikasi"
+                          : "Ditolak"}
                       </span>
                     </td>
                     <td className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">

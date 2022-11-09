@@ -17,15 +17,15 @@ const MainSearchBarWithSelect = ({ searchCallback, lastPath }) => {
       <div className="search-bar mb-4">
         <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
           <div className="col-span-1">
-            <SelectInput
-              onChange={(e) => {
-                history.push(e.target.value);
-              }}
-              value={lastPath}
-            >
-              <option value="event">Event</option>
-              <option value="organization">Organisasi</option>
-            </SelectInput>
+            {/*<SelectInput*/}
+            {/*  onChange={(e) => {*/}
+            {/*    history.push(e.target.value);*/}
+            {/*  }}*/}
+            {/*  value={lastPath}*/}
+            {/*>*/}
+            {/*  <option value="event">Event</option>*/}
+            {/*  <option value="organization">Organisasi</option>*/}
+            {/*</SelectInput>*/}
           </div>
           <div className="col-span-2 md:col-span-3">
             <div className="flex gap-2">

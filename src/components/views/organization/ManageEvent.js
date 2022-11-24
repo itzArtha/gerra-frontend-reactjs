@@ -1461,7 +1461,7 @@ const ManageEvent = () => {
                   )}
                   {/* Ticket End */}
                 </div>
-                {ticket.length < 3 ? (
+                {ticket.length < 9 ? (
                   <div className="flex justify-center my-8">
                     {isLoading ? (
                       <Skeleton className="w-52 h-10 rounded" count="1" />

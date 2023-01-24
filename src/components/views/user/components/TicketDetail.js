@@ -51,6 +51,10 @@ const TicketDetail = ({ transaction, loading, type }) => {
               <td>{data.event.location}</td>
             </tr>
           )}
+          <tr className="flex justify-between border-b py-2">
+            <td>Deskripsi/Link Group</td>
+            <td>{data.description}</td>
+          </tr>
 
           <tr className={"flex justify-center mt-4"}>
             <QRCode

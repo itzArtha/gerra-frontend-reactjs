@@ -733,8 +733,7 @@ const ManageEvent = () => {
           showLocationModal ||
           showTicketModal ||
           showEditTicketModal
-        }
-      >
+        }>
         {showAddParticipantModal ? (
           <div className="grid grid-cols-3 gap-2">
             <div className="my-2 col-span-2">
@@ -760,8 +759,7 @@ const ManageEvent = () => {
                 value={formData.typeColumn}
                 onChange={(e) => {
                   setFormData({ ...formData, typeColumn: e.target.value });
-                }}
-              >
+                }}>
                 <option defaultValue="">Pilih tipe kolom</option>
                 <option value="text">Text</option>
                 <option value="number">Number</option>
@@ -784,8 +782,7 @@ const ManageEvent = () => {
                 value={formData.format}
                 onChange={(e) => {
                   setFormData({ ...formData, format: e.target.value });
-                }}
-              >
+                }}>
                 <option value={""}>Pilih format</option>
                 {catFor.format.map((item, i) => (
                   <option key={i} value={item.id}>
@@ -807,8 +804,7 @@ const ManageEvent = () => {
                 value={formData.kategori}
                 onChange={(e) => {
                   setFormData({ ...formData, kategori: e.target.value });
-                }}
-              >
+                }}>
                 <option value={""}>Pilih kategori</option>
                 {catFor.category.map((item, i) => (
                   <option key={i} value={item.id}>
@@ -1090,8 +1086,8 @@ const ManageEvent = () => {
                 <div className="my-2">
                   <Label label="Mulai Dijual" />
                   <MainInput
-                    min={moment().format("YYYY-MM-DD")}
-                    type="date"
+                    min={moment().format("YYYY-MM-DD HH:II:SS")}
+                    type="datetime-local"
                     name="startSaleTicket"
                     value={formData.startSaleTicket}
                     onChange={(e) => {
@@ -1111,8 +1107,8 @@ const ManageEvent = () => {
                 <div className="my-2">
                   <Label label="Berakhir Dijual" />
                   <MainInput
-                    min={moment().add(1, "days").format("YYYY-MM-DD")}
-                    type="date"
+                    min={moment().add(1, "days").format("YYYY-MM-DD HH:II:SS")}
+                    type="datetime-local"
                     name="endSaleTicket"
                     value={formData.endSaleTicket}
                     onChange={(e) => {
@@ -1160,8 +1156,7 @@ const ManageEvent = () => {
           <div className="mt-4 mx-4 md:mx-0">
             <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4">
               <div
-                className={`w-full h-72 bg-gray-400 mx-auto xl:mx-0 rounded`}
-              >
+                className={`w-full h-72 bg-gray-400 mx-auto xl:mx-0 rounded`}>
                 {!formData.bannerUrl ? (
                   ""
                 ) : (
@@ -1184,8 +1179,7 @@ const ManageEvent = () => {
                   <div
                     className={`flex justify-end ${
                       !formData.bannerUrl ? "" : "py-4"
-                    }`}
-                  >
+                    }`}>
                     <MainButton
                       onClick={(e) => {
                         uploadCover.current && uploadCover.current.click();
@@ -1371,8 +1365,7 @@ const ManageEvent = () => {
                     ticket.map((item, i) => (
                       <div
                         className="w-full border rounded grid grid-cols-4 gap-2 p-3"
-                        key={i}
-                      >
+                        key={i}>
                         <div className="border-r pr-3 col-span-1">
                           <div>
                             <img
@@ -1402,8 +1395,7 @@ const ManageEvent = () => {
                                 className="w-8 h-8"
                                 onClick={() => {
                                   handleUpdateTicketModal(item.id);
-                                }}
-                              >
+                                }}>
                                 {isLoading ? (
                                   ""
                                 ) : (
@@ -1418,8 +1410,7 @@ const ManageEvent = () => {
                                 className="w-8 h-8"
                                 onClick={() => {
                                   handleDeleteTicket(item.id);
-                                }}
-                              >
+                                }}>
                                 <img
                                   className="w-4 h-4"
                                   src={process.env.PUBLIC_URL + "/trash.svg"}
@@ -1728,8 +1719,7 @@ const ManageEvent = () => {
                       <span
                         className={`text-sm flex ${
                           formData.isDescriptionOverChar ? "text-red-600" : ""
-                        }`}
-                      >
+                        }`}>
                         {formData.description.length}/1808
                       </span>
                     </div>
@@ -1771,8 +1761,7 @@ const ManageEvent = () => {
                       <span
                         className={`text-sm flex ${
                           formData.isTermsOverChar ? "text-red-600" : ""
-                        }`}
-                      >
+                        }`}>
                         {formData.terms.length}/1808
                       </span>
                     </div>

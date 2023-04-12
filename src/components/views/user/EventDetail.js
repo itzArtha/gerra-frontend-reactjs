@@ -345,24 +345,21 @@ const EventDetail = () => {
                     url={window.location.href}
                     quote={""}
                     hashtag={"#seminar #kompetisi #event #mahasiswa"}
-                    description={"Woi coba cek nih, keren taw"}
-                  >
+                    description={"Woi coba cek nih, keren taw"}>
                     <WhatsappIcon size={32} round />
                   </WhatsappShareButton>
                   <TelegramShareButton
                     url={window.location.href}
                     quote={""}
                     hashtag={"#seminar #kompetisi #event #mahasiswa"}
-                    description={"Woi coba cek nih, keren taw"}
-                  >
+                    description={"Woi coba cek nih, keren taw"}>
                     <TelegramIcon size={32} round />
                   </TelegramShareButton>
                   <LineShareButton
                     url={window.location.href}
                     quote={""}
                     hashtag={"#seminar #kompetisi #event #mahasiswa"}
-                    description={"Woi coba cek nih, keren taw"}
-                  >
+                    description={"Woi coba cek nih, keren taw"}>
                     <LineIcon size={32} round />
                   </LineShareButton>
                 </div>
@@ -531,11 +528,12 @@ const EventDetail = () => {
                         ).length > 0
                           ? "border-yellow-500"
                           : "border-gray-200"
-                      }`}
-                    >
+                      }`}>
                       <div className="flex justify-between">
                         <div>
-                          {item.amount > 0 ? (
+                          {item.amount > 0 &&
+                          new Date(item.end_at).getTime() >=
+                            new Date().getTime() ? (
                             <Checkbox
                               value={item.id}
                               id={`checkbox${i}`}
@@ -560,7 +558,9 @@ const EventDetail = () => {
                       </div>
 
                       <div className={"flex justify-between"}>
-                        {item.amount > 0 ? (
+                        {item.amount > 0 &&
+                        new Date(item.end_at).getTime() >=
+                          new Date().getTime() ? (
                           <div className={"flex gap-2"}>
                             <div className="custom-number-input h-10 w-32 mt-4">
                               <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
@@ -829,8 +829,7 @@ const EventDetail = () => {
                             onClick={() => {
                               handleDeleteChoosenPart(item.id);
                             }}
-                            className="w-8 h-8 my-4"
-                          >
+                            className="w-8 h-8 my-4">
                             <img
                               className="h-8 w-8 pr-2"
                               src={process.env.PUBLIC_URL + "/trash.svg"}
@@ -898,8 +897,7 @@ const EventDetail = () => {
                       <div
                         className={`flex justify-between my-1 ${
                           calculate.discount > 0 ? "animate-pulse" : ""
-                        }`}
-                      >
+                        }`}>
                         <div>
                           <span className="text-xl">
                             Discount{" "}
@@ -927,8 +925,7 @@ const EventDetail = () => {
                         <h2
                           className={`text-4xl font-bold text-right ${
                             calculate.total ? "animate-pulse" : ""
-                          }`}
-                        >
+                          }`}>
                           <CurrencyFormat
                             value={calculate.total}
                             displayType={"text"}
@@ -958,8 +955,7 @@ const EventDetail = () => {
               buttonLabel={showAddTeam ? "Tambah Anggota" : "Simpan"}
               title={showAddTeam ? "Tambah Anggota" : "Tambahkan Kupon Diskon"}
               button={true}
-              onClick={handleModal}
-            >
+              onClick={handleModal}>
               {showAddTeam ? (
                 <div>
                   <div className="pb-4">
@@ -994,8 +990,7 @@ const EventDetail = () => {
                             ).length > 0
                               ? "border-yellow-400 "
                               : ""
-                          }`}
-                        >
+                          }`}>
                           <div className="flex justify-between">
                             <IconWithTitle
                               title={item.name}

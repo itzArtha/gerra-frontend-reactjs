@@ -1127,7 +1127,7 @@ const ManageEvent = () => {
                 </div>
               </div>
               <div className="my-2">
-                <Label label="Deskripsi" />
+                <Label label="Deskripsi/Link Group" />
                 <MainTextArea
                   className="resize-none"
                   type="text"

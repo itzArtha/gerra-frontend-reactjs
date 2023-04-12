@@ -88,27 +88,11 @@ const PaymentMethod = () => {
         <div>
           <div
             onClick={() => {
-              handlePaymentMethod("gopay");
-            }}
-            className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
-          >
-            <span>QRIS/Gopay</span>
-          </div>
-          <div
-            onClick={() => {
-              handlePaymentMethod("bni");
-            }}
-            className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
-          >
-            <span>BNI Virtual Account</span>
-          </div>
-          <div
-            onClick={() => {
               handlePaymentMethod("other_va");
             }}
             className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
           >
-            <span>BRI, Mandiri, OVO, ShopeePay, Dll</span>
+            <span>BRI, BNI, Mandiri, OVO, ShopeePay, Dll</span>
           </div>
         </div>
       </InfoModal>

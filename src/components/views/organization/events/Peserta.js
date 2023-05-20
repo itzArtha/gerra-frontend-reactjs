@@ -28,16 +28,8 @@ const Peserta = ({ slug }) => {
               "ID Peserta": item.id,
               "Nama Peserta": item.name,
               Email: item.email,
-              Instansi: parsedData.instansi,
-              "Jenis Kelamin":
-                parsedData.sex === 0
-                  ? "Wanita"
-                  : parsedData.sex === 1
-                  ? "Pria"
-                  : null,
-              "Tanggal Lahir": parsedData.birthday,
-              KTP: parsedData.ktp,
               NIM: parsedData.nim,
+              Referral: parsedData.referral,
               "No. Telepon": parsedData.hp,
               Tiket: item.ticket,
               "Tanggal Registrasi": moment(item.created_at).format("lll"),

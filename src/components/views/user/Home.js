@@ -47,8 +47,7 @@ const Home = () => {
         title="Kamu bukan organizer lo..."
         handleClose={() => {
           setShowModal(false);
-        }}
-      >
+        }}>
         Hehe kalo mau buat event, login sebagai organisasi dulu yuk
       </InfoModal>
       <div className="container px-6 py-16 mx-auto text-center">
@@ -82,8 +81,7 @@ const Home = () => {
             ) : (
               <Link
                 className="mt-8 mx-1 rounded-lg w-4/6 font-semibold px-4 py-2 tracking-wide border border-black text-black transition-colors duration-200 transform bg-yellow-400 hover:bg-yellow-300 focus:outline-none"
-                to="/explore/event"
-              >
+                to="/explore/event">
                 Cari event
               </Link>
             )}
@@ -168,8 +166,7 @@ const Home = () => {
             <div
               className={
                 "md:flex md:justify-center md:gap-8 grid grid-cols-2 gap-4"
-              }
-            >
+              }>
               <div className={"my-auto"}>
                 <img
                   className={"w-48 mt-7"}

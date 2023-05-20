@@ -14,6 +14,7 @@ import CurrencyFormat from "react-currency-format";
 import MainModal from "../../modals/MainModal";
 import moment from "moment";
 import Radio from "../../Radio";
+import useQuery from "../../useQuery";
 import {
   WhatsappIcon,
   WhatsappShareButton,
@@ -27,6 +28,7 @@ import "../../../index.css";
 
 const EventDetail = () => {
   const { slug } = useParams();
+  const query = useQuery();
   const history = useHistory();
   const location = useLocation();
   const scrollRef = useRef(null);
@@ -72,6 +74,7 @@ const EventDetail = () => {
     birthdayErrorLabel: "KTP ga boleh kosong",
     instansi: "",
     nim: "",
+    referral: "",
     searchPart: "",
     coupon: "",
     isCouponError: false,
@@ -87,6 +90,7 @@ const EventDetail = () => {
   };
 
   useEffect(() => {
+    setFormData({ ...formData, referral: query.get("ref") });
     const fetchData = async () => {
       await apiClient
         .get("/api/v1/organization/event/" + slug)
@@ -119,6 +123,7 @@ const EventDetail = () => {
             sex: response.data.data.sex,
             id: response.data.data.id,
             roles: parseInt(response.data.data.roles),
+            referral: query.get("ref"),
           });
           setAuth(true);
         })
@@ -301,6 +306,7 @@ const EventDetail = () => {
           sex: formData.sex,
           ktp: formData.ktp,
           nim: formData.nim,
+          referral: formData.referral,
         },
       })
       .then((response) => {
@@ -533,6 +539,8 @@ const EventDetail = () => {
                         <div>
                           {item.amount > 0 &&
                           new Date(item.end_at).getTime() >=
+                            new Date().getTime() &&
+                          new Date(item.start_at).getTime() <=
                             new Date().getTime() ? (
                             <Checkbox
                               value={item.id}
@@ -546,7 +554,7 @@ const EventDetail = () => {
                             />
                           ) : (
                             <div className={"p-2 bg-red-500 text-white"}>
-                              Sold out
+                              Closed
                             </div>
                           )}
                         </div>
@@ -560,6 +568,8 @@ const EventDetail = () => {
                       <div className={"flex justify-between"}>
                         {item.amount > 0 &&
                         new Date(item.end_at).getTime() >=
+                          new Date().getTime() &&
+                        new Date(item.start_at).getTime() <=
                           new Date().getTime() ? (
                           <div className={"flex gap-2"}>
                             <div className="custom-number-input h-10 w-32 mt-4">
@@ -697,6 +707,23 @@ const EventDetail = () => {
                             setFormData({
                               ...formData,
                               nim: e.target.value,
+                            });
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {data.APInformation.referral ? (
+                      <div className="pb-4">
+                        <Label label={"Referral (Optional)"} />
+                        <MainInput
+                          value={formData.referral}
+                          type={"text"}
+                          onChange={(e) => {
+                            setFormData({
+                              ...formData,
+                              referral: e.target.value,
                             });
                           }}
                         />

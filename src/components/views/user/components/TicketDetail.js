@@ -17,8 +17,7 @@ const TicketDetail = ({ transaction, loading, type }) => {
         handleClose={() => {
           setShowTicketModal(false);
         }}
-        title={"Detail Tiket"}
-      >
+        title={"Detail Tiket"}>
         <div>
           <tr className="flex justify-between border-b py-2">
             <td>ID Peserta</td>
@@ -39,8 +38,7 @@ const TicketDetail = ({ transaction, loading, type }) => {
                 <a
                   target={"_blank"}
                   className="text-blue-500 hover:text-blue-600"
-                  href={data.event.stream_url}
-                >
+                  href={data.event.stream_url}>
                   Klik Link
                 </a>
               </td>
@@ -139,8 +137,7 @@ const TicketDetail = ({ transaction, loading, type }) => {
                   : transaction.status === "settlement"
                   ? "text-green-600 bg-green-200"
                   : "text-red-600 bg-red-200"
-              }`}
-            >
+              }`}>
               {transaction.status}
             </span>
           </div>

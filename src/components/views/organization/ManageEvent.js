@@ -140,6 +140,7 @@ const ManageEvent = () => {
     birthday: false,
     ktp: false,
     nim: false,
+    referral: false,
   });
 
   const [ticket, setTicket] = useState([]);
@@ -185,7 +186,7 @@ const ManageEvent = () => {
             streamUrl: response.data.data.stream_url,
           });
           setTicket(response.data.data.ticket);
-          setInfo(response.data.data.APInformation);
+          setDataPeserta(response.data.data.APInformation);
           setLoading(false);
         })
         .catch((error) => {
@@ -1591,6 +1592,15 @@ const ManageEvent = () => {
                       onChange={handleUpdate}
                       checked={dataPeserta.nim}
                       label={"NIM (Optional)"}
+                      disabled={false}
+                    />
+                  </div>
+                  <div className="flex">
+                    <Checkbox
+                      name="referral"
+                      onChange={handleUpdate}
+                      checked={dataPeserta.referral}
+                      label={"Referral (Optional)"}
                       disabled={false}
                     />
                   </div>

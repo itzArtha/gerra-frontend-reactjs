@@ -120,8 +120,7 @@ const Revenue = () => {
         buttonLabel={processing ? `Loading...` : `Tarik`}
         showModal={showModal}
         onClick={handleWd}
-        title={`Tarik Dana`}
-      >
+        title={`Tarik Dana`}>
         <div>
           <div className="my-2">
             <Label label="Jumlah" />
@@ -142,8 +141,7 @@ const Revenue = () => {
               value={formData.rekening}
               onChange={(e) => {
                 setFormData({ ...formData, rekening: e.target.value });
-              }}
-            >
+              }}>
               <option defaultValue="">Pilih rekening</option>
               {rek.map((item, i) => (
                 <option key={item.id} value={item.id}>
@@ -172,14 +170,7 @@ const Revenue = () => {
             />
           </div>
           <div className="font-light text-lg pt-4">
-            Total bonus dari transaksi,{" "}
-            <a
-              className={"text-blue-600 font-semibold text-sm hover:underline"}
-              target={"_blank"}
-              href="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/TokoeventBonus.pdf"
-            >
-              Pelajari selengkapnya
-            </a>
+            Total bonus dari penjualan
           </div>
           <div className="text-right">
             <SecondaryButton

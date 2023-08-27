@@ -41,7 +41,7 @@ const Home = () => {
 
   return (
     <MainLayout top={true} footer={true} menu={true}>
-      <InstallPWA />
+      {/* <InstallPWA /> */}
       <InfoModal
         showModal={showModal}
         title="Kamu bukan organizer lo..."
@@ -96,16 +96,16 @@ const Home = () => {
             </div>
             <div className="py-12">
               <h2 className="text-justify font-small text-xl mb-4">
-                Tokoevent adalah platform trading, asekk. <br />
-                Trading <b>tiket event</b> atau jual beli tiket event, disini
-                kamu bisa menjual tiket misal organisasi kampus kamu mau ngadain
-                event & jual tiket bisa disini aja. Dan yang pasti{" "}
+                Tokoevent adalah platform jual beli tiket event kampus, event
+                umum, event mahasiswa dan disini kamu bisa jual tiket. Misal
+                organisasi kampus kamu mau ngadain event & jual tiket bisa
+                disini aja, dan yang pasti{" "}
                 <b>paperless, mudah, aman, dan cepat</b> <br /> <br />
                 Gak cuma itu karena kamu disini bisa beli tiket dan dapet{" "}
                 <b>promo2</b> juga, apalagi gen-z sekarang pemburu promo kan{" "}
                 <br />
                 <br />
-                <b>#DariMahasiswaUntukBangsa</b>
+                <b>#DariMahasiswaUntukBangsa #TokoeventTanpaSpasi</b>
               </h2>
             </div>
           </div>
@@ -158,7 +158,7 @@ const Home = () => {
             </h2>
           )}
         </div>
-        <div className={"mt-48"}>
+        <div className={"mt-24"}>
           <h2 className="font-bold text-4xl mb-4 text-center mt-8">
             Partners & Supports
           </h2>
@@ -170,21 +170,21 @@ const Home = () => {
               <div className={"my-auto"}>
                 <img
                   className={"w-48 mt-7"}
-                  src="https://i.ibb.co/gmv85S0/Untitled-1.png"
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Logo_Gerakan_Nasional_1000_Startup_Digital.png/800px-Logo_Gerakan_Nasional_1000_Startup_Digital.png"
                   alt="Logo"
                 />
               </div>{" "}
               <div>
                 <img
                   className={"w-48"}
-                  src="https://www.stikom-bali.ac.id/id/wp-content/uploads/2020/07/ITB-RESMI-300x300.png"
+                  src="https://pk2umk.kemenkopukm.go.id/img/logo.png"
                   alt="Logo"
                 />
               </div>{" "}
-              <div className={"my-auto"}>
+              <div>
                 <img
                   className={"w-48 mt-7"}
-                  src="https://yt3.ggpht.com/CBOVsvx28XnvYNCcmkmWGkz2xWv1hK5lBkj8VY4Cp1k951kGgmE300s8JQywb3uN8BIFjmVA=s900-c-k-c0x00ffffff-no-rj"
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/ARKAYA.png"
                   alt="Logo"
                 />
               </div>{" "}
@@ -195,13 +195,81 @@ const Home = () => {
                   alt="Logo"
                 />
               </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/DIESTERIA.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/MAKSIS+UNUD.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/KRAMAT.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+            </div>
+            <div
+              className={
+                "md:flex md:justify-center md:gap-8 grid grid-cols-2 gap-4"
+              }>
               <div className={"my-auto"}>
                 <img
                   className={"w-48 mt-7"}
-                  src="https://i.ibb.co/sWqy6z6/gerra-13-Artboard-1.png"
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/PNB+FAIR.png"
                   alt="Logo"
                 />
               </div>
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/HANAMI.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/GREATFEST.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/DELUSI.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/ARTSPIRASI.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://assets-gerra.s3.ap-southeast-1.amazonaws.com/AMK+FEST.png"
+                  alt="Logo"
+                />
+              </div>{" "}
+              <div className={"my-auto"}>
+                <img
+                  className={"w-48 mt-7"}
+                  src="https://yt3.ggpht.com/CBOVsvx28XnvYNCcmkmWGkz2xWv1hK5lBkj8VY4Cp1k951kGgmE300s8JQywb3uN8BIFjmVA=s900-c-k-c0x00ffffff-no-rj"
+                  alt="Logo"
+                />
+              </div>{" "}
             </div>
           </div>
         </div>

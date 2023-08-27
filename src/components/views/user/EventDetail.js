@@ -256,8 +256,9 @@ const EventDetail = () => {
   };
 
   const handleLogic = (newArray, discount = 0, quantity) => {
+    quantity = newArray.length == 0 ? 0 : quantity;
     let subtotal = 0,
-      fee = 0,
+      fee = 5000 * quantity,
       total = 0;
     newArray.map(
       (item, i) => (subtotal += parseInt(item.price.price) * quantity)
@@ -892,7 +893,7 @@ const EventDetail = () => {
                       <div className="flex justify-between my-1">
                         <div>
                           <span className="text-xl">
-                            Tiket Pendaftaran ({ticket.length})
+                            Tiket Pendaftaran ({quantity})
                           </span>
                         </div>
                         <div>
@@ -906,9 +907,11 @@ const EventDetail = () => {
                           </span>
                         </div>
                       </div>
-                      {/*                      <div className="flex justify-between my-1">
+                      <div className="flex justify-between my-1">
                         <div>
-                          <span className="text-xl">Biaya Admin</span>
+                          <span className="text-xl">
+                            Biaya Admin ({quantity})
+                          </span>
                         </div>
                         <div>
                           <span className="font-semibold text-xl">
@@ -920,7 +923,7 @@ const EventDetail = () => {
                             />
                           </span>
                         </div>
-                      </div>*/}
+                      </div>
                       <div
                         className={`flex justify-between my-1 ${
                           calculate.discount > 0 ? "animate-pulse" : ""

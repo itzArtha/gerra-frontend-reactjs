@@ -11,6 +11,10 @@ const PaymentMethod = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [payLoading, setPayLoading] = useState(false);
+  const [total, setTotal] = useState({
+    total: 0,
+    newTotal: 0,
+  });
   const [data, setData] = useState({});
   const [pm, setPM] = useState("");
   const [isPmError, setPMError] = useState(false);
@@ -29,6 +33,9 @@ const PaymentMethod = () => {
         .get("/api/v1/user/checkout/data")
         .then((response) => {
           setData(response.data);
+          setTotal({
+            total: response.data.total,
+          });
           setLoading(false);
         })
         .catch((error) => {
@@ -43,14 +50,17 @@ const PaymentMethod = () => {
 
   const swicthPM = (data) => {
     switch (data) {
-      case "gopay":
-        return "QRIS";
-      case "bni":
-        return "Bank BNI";
-      case "other_va":
-        return "BRI, Mandiri, OVO, ShopeePay, Dll";
+      case "RETAIL":
+        return "Alfamart";
+
+      case "E_WALLET":
+        return "eWallet";
+
+      case "VA":
+        return "Virtual Account";
+
       default:
-        return "Error";
+        return data;
     }
   };
 
@@ -83,16 +93,51 @@ const PaymentMethod = () => {
         handleClose={() => {
           setShowModal(false);
         }}
-        title={"Pilih Metode Pembayaran"}
-      >
+        title={"Pilih Metode Pembayaran"}>
         <div>
           <div
             onClick={() => {
-              handlePaymentMethod("other_va");
+              handlePaymentMethod("VA");
             }}
-            className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black"
-          >
-            <span>BRI, BNI, Mandiri, OVO, ShopeePay, Dll</span>
+            className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black">
+            <span>Virtual Account (BNI, BRI, BSI, Mandiri)</span>
+            <div>
+              <span className="text-xs">
+                Biaya Admin: {data.total >= 100000 ? "Rp4.000" : "Rp.3000"}
+              </span>
+            </div>
+          </div>
+          <div
+            onClick={() => {
+              handlePaymentMethod("QRIS");
+            }}
+            className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black">
+            <span>QRIS</span>
+            <div>
+              <span className="text-xs">
+                Biaya Admin: {data.total >= 100000 ? "Rp1.000" : "GRATIS"}
+              </span>
+            </div>
+          </div>
+          <div
+            onClick={() => {
+              handlePaymentMethod("E_WALLET");
+            }}
+            className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black">
+            <span>eWallet (Dana, OVO, ShopeePay)</span>
+            <div>
+              <span className="text-xs">Biaya Admin: Rp4.000</span>
+            </div>
+          </div>
+          <div
+            onClick={() => {
+              handlePaymentMethod("RETAIL");
+            }}
+            className="my-2 p-4 font-semibold duration-200 cursor-pointer text-center bg-yellow-400 rounded-md hover:bg-yellow-300 border border-black">
+            <span>Alfamart</span>
+            <div>
+              <span className="text-xs">Biaya Admin: Rp5.000</span>
+            </div>
           </div>
         </div>
       </InfoModal>
@@ -106,18 +151,13 @@ const PaymentMethod = () => {
               ""
             ) : (
               <CurrencyFormat
-                value={isLoading ? 0 : data.total}
+                value={isLoading ? 0 : total.total}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"Rp"}
               />
             )}
           </h2>
-        </div>
-        <div className={"mb-12"}>
-          <span className={"mt-12 font-semibold text-lg"}>
-            Sudah Termasuk Biaya Transfer
-          </span>
         </div>
         <div className="my-4 flex justify-center">
           {isLoading ? (

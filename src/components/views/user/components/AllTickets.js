@@ -51,7 +51,7 @@ const AllTickets = (props) => {
                 <TicketDetail
                   type={props.sort}
                   key={i}
-                  transaction={item}
+                  participant={item}
                   loading={loading}
                 />
               </div>

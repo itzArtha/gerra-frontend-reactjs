@@ -6,10 +6,12 @@ import { useRef, useState } from "react";
 import moment from "moment";
 import { Link, useHistory } from "react-router-dom";
 import QRCode from "qrcode.react";
-const TicketDetail = ({ transaction, loading, type }) => {
+const TicketDetail = ({ participant, loading, type }) => {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const history = useHistory();
+  const transaction = participant.transaction;
   const data = transaction.ticket;
+
   return (
     <>
       <InfoModal
@@ -17,49 +19,26 @@ const TicketDetail = ({ transaction, loading, type }) => {
         handleClose={() => {
           setShowTicketModal(false);
         }}
-        title={"Detail Tiket"}>
+        title={"Detail Tiket"}
+      >
         <div>
           <tr className="flex justify-between border-b py-2">
-            <td>ID Peserta</td>
+            <td>Nomor Tiket</td>
             <td>{transaction.participant_id}</td>
           </tr>
           <tr className="flex justify-between border-b py-2">
             <td>Nama Tiket</td>
             <td>{data.title}</td>
           </tr>
-          <tr className="flex justify-between border-b py-2">
-            <td>Waktu Mulai</td>
-            <td>{moment(data.start_at).format("ll")}</td>
-          </tr>
-          {data.event.is_online ? (
-            <tr className="flex justify-between border-b py-2">
-              <td>Link Conference</td>
-              <td>
-                <a
-                  target={"_blank"}
-                  className="text-blue-500 hover:text-blue-600"
-                  href={data.event.stream_url}>
-                  Klik Link
-                </a>
-              </td>
-            </tr>
-          ) : (
-            <tr className="flex justify-between border-b py-2">
-              <td>Lokasi</td>
-              <td>{data.event.location}</td>
-            </tr>
-          )}
-          <tr className="flex justify-between border-b py-2">
-            <td>Deskripsi/Link Group</td>
-            <td>{data.description}</td>
-          </tr>
 
           <tr className={"flex justify-center mt-4"}>
             <QRCode
-              value={JSON.stringify({
-                event_id: data.event.id,
-                participant_id: transaction.participant_id,
-              })}
+              value={participant.uuid}
+              imageSettings={{
+                src: process.env.PUBLIC_URL + "/logo-qr.png",
+                width: 80,
+                height: 80,
+              }}
               id="qr-download"
               size={256}
               renderAs="canvas"
@@ -137,7 +116,8 @@ const TicketDetail = ({ transaction, loading, type }) => {
                   : transaction.status === "settlement"
                   ? "text-green-600 bg-green-200"
                   : "text-red-600 bg-red-200"
-              }`}>
+              }`}
+            >
               {transaction.status}
             </span>
           </div>

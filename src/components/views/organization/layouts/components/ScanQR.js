@@ -78,8 +78,7 @@ const ScanQR = () => {
   const handlePresenceRequest = (decodedText) => {
     apiClient
       .post("/api/v1/user/presence", {
-        event_id: decodedText.event_id,
-        participant_id: decodedText.participant_id,
+        uuid: decodedText,
       })
       .then((response) => {
         setData(response.data.data);

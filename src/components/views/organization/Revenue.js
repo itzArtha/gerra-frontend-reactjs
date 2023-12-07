@@ -34,27 +34,27 @@ const Revenue = () => {
     rekeningErrorLabel: "",
   });
 
-  useEffect(() => {
-    const fetchRevenue = async () => {
-      setLoading(true);
-      await apiClient
-        .get("/api/v1/organization/revenue")
-        .then((response) => {
-          setData(response.data.data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          // console.log(error.response.data);
-          setLoading(false);
-        });
-    };
-
-    const fetchRekening = async () => {
-      await apiClient.get("/api/v1/organization/bank").then((response) => {
-        setRek(response.data.data);
+  const fetchRevenue = async (page = 1, totalRows) => {
+    setLoading(true);
+    await apiClient
+      .get("/api/v1/organization/revenue")
+      .then((response) => {
+        setData(response.data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // console.log(error.response.data);
+        setLoading(false);
       });
-    };
+  };
 
+  const fetchRekening = async () => {
+    await apiClient.get("/api/v1/organization/bank").then((response) => {
+      setRek(response.data.data);
+    });
+  };
+
+  useEffect(() => {
     fetchRekening();
     fetchBalance();
     fetchWd();
@@ -120,7 +120,8 @@ const Revenue = () => {
         buttonLabel={processing ? `Loading...` : `Tarik`}
         showModal={showModal}
         onClick={handleWd}
-        title={`Tarik Dana`}>
+        title={`Tarik Dana`}
+      >
         <div>
           <div className="my-2">
             <Label label="Jumlah" />
@@ -141,7 +142,8 @@ const Revenue = () => {
               value={formData.rekening}
               onChange={(e) => {
                 setFormData({ ...formData, rekening: e.target.value });
-              }}>
+              }}
+            >
               <option defaultValue="">Pilih rekening</option>
               {rek.map((item, i) => (
                 <option key={item.id} value={item.id}>
@@ -159,31 +161,6 @@ const Revenue = () => {
       </MainModal>
       {/* Contents */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MainBox className="bg-yellow-400 hover:bg-yellow-300 pt-8">
-          <div className="font-semibold text-5xl pb-4">
-            {" "}
-            <CurrencyFormat
-              value={bonus}
-              displayType={"text"}
-              thousandSeparator={true}
-              prefix={"Rp"}
-            />
-          </div>
-          <div className="font-light text-lg pt-4">
-            Total bonus dari penjualan
-          </div>
-          <div className="text-right">
-            <SecondaryButton
-              className="mt-4"
-              type="button"
-              onClick={() => {
-                setType("bonus");
-                setShowModal(true);
-              }}
-              label="Tarik Bonus"
-            />
-          </div>
-        </MainBox>
         <MainBox className="bg-red-400 hover:bg-red-300 pt-8">
           <div className="font-semibold text-5xl pb-4">
             {" "}

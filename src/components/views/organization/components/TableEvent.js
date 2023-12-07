@@ -2,6 +2,10 @@ import moment from "moment";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import MainModal from "../../../modals/MainModal";
+import CurrencyFormat from "react-currency-format";
+import DataTable from "react-data-table-component";
+import MainButton from "../../../MainButton";
+import MainBox from "./MainBox";
 
 const TableEvent = ({ callback, data }) => {
   const history = useHistory();
@@ -16,6 +20,141 @@ const TableEvent = ({ callback, data }) => {
   const handleDelete = () => {
     handleCallback(deleteID);
   };
+
+  const columns = [
+    {
+      name: "#",
+      selector: (row) => row.no,
+      sortable: true,
+      width: "30px",
+      right: true,
+      compact: true,
+    },
+    {
+      name: "Nama Event",
+      selector: (row) => row.title,
+      sortable: true,
+      format: (item) => (
+        <div className="flex items-center">
+          <div className="flex-shrink-0 h-10 w-10">
+            <img
+              className="h-10 w-10 rounded-full"
+              src={item.title.banner_url}
+              alt=""
+            />
+          </div>
+          <div className="ml-4">
+            <div className="text-sm font-medium text-gray-900">
+              {item.title.label}
+            </div>
+            <div className="text-sm text-gray-500">{item.owner}</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      name: "Lokasi",
+      selector: (row) => row.location,
+      sortable: true,
+      format: (item) => (
+        <div>
+          <div className="text-sm text-gray-900">{item.location.label}</div>
+          <div className="text-sm text-gray-500">
+            {item.location.is_online ? "Online" : "Offline"}
+          </div>
+        </div>
+      ),
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      sortable: true,
+      format: (row) => (
+        <span
+          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${row.status.color}`}
+        >
+          {row.status.label}
+        </span>
+      ),
+    },
+    {
+      name: "Tanggal Dibuat",
+      selector: (row) => row.created_at,
+      sortable: true,
+      format: (row) => moment(row.created_at).format("lll"),
+    },
+  ];
+
+  const items = data.map((event, key) => {
+    return {
+      no: key + 1,
+      slug: event.slug,
+      title: {
+        label: event.title,
+        banner_url: event.banner_url,
+      },
+      location: {
+        label: event.location,
+        is_online: event.is_online,
+      },
+      status: event.status,
+      created_at: event.created_at,
+      total_participants: event.total_participants,
+      total_sales: event.total_sales,
+    };
+  });
+
+  const ExpandedComponent = ({ data }) => (
+    <div className={"p-4"}>
+      <div className={"grid grid-cols-2 gap-2"}>
+        <div>
+          <MainBox className="bg-indigo-400 hover:bg-indigo-300 pt-8">
+            <div className="font-semibold text-5xl pb-4">
+              {data.total_participants}
+            </div>
+            <div className="font-light text-lg pt-4">Total peserta</div>
+          </MainBox>
+        </div>
+        <div>
+          <MainBox className="bg-red-400 hover:bg-red-300 pt-8">
+            <div className="font-semibold text-5xl pb-4">
+              <CurrencyFormat
+                value={data.total_sales}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"Rp"}
+              />
+            </div>
+            <div className="font-light text-lg pt-4">Total penjualan tiket</div>
+          </MainBox>
+        </div>
+      </div>
+      <div className={"text-center mt-2"}>
+        <MainButton
+          label={"Lihat Peserta"}
+          className={"m-1"}
+          onClick={() => {
+            return window.open(`/admin/event/${data.slug}?tab=peserta`);
+          }}
+        />
+        <MainButton
+          label={"Lihat Penjualan"}
+          className={"m-1"}
+          onClick={() => {
+            return window.open(`/admin/event/${data.slug}?tab=penjualan`);
+          }}
+        />
+        <MainButton
+          label={"Lihat Absensi"}
+          className={"m-1"}
+          onClick={() => {
+            return window.open(`/admin/event/${data.slug}?tab=presensi`);
+          }}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col">
       <MainModal
@@ -32,142 +171,13 @@ const TableEvent = ({ callback, data }) => {
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Judul
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Lokasi
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Kategori
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Waktu
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((item, i) => (
-                  <tr key={i}>
-                    <Link to={`/explore/event/${item.slug}`}>
-                      <td className="px-6 py-4 whitespace-nowrap cursor-pointer">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={item.banner_url}
-                              alt=""
-                            />
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
-                              {item.title}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {item.owner}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </Link>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {item.location}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {item.is_online ? "Online" : "Offline"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {item.category}
-                      </div>
-                      <div className="text-sm text-gray-500">{item.format}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        <span className="font-semibold">Start at</span>{" "}
-                        {moment(item.start_at).format("lll")}
-                      </div>
-                      <div className="text-sm text-gray-900">
-                        <span className="font-semibold">End at</span>{" "}
-                        {moment(item.end_at).format("lll")}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          item.status === 0 || item.status === 3
-                            ? "bg-yellow-100 text-yellow-800"
-                            : item.status === 1
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {item.status === 0
-                          ? "Draf"
-                          : item.status === 1
-                          ? "Aktif"
-                          : item.status === 2
-                          ? "Berakhir"
-                          : item.status === 3
-                          ? "Menunggu Verifikasi"
-                          : "Ditolak"}
-                      </span>
-                    </td>
-                    <td className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <a target={`__blank`} href={`/admin/event/${item.slug}`}>
-                        <p className="text-green-600 hover:text-green-900 cursor-pointer">
-                          Dashboard
-                        </p>
-                      </a>
-                    </td>
-                    <td
-                      className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium"
-                      onClick={() => {
-                        history.push(`/manage/event/${item.slug}`);
-                      }}
-                    >
-                      <p className="text-indigo-600 hover:text-indigo-900 cursor-pointer">
-                        Edit
-                      </p>
-                    </td>
-                    <td
-                      className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium"
-                      onClick={() => {
-                        setShowModal(true);
-                        setdeleteID(item.slug);
-                      }}
-                    >
-                      <p className="text-red-600 hover:text-red-900 cursor-pointer">
-                        Delete
-                      </p>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <DataTable
+              columns={columns}
+              data={items}
+              pagination={true}
+              expandableRows
+              expandableRowsComponent={ExpandedComponent}
+            />
           </div>
         </div>
       </div>

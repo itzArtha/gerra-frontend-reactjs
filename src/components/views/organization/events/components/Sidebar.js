@@ -45,7 +45,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
               <div>
                 <h2 className="text-xl font-semibold">{data.title}</h2>
                 <span className="text-sm font-light">
-                  {data.description.substring(0, 88) + "..."}
+                  {data.description?.substring(0, 88) + "..."}
                 </span>
                 <br />
                 <a

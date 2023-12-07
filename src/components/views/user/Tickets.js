@@ -78,6 +78,7 @@ const Tickets = () => {
               {handleContent().label}
             </h2>
             <div className="mt-4">{handleContent().view}</div>
+            <div className={"mt-36"} />
           </main>
         </div>
       </div>

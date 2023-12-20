@@ -13,9 +13,9 @@ const Peserta = ({ slug }) => {
 
   const fileName = "data-peserta";
   useEffect(() => {
-    const fetchPenjualan = () => {
+    const fetchPenjualan = async () => {
       setLoading(true);
-      apiClient
+      return await apiClient
         .get("/api/v1/user/participant?eventid=" + slug)
         .then((response) => {
           setData(response.data.data);
@@ -23,23 +23,35 @@ const Peserta = ({ slug }) => {
           let newArray = [];
           // eslint-disable-next-line array-callback-return
           response.data.data.map((item) => {
-            let parsedData = JSON.parse(item.data);
             let obj = {
               "ID Peserta": item.id,
               "Nama Peserta": item.name,
+              "Nama Tiket": item.ticket_name,
+              "Harga Tiket": item.ticket_price,
               Email: item.email,
-              NIM: parsedData.nim,
-              Referral: parsedData.referral,
-              "No. Telepon": parsedData.hp,
-              Tiket: item.ticket,
+              NIM: item.nim,
+              Referral: item.referral,
+              Hadir: item.presence,
+              "No. Telepon": item.phone,
               "Tanggal Registrasi": moment(item.created_at).format("lll"),
             };
             newArray.push(obj);
             setExportData(newArray);
           });
+
+          return response.data.data;
         });
     };
-    fetchPenjualan();
+
+    fetchPenjualan().then((r) => {
+      window.Echo?.channel("event." + slug).listen(
+        ".NewParticipantPresence",
+        (event) => {
+          let newArrayData = r.filter((item) => item.uuid !== event.data.uuid);
+          setData(() => [...newArrayData, event.data].reverse());
+        }
+      );
+    });
   }, [slug]);
 
   return (

@@ -115,7 +115,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                 />
               </Link>
             </div>
-            <div className="mb-2 last:mb-0">
+            {/*<div className="mb-2 last:mb-0">
               <Link to="?tab=penjualan">
                 <SecondaryButton
                   onClick={(e) => {
@@ -127,8 +127,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                   label="Penjualan"
                 />
               </Link>
-            </div>
-            <div className="mb-2 last:mb-0">
+            </div>*/}
+            {/*<div className="mb-2 last:mb-0">
               <Link to="?tab=presensi">
                 <SecondaryButton
                   onClick={(e) => {
@@ -140,7 +140,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                   label="Presensi"
                 />
               </Link>
-            </div>
+            </div>*/}
           </nav>
 
           <div className="flex items-center justify-center px-4 -mx-2">

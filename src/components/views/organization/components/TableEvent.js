@@ -134,6 +134,13 @@ const TableEvent = ({ callback, data }) => {
       </div>
       <div className={"text-center mt-2"}>
         <MainButton
+          label={"Lihat Preview"}
+          className={"m-1"}
+          onClick={() => {
+            return window.open(`/explore/event/${data.slug}`);
+          }}
+        />
+        <MainButton
           label={"Lihat Peserta"}
           className={"m-1"}
           onClick={() => {
@@ -145,13 +152,6 @@ const TableEvent = ({ callback, data }) => {
           className={"m-1"}
           onClick={() => {
             return window.open(`/admin/event/${data.slug}?tab=penjualan`);
-          }}
-        />
-        <MainButton
-          label={"Lihat Absensi"}
-          className={"m-1"}
-          onClick={() => {
-            return window.open(`/admin/event/${data.slug}?tab=presensi`);
           }}
         />
       </div>

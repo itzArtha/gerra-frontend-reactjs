@@ -44,7 +44,7 @@ const Peserta = ({ slug }) => {
     };
 
     fetchPenjualan().then((r) => {
-      window.Echo?.channel("event." + slug).listen(
+      window.Echo.channel("event." + slug).listen(
         ".NewParticipantPresence",
         (event) => {
           let newArrayData = r.filter((item) => item.uuid !== event.data.uuid);

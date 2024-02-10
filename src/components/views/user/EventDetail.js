@@ -264,7 +264,8 @@ const EventDetail = () => {
       (item, i) => (subtotal += parseInt(item.price.price) * quantity)
     );
     discount = subtotal * discount;
-    total = subtotal + fee - discount;
+    fee = subtotal == 0 ? 0 : fee;
+    total = subtotal + fee + -discount;
     setCalculate({
       subtotal: subtotal,
       fee: fee,
@@ -277,17 +278,7 @@ const EventDetail = () => {
     if (!auth) {
       handleSwal("Login dulu ya sayang, baru kamu checkout", "warning");
     } else {
-      if (formData.name && formData.email && formData.hp && ticket.length > 0) {
-        handleCheckout();
-      } else if (ticket.length <= 0) {
-        handleSwal("Kamu harus memilih tiket", "warning");
-      } else if (!formData.name) {
-        setFormData({ ...formData, isNameError: true });
-      } else if (!formData.email) {
-        setFormData({ ...formData, isEmailError: true });
-      } else if (!formData.hp) {
-        setFormData({ ...formData, isHpError: true });
-      }
+      handleCheckout();
     }
   };
 
@@ -346,29 +337,6 @@ const EventDetail = () => {
               <div className="flex gap-3">
                 <div>
                   <h2 className="text-3xl font-semibold">{data.title}</h2>
-                </div>
-                <div className="flex gap-2">
-                  <WhatsappShareButton
-                    url={window.location.href}
-                    quote={""}
-                    hashtag={"#seminar #kompetisi #event #mahasiswa"}
-                    description={"Woi coba cek nih, keren taw"}>
-                    <WhatsappIcon size={32} round />
-                  </WhatsappShareButton>
-                  <TelegramShareButton
-                    url={window.location.href}
-                    quote={""}
-                    hashtag={"#seminar #kompetisi #event #mahasiswa"}
-                    description={"Woi coba cek nih, keren taw"}>
-                    <TelegramIcon size={32} round />
-                  </TelegramShareButton>
-                  <LineShareButton
-                    url={window.location.href}
-                    quote={""}
-                    hashtag={"#seminar #kompetisi #event #mahasiswa"}
-                    description={"Woi coba cek nih, keren taw"}>
-                    <LineIcon size={32} round />
-                  </LineShareButton>
                 </div>
               </div>
             )}
@@ -535,14 +503,11 @@ const EventDetail = () => {
                         ).length > 0
                           ? "border-yellow-500"
                           : "border-gray-200"
-                      }`}>
+                      }`}
+                    >
                       <div className="flex justify-between">
                         <div>
-                          {item.amount > 0 &&
-                          new Date(item.end_at).getTime() >=
-                            new Date().getTime() &&
-                          new Date(item.start_at).getTime() <=
-                            new Date().getTime() ? (
+                          {item.show_ticket ? (
                             <Checkbox
                               value={item.id}
                               id={`checkbox${i}`}
@@ -567,11 +532,7 @@ const EventDetail = () => {
                       </div>
 
                       <div className={"flex justify-between"}>
-                        {item.amount > 0 &&
-                        new Date(item.end_at).getTime() >=
-                          new Date().getTime() &&
-                        new Date(item.start_at).getTime() <=
-                          new Date().getTime() ? (
+                        {item.show_ticket ? (
                           <div className={"flex gap-2"}>
                             <div className="custom-number-input h-10 w-32 mt-4">
                               <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
@@ -619,10 +580,6 @@ const EventDetail = () => {
                               thousandSeparator={true}
                               prefix={"Rp"}
                             />
-                            /
-                            <span className="text-sm">
-                              {item.type === 0 ? "Person" : "Tim"}
-                            </span>
                           </h2>
                         </div>
                       </div>
@@ -631,270 +588,14 @@ const EventDetail = () => {
                 </div>
               </div>
               <div className="md:flex md:justify-between mt-8">
-                <div className="md:w-1/3">
-                  <h2 className="text-2xl font-bold">
-                    Informasi{" "}
-                    {ticket.filter((i) => i.price.type === 1).length > 0
-                      ? "Ketua Tim"
-                      : "Personal"}
-                  </h2>
-                  <div className="mt-4">
-                    <div className="pb-4">
-                      <Label label={"Nama Lengkap"} />
-                      <MainInput
-                        disabled={auth}
-                        value={formData.name}
-                        type={"text"}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            name: e.target.value,
-                            isNameError: false,
-                          });
-                        }}
-                      />
-                      {formData.isNameError ? (
-                        <ErrorLabel label={formData.nameErrorLabel} />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="pb-4">
-                      <Label label={"Email"} />
-                      <MainInput
-                        disabled={auth}
-                        value={formData.email}
-                        type={"text"}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            email: e.target.value,
-                            isEmailError: false,
-                          });
-                        }}
-                      />
-                      {formData.isEmailError ? (
-                        <ErrorLabel label={formData.emailErrorLabel} />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="pb-4">
-                      <Label label={"No. Telepon"} />
-                      <CurrencyFormat
-                        customInput={MainInput}
-                        value={formData.hp}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            hp: e.target.value,
-                            isHpError: false,
-                          });
-                        }}
-                      />
-                      {formData.isHpError ? (
-                        <ErrorLabel label={formData.hpErrorLabel} />
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    {data.APInformation.nim ? (
-                      <div className="pb-4">
-                        <Label label={"NIM (Optional)"} />
-                        <MainInput
-                          value={formData.nim}
-                          type={"text"}
-                          onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              nim: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {data.APInformation.referral ? (
-                      <div className="pb-4">
-                        <Label label={"Referral (Optional)"} />
-                        <MainInput
-                          value={formData.referral}
-                          type={"text"}
-                          onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              referral: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {/*{data.APInformation.sex ? (
-                      <div className="pb-4">
-                        <Label label={"Jenis Kelamin"} />
-                        <div className="flex gap-4">
-                          <Radio
-                            onChange={(e) => {
-                              setFormData({
-                                ...formData,
-                                sex: e.target.value,
-                              });
-                            }}
-                            name="SexType"
-                            label={"Perempuan"}
-                            value="0"
-                            checked={parseInt(formData.sex) === 0}
-                          />
-                          <Radio
-                            onChange={(e) => {
-                              setFormData({
-                                ...formData,
-                                sex: e.target.value,
-                              });
-                            }}
-                            name="SexType"
-                            label={"Laki - Laki"}
-                            value="1"
-                            checked={parseInt(formData.sex) === 1}
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      ""
-                    )}*/}
-                    {/*
-                    {data.APInformation.instansi ? (
-                      <div className="pb-4">
-                        <Label label={"Instansi"} />
-                        <MainInput
-                          value={formData.instansi}
-                          type={"text"}
-                          onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              instansi: e.target.value,
-                            });
-                          }}
-                        />
-                        {formData.isInstansiError ? (
-                          <ErrorLabel label={formData.instansiErrorLabel} />
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {data.APInformation.birthday ? (
-                      <div className="pb-4">
-                        <Label label={"Tanggal Lahir"} />
-                        <MainInput
-                          value={formData.birthday}
-                          type={"date"}
-                          onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              birthday: e.target.value,
-                            });
-                          }}
-                        />
-                        {formData.isBirthdayError ? (
-                          <ErrorLabel label={formData.birthdayErrorLabel} />
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {data.APInformation.ktp ? (
-                      <div className="pb-4">
-                        <Label label={"KTP"} />
-                        <MainInput
-                          value={formData.ktp}
-                          type={"text"}
-                          onChange={(e) => {
-                            setFormData({ ...formData, ktp: e.target.value });
-                          }}
-                        />
-                        {formData.isKtpError ? (
-                          <ErrorLabel label={formData.ktpErrorLabel} />
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    ) : (
-                      ""
-                    )}*/}
-                  </div>
-                  {ticket.filter((i) => i.price.type === 1).length > 0 ? (
-                    <div className="w-full">
-                      <h2 className="text-2xl font-bold">Informasi Tim</h2>
-                      {choosePart.map((item, i) => (
-                        <div className="my-4 flex justify-between" key={i}>
-                          <IconWithTitle
-                            title={item.res.name}
-                            loading={loading}
-                            className="m-4"
-                            icon={
-                              <img
-                                className="w-10 h-10 rounded-full object-cover"
-                                src={
-                                  loading
-                                    ? ""
-                                    : item.res.photo_url
-                                    ? item.res.photo_url
-                                    : `https://ui-avatars.com/api/?bold=true&name=${item.res.name}&background=random&?size=128&length=1`
-                                }
-                                alt="Icon"
-                              />
-                            }
-                          />
-                          <RoundedButton
-                            onClick={() => {
-                              handleDeleteChoosenPart(item.id);
-                            }}
-                            className="w-8 h-8 my-4">
-                            <img
-                              className="h-8 w-8 pr-2"
-                              src={process.env.PUBLIC_URL + "/trash.svg"}
-                              alt="Icon"
-                            />
-                          </RoundedButton>
-                        </div>
-                      ))}
-                      <div>
-                        <MainButton
-                          type="button"
-                          className="w-full mt-4"
-                          label="Tambah Anggota Tim"
-                          onClick={handleOpenAddModal}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
+                <div className="md:w-1/3"></div>
                 <div className="md:w-1/3 mt-8">
                   <h2 className="text-2xl font-bold">Informasi Pembelian</h2>
                   <div className="mt-4">
-                    <MainButton
-                      type="button"
-                      label="Masukkan Kode Kupon"
-                      onClick={() => {
-                        setShowCoupon(true);
-                      }}
-                    />
                     <div className="mt-2">
                       <div className="flex justify-between my-1">
                         <div>
-                          <span className="text-xl">
-                            Tiket Pendaftaran ({quantity})
-                          </span>
+                          <span className="text-xl">Tiket ({quantity})</span>
                         </div>
                         <div>
                           <span className="font-semibold text-xl">
@@ -924,30 +625,6 @@ const EventDetail = () => {
                           </span>
                         </div>
                       </div>
-                      <div
-                        className={`flex justify-between my-1 ${
-                          calculate.discount > 0 ? "animate-pulse" : ""
-                        }`}>
-                        <div>
-                          <span className="text-xl">
-                            Discount{" "}
-                            {formData.discountCode
-                              ? `(${formData.discountCode})`
-                              : ""}{" "}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="font-semibold text-xl">
-                            {" "}
-                            <CurrencyFormat
-                              value={calculate.discount}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              prefix={"Rp"}
-                            />
-                          </span>
-                        </div>
-                      </div>
                       <div className="mt-36">
                         <h2 className="text-xl font-bold text-right">
                           Subtotal
@@ -955,7 +632,8 @@ const EventDetail = () => {
                         <h2
                           className={`text-4xl font-bold text-right ${
                             calculate.total ? "animate-pulse" : ""
-                          }`}>
+                          }`}
+                        >
                           <CurrencyFormat
                             value={calculate.total}
                             displayType={"text"}
@@ -985,7 +663,8 @@ const EventDetail = () => {
               buttonLabel={showAddTeam ? "Tambah Anggota" : "Simpan"}
               title={showAddTeam ? "Tambah Anggota" : "Tambahkan Kupon Diskon"}
               button={true}
-              onClick={handleModal}>
+              onClick={handleModal}
+            >
               {showAddTeam ? (
                 <div>
                   <div className="pb-4">
@@ -1020,7 +699,8 @@ const EventDetail = () => {
                             ).length > 0
                               ? "border-yellow-400 "
                               : ""
-                          }`}>
+                          }`}
+                        >
                           <div className="flex justify-between">
                             <IconWithTitle
                               title={item.name}

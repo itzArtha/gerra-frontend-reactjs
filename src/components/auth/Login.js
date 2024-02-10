@@ -16,6 +16,7 @@ const Login = ({ id, callback }) => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [formData, setformData] = useState({
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     email: "",
     isEmailError: false,
     emailErrorLabel: "",
@@ -46,6 +47,7 @@ const Login = ({ id, callback }) => {
           email: formData.email,
           password: formData.password,
           roles: id === "user" ? 1 : 0,
+          timezone: formData.timezone,
         })
         .then((response) => {
           setLoading(false);

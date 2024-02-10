@@ -30,6 +30,7 @@ const Register = ({ id, callback }) => {
     password_confirmation: "",
     isPassword_confirmationError: false,
     password_confirmationErrorLabel: "",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
 
   useEffect(() => {
@@ -57,6 +58,7 @@ const Register = ({ id, callback }) => {
           password: formData.password,
           password_confirmation: formData.password_confirmation,
           roles: id === "user" ? 1 : 0,
+          timezone: formData.timezone,
         })
         .then((response) => {
           if (response.status === 200) {

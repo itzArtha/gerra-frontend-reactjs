@@ -13,16 +13,7 @@ import Label from "../../Label";
 import CurrencyFormat from "react-currency-format";
 import MainModal from "../../modals/MainModal";
 import moment from "moment";
-import Radio from "../../Radio";
 import useQuery from "../../useQuery";
-import {
-  WhatsappIcon,
-  WhatsappShareButton,
-  LineShareButton,
-  LineIcon,
-  TelegramIcon,
-  TelegramShareButton,
-} from "react-share";
 import handleSwal from "../../handleSwal";
 import "../../../index.css";
 
@@ -278,7 +269,15 @@ const EventDetail = () => {
     if (!auth) {
       handleSwal("Login dulu ya sayang, baru kamu checkout", "warning");
     } else {
-      handleCheckout();
+      if (data.APInformation.nim && formData.nim) {
+        if (ticket.length > 0) {
+          handleCheckout();
+        } else {
+          handleSwal("Kamu belum pilih tiket udah checkout aja", "warning");
+        }
+      } else {
+        handleSwal("Isi NIM dulu ya perlu banget soalnya", "warning");
+      }
     }
   };
 
@@ -563,11 +562,6 @@ const EventDetail = () => {
                                 />
                               </div>
                             </div>
-                            {/*                      <div>
-                            <h2 className={"font-semibold text-sm mt-10"}>
-                              Sisa: {item.amount}
-                            </h2>
-                          </div>*/}
                           </div>
                         ) : (
                           <div />
@@ -588,7 +582,42 @@ const EventDetail = () => {
                 </div>
               </div>
               <div className="md:flex md:justify-between mt-8">
-                <div className="md:w-1/3"></div>
+                <div className="md:w-1/3">
+                  {data.APInformation.nim ? (
+                    <div className="pb-4">
+                      <Label label={"NIM"} />
+                      <MainInput
+                        value={formData.nim}
+                        type={"text"}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            nim: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {data.APInformation.referral ? (
+                    <div className="pb-4">
+                      <Label label={"Referral (Optional)"} />
+                      <MainInput
+                        value={formData.referral}
+                        type={"text"}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            referral: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
                 <div className="md:w-1/3 mt-8">
                   <h2 className="text-2xl font-bold">Informasi Pembelian</h2>
                   <div className="mt-4">

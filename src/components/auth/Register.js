@@ -67,6 +67,7 @@ const Register = ({ id, callback }) => {
                 email: formData.email,
                 password: formData.password,
                 roles: id === "user" ? 1 : 0,
+                timezone: formData.timezone,
               })
               .then((response) => {
                 setLoading(false);

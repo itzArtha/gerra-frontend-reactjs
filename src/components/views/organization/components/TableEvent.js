@@ -154,6 +154,13 @@ const TableEvent = ({ callback, data }) => {
             return window.open(`/admin/event/${data.slug}?tab=penjualan`);
           }}
         />
+        <MainButton
+          label={"Edit Event"}
+          className={"m-1"}
+          onClick={() => {
+            return window.open(`/manage/event/${data.slug}`);
+          }}
+        />
       </div>
     </div>
   );

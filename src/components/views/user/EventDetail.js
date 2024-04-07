@@ -207,8 +207,9 @@ const EventDetail = () => {
   };
 
   const handleIncreaseQuantity = () => {
-    if (quantity >= 5) return;
-    if (ticket.length === 0) handleSwal("Pilih na tiketmu dulu yangg", "error");
+    if (quantity >= 2) return;
+    if (ticket.length === 0)
+      return handleSwal("Pilih na tiketmu dulu yangg", "error");
 
     let qty = quantity + 1;
 
@@ -217,7 +218,7 @@ const EventDetail = () => {
   };
 
   const handleDecreaseQuantity = () => {
-    if (quantity === 0) return;
+    if (quantity === 1) return;
     let qty = quantity - 1;
 
     setQuantity(qty);
@@ -240,7 +241,7 @@ const EventDetail = () => {
       newArray = newArray.filter((i) => i.id !== id);
     }
     setTicket(newArray);
-    setQuantity(quantity);
+    setQuantity(newArray.length);
     setCouponValue(0);
     // Logic
     handleLogic(newArray, 0, quantity);

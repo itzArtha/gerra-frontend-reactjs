@@ -218,7 +218,7 @@ const EventDetail = () => {
   };
 
   const handleDecreaseQuantity = () => {
-    if (quantity === 1) return;
+    if (quantity === 1 || quantity === 0) return;
     let qty = quantity - 1;
 
     setQuantity(qty);

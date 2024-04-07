@@ -17,6 +17,7 @@ import Login from "../../../auth/Login";
 import OnBoarding from "../../../auth/OnBoarding";
 import handleSwal from "../../../handleSwal";
 import Countdown from "react-countdown";
+import moment from "moment";
 const PaymentMethod = () => {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -33,6 +34,7 @@ const PaymentMethod = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [showLogin, setLogin] = useState(false);
   const [LoginType, setLoginType] = useState("");
+  const [expired, setExpired] = useState(moment().add(90000).format());
   const history = useHistory();
 
   const handlePaymentMethod = (data) => {
@@ -47,12 +49,14 @@ const PaymentMethod = () => {
       await apiClient
         .get("/api/v1/user/checkout/data")
         .then((response) => {
+          response = response.data;
           setData(response.data);
           setTotal({
             total: response.data.total,
           });
+          setExpired(response.expired_at);
 
-          setLoggedIn(response.data.isLoggedIn);
+          setLoggedIn(response.isLoggedIn);
         })
         .catch((error) => {
           if (error.response.status === 404) {
@@ -248,7 +252,7 @@ const PaymentMethod = () => {
           <div>
             <h2 className="md:text-5xl text-3xl font-bold mt-4 animate-pulse">
               <Countdown
-                date={Date.now() + 900000}
+                date={moment(expired).format()}
                 renderer={countDownRenderer}
               >
                 <span>Expired</span>

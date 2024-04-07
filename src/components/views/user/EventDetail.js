@@ -266,18 +266,10 @@ const EventDetail = () => {
   };
 
   const handleValidate = () => {
-    if (!auth) {
-      handleSwal("Login dulu ya sayang, baru kamu checkout", "warning");
+    if (ticket.length > 0) {
+      handleCheckout();
     } else {
-      if (data.APInformation.nim && formData.nim) {
-        if (ticket.length > 0) {
-          handleCheckout();
-        } else {
-          handleSwal("Kamu belum pilih tiket udah checkout aja", "warning");
-        }
-      } else {
-        handleSwal("Isi NIM dulu ya perlu banget soalnya", "warning");
-      }
+      handleSwal("Kamu belum pilih tiket udah checkout aja", "warning");
     }
   };
 
@@ -316,8 +308,8 @@ const EventDetail = () => {
 
   return (
     <MainLayout top={true} footer={true}>
-      <div className="mt-12 mx-4 md:mx-12">
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="md:mt-12 md:mx-12">
+        <div className="md:mt-4 grid grid-cols-1 md:grid-cols-5 gap-8">
           <div className="md:col-span-2">
             {loading ? (
               <Skeleton className="w-full h-64 rounded-lg" count="1" />
@@ -329,7 +321,7 @@ const EventDetail = () => {
               />
             )}
           </div>
-          <div className="md:col-span-3">
+          <div className="md:col-span-3 mx-4">
             {loading ? (
               <Skeleton className="w-1/2 h-4 rounded-full" count="1" />
             ) : (
@@ -444,354 +436,207 @@ const EventDetail = () => {
             </div>
           </div>
         </div>
-        {mode === 0 ? (
-          <>
-            <div className="mt-24 flex justify-center gap-2" ref={scrollRef}>
-              <MainButton
-                type="button"
-                onClick={() => {
-                  setChoice(0);
-                }}
-                label="Deskripsi Event"
-              />
-              <MainButton
-                type="button"
-                onClick={() => {
-                  setChoice(1);
-                }}
-                label="Syarat & Ketentuan"
-              />
-            </div>
-            <div className="md:mx-24">
-              {loading ? (
-                <Skeleton
-                  className="w-1/5 h-4 my-4 mx-auto rounded-full"
-                  count="1"
-                />
-              ) : (
-                <h2 className="text-2xl text-center font-bold mt-12">
-                  {choice === 0
-                    ? "Deskripsi Event"
-                    : "Syarat & Ketentuan Event"}
-                </h2>
-              )}
-              {loading ? (
-                <Skeleton className="w-full h-4 rounded-full" count="5" />
-              ) : choice === 0 ? (
-                <p className="mt-4">{data.description}</p>
-              ) : (
-                <p className="mt-4">{data.terms}</p>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="mt-24 md:mx-24" ref={scrollRef}>
-              <h2 className="text-2xl text-center font-bold mt-12">
-                Daftar Tiket
-              </h2>
-              <div className="mt-4">
-                <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
-                  {data.ticket.map((item, i) => (
-                    <label
-                      htmlFor={`checkbox${i}`}
-                      key={i}
-                      className={`w-full h-32 border p-2 ${
-                        ticket.filter(
-                          (c) => parseInt(c.id) === parseInt(item.id)
-                        ).length > 0
-                          ? "border-yellow-500"
-                          : "border-gray-200"
-                      }`}
-                    >
-                      <div className="flex justify-between">
-                        <div>
-                          {item.show_ticket ? (
-                            <Checkbox
-                              value={item.id}
-                              id={`checkbox${i}`}
-                              onChange={handleSelectTicket}
-                              checked={
-                                ticket.filter(
-                                  (c) => parseInt(c.id) === parseInt(item.id)
-                                ).length > 0
-                              }
-                            />
-                          ) : (
-                            <div className={"p-2 bg-red-500 text-white"}>
-                              Closed
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <h2 className="text-right font-semibold text-lg">
-                            {item.title}
-                          </h2>
-                        </div>
-                      </div>
 
-                      <div className={"flex justify-between"}>
-                        {item.show_ticket ? (
-                          <div className={"flex gap-2"}>
-                            <div className="custom-number-input h-10 w-32 mt-4">
-                              <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
-                                <MainButton
-                                  onClick={() => {
-                                    handleDecreaseQuantity(quantity - 1);
-                                  }}
-                                  label={"-"}
-                                />
-                                <input
-                                  type="number"
-                                  className="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
-                                  name="custom-input-quantity"
-                                  value={
+        <div className={"mx-4"}>
+          <div className="mt-24 flex justify-center gap-2" ref={scrollRef}>
+            <MainButton
+              type="button"
+              onClick={() => {
+                setChoice(0);
+              }}
+              label="Deskripsi Event"
+            />
+            <MainButton
+              type="button"
+              onClick={() => {
+                setChoice(1);
+              }}
+              label="Beli Tiket"
+            />
+          </div>
+          <div className="md:mx-24">
+            {loading ? (
+              <Skeleton
+                className="w-1/5 h-4 my-4 mx-auto rounded-full"
+                count="1"
+              />
+            ) : (
+              <h2 className="text-2xl text-center font-bold mt-12">
+                {choice === 0 ? "Deskripsi" : "Beli Tiket"}
+              </h2>
+            )}
+            {loading ? (
+              <Skeleton className="w-full h-4 rounded-full" count="5" />
+            ) : choice === 0 ? (
+              <>
+                <p className="mt-4">{data.description}</p>
+                <h2 className="text-2xl text-center font-bold mt-12">
+                  {"Syarat & Ketentuan"}
+                </h2>
+                <p className="mt-4">{data.terms}</p>
+              </>
+            ) : (
+              <>
+                <div className="md:mx-24" ref={scrollRef}>
+                  <div className="mt-4">
+                    <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+                      {data.ticket.map((item, i) => (
+                        <label
+                          htmlFor={`checkbox${i}`}
+                          key={i}
+                          className={`w-full h-32 border p-2 ${
+                            ticket.filter(
+                              (c) => parseInt(c.id) === parseInt(item.id)
+                            ).length > 0
+                              ? "border-yellow-500"
+                              : "border-gray-200"
+                          }`}
+                        >
+                          <div className="flex justify-between">
+                            <div>
+                              {item.show_ticket ? (
+                                <Checkbox
+                                  value={item.id}
+                                  id={`checkbox${i}`}
+                                  onChange={handleSelectTicket}
+                                  checked={
                                     ticket.filter(
                                       (c) =>
                                         parseInt(c.id) === parseInt(item.id)
                                     ).length > 0
-                                      ? quantity
-                                      : 0
                                   }
                                 />
-                                <MainButton
-                                  onClick={() => {
-                                    handleIncreaseQuantity(quantity + 1);
-                                  }}
-                                  label={"+"}
-                                />
-                              </div>
+                              ) : (
+                                <div className={"p-2 bg-red-500 text-white"}>
+                                  Closed
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              <h2 className="text-right font-semibold text-lg">
+                                {item.title}
+                              </h2>
                             </div>
                           </div>
-                        ) : (
-                          <div />
-                        )}
-                        <div>
-                          <h2 className="font-semibold text-lg mt-10">
-                            <CurrencyFormat
-                              value={loading ? 0 : item.price}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              prefix={"Rp"}
-                            />
-                          </h2>
-                        </div>
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="md:flex md:justify-between mt-8">
-                <div className="md:w-1/3">
-                  {data.APInformation.nim ? (
-                    <div className="pb-4">
-                      <Label label={"NIM"} />
-                      <MainInput
-                        value={formData.nim}
-                        type={"text"}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            nim: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  {data.APInformation.referral ? (
-                    <div className="pb-4">
-                      <Label label={"Referral (Optional)"} />
-                      <MainInput
-                        value={formData.referral}
-                        type={"text"}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            referral: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="md:w-1/3 mt-8">
-                  <h2 className="text-2xl font-bold">Informasi Pembelian</h2>
-                  <div className="mt-4">
-                    <div className="mt-2">
-                      <div className="flex justify-between my-1">
-                        <div>
-                          <span className="text-xl">Tiket ({quantity})</span>
-                        </div>
-                        <div>
-                          <span className="font-semibold text-xl">
-                            <CurrencyFormat
-                              value={calculate.subtotal}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              prefix={"Rp"}
-                            />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between my-1">
-                        <div>
-                          <span className="text-xl">
-                            Biaya Admin ({quantity})
-                          </span>
-                        </div>
-                        <div>
-                          <span className="font-semibold text-xl">
-                            <CurrencyFormat
-                              value={calculate.fee}
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              prefix={"Rp"}
-                            />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-36">
-                        <h2 className="text-xl font-bold text-right">
-                          Subtotal
-                        </h2>
-                        <h2
-                          className={`text-4xl font-bold text-right ${
-                            calculate.total ? "animate-pulse" : ""
-                          }`}
-                        >
-                          <CurrencyFormat
-                            value={calculate.total}
-                            displayType={"text"}
-                            thousandSeparator={true}
-                            prefix={"Rp"}
-                          />
-                        </h2>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="text-center mt-12">
-                <MainButton
-                  className="w-full md:w-36"
-                  type="button"
-                  label={checkoutLoading ? `Loading...` : `Checkout`}
-                  onClick={() => {
-                    handleValidate();
-                  }}
-                />
-              </div>
-            </div>
-            <MainModal
-              showModal={showAddTeam || showCoupon}
-              handleClose={handleCloseModal}
-              buttonLabel={showAddTeam ? "Tambah Anggota" : "Simpan"}
-              title={showAddTeam ? "Tambah Anggota" : "Tambahkan Kupon Diskon"}
-              button={true}
-              onClick={handleModal}
-            >
-              {showAddTeam ? (
-                <div>
-                  <div className="pb-4">
-                    <div className="flex justify-end">
-                      <Label
-                        label={`Dipilih: ${choosePart.map(
-                          (item) => item.res.name
-                        )}`}
-                      />
-                    </div>
-                    <Label label="Cari Anggota" />
-                    <MainInput
-                      value={formData.searchPart}
-                      type="text"
-                      onChange={handleSearchPart}
-                    />
-                    {formData.isNameError ? (
-                      <ErrorLabel label={formData.nameErrorLabel} />
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div className="overflow-auto h-64">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {filteredPersons.map((item, i) => (
-                        <label
-                          key={i}
-                          htmlFor={`addTeamCheck${i}`}
-                          className={`my-2 border ${
-                            choosePart.filter(
-                              (c) => parseInt(c.id) === parseInt(item.id)
-                            ).length > 0
-                              ? "border-yellow-400 "
-                              : ""
-                          }`}
-                        >
-                          <div className="flex justify-between">
-                            <IconWithTitle
-                              title={item.name}
-                              loading={loading}
-                              className="m-4"
-                              icon={
-                                <img
-                                  className="w-10 h-10 rounded-full object-cover"
-                                  src={
-                                    loading
-                                      ? ""
-                                      : item.photo_url
-                                      ? item.photo_url
-                                      : `https://ui-avatars.com/api/?bold=true&name=${item.name}&background=random&?size=128&length=1`
-                                  }
-                                  alt="Icon"
+
+                          <div className={"flex justify-between"}>
+                            {item.show_ticket ? (
+                              <div className={"flex gap-2"}>
+                                <div className="custom-number-input h-10 w-32 mt-4">
+                                  <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                                    <MainButton
+                                      onClick={() => {
+                                        handleDecreaseQuantity(quantity - 1);
+                                      }}
+                                      label={"-"}
+                                    />
+                                    <input
+                                      type="number"
+                                      className="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
+                                      name="custom-input-quantity"
+                                      value={
+                                        ticket.filter(
+                                          (c) =>
+                                            parseInt(c.id) === parseInt(item.id)
+                                        ).length > 0
+                                          ? quantity
+                                          : 0
+                                      }
+                                    />
+                                    <MainButton
+                                      onClick={() => {
+                                        handleIncreaseQuantity(quantity + 1);
+                                      }}
+                                      label={"+"}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div />
+                            )}
+                            <div>
+                              <h2 className="font-semibold text-lg mt-10">
+                                <CurrencyFormat
+                                  value={loading ? 0 : item.price}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  prefix={"Rp"}
                                 />
-                              }
-                            />
-                            <Checkbox
-                              checked={
-                                choosePart.filter(
-                                  (c) => parseInt(c.id) === parseInt(item.id)
-                                ).length > 0
-                              }
-                              onChange={handleSelectPart}
-                              value={item.id}
-                              className="my-4"
-                              id={`addTeamCheck${i}`}
-                            />
+                              </h2>
+                            </div>
                           </div>
                         </label>
                       ))}
                     </div>
+                    <div className={"md:flex md:justify-end"}>
+                      <div className="md:w-1/3 mt-8">
+                        <h2 className="text-2xl font-bold">
+                          Informasi Pembelian
+                        </h2>
+                        <div className="mt-4">
+                          <div className="mt-2">
+                            <div className="flex justify-between my-1">
+                              <div>
+                                <span className="text-xl">
+                                  Tiket ({quantity})
+                                </span>
+                              </div>
+                              <div>
+                                <span className="font-semibold text-xl">
+                                  <CurrencyFormat
+                                    value={calculate.subtotal}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                    prefix={"Rp"}
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between my-1">
+                              <div>
+                                <span className="text-xl">
+                                  Biaya Admin ({quantity})
+                                </span>
+                              </div>
+                              <div>
+                                <span className="font-semibold text-xl">
+                                  <CurrencyFormat
+                                    value={calculate.fee}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                    prefix={"Rp"}
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                            <div className="mt-20">
+                              <h2 className="text-xl font-bold text-right">
+                                Subtotal
+                              </h2>
+                              <h2
+                                className={`text-4xl font-bold text-right ${
+                                  calculate.total ? "animate-pulse" : ""
+                                }`}
+                              >
+                                <CurrencyFormat
+                                  value={calculate.total}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  prefix={"Rp"}
+                                />
+                              </h2>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <div>
-                  <div className="pb-4">
-                    <Label label="Cek Kupon" />
-                    <MainInput
-                      value={formData.coupon}
-                      type="text"
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          coupon: e.target.value,
-                          isCouponError: false,
-                        });
-                      }}
-                    />
-                    {formData.isCouponError ? (
-                      <ErrorLabel label={formData.couponErrorLabel} />
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </div>
-              )}
-            </MainModal>
-          </>
-        )}
+              </>
+            )}
+          </div>
+        </div>
       </div>
       <div className={"px-4 fixed w-full z-10 bottom-4 flex justify-center"}>
         {loading ? null : data.is_mine ? (
@@ -804,14 +649,13 @@ const EventDetail = () => {
             }}
           />
         ) : (parseInt(data.status) === 1 && parseInt(formData.roles) === 1) ||
-          (!auth && parseInt(data.status) === 1) ? (
+          (!auth && parseInt(data.status) === 1 && choice === 1) ? (
           <MainButton
-            className={"w-full md:w-48"}
+            className="w-full md:w-36"
             type="button"
-            label={mode === 0 ? "Beli Tiket" : "Detail Event"}
+            label={checkoutLoading ? `Loading...` : `Checkout`}
             onClick={() => {
-              setMode(mode ? 0 : 1);
-              handleClick();
+              handleValidate();
             }}
           />
         ) : (

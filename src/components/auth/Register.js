@@ -10,6 +10,8 @@ import SecBtn from "../SecondaryButton";
 import GoogleBtn from "../GoogleLoginButton";
 import isAuth from "../services/isAuth";
 import Checkbox from "../Checkbox";
+import MainInput from "../MainInput";
+import CurrencyFormat from "react-currency-format";
 
 const Register = ({ id, callback }) => {
   const history = useHistory();
@@ -24,6 +26,9 @@ const Register = ({ id, callback }) => {
     email: "",
     isEmailError: false,
     emailErrorLabel: "",
+    phone: "",
+    isPhoneError: false,
+    phoneErrorLabel: "",
     password: "",
     isPasswordError: false,
     passwordErrorLabel: "",
@@ -55,6 +60,7 @@ const Register = ({ id, callback }) => {
         .post("/api/v1/register", {
           name: formData.name,
           email: formData.email,
+          phone: formData.phone,
           password: formData.password,
           password_confirmation: formData.password_confirmation,
           roles: id === "user" ? 1 : 0,
@@ -149,6 +155,12 @@ const Register = ({ id, callback }) => {
         isPasswordError: true,
         passwordErrorLabel: "Password tidak boleh kosong",
       });
+    } else if (!formData.phone) {
+      setformData({
+        ...formData,
+        isPhoneError: true,
+        phoneErrorLabel: "No. Hp tidak boleh kosong",
+      });
     } else if (!formData.termsAgree) {
       setformData({
         ...formData,
@@ -213,6 +225,7 @@ const Register = ({ id, callback }) => {
                       })
                     }
                     name="name"
+                    min={5}
                     type="text"
                   />
                   {formData.isNameError ? (
@@ -233,11 +246,34 @@ const Register = ({ id, callback }) => {
                         isEmailError: false,
                       })
                     }
+                    placeholder={"cth: user@gmail.com"}
                     name="email"
                     type="email"
                   />
                   {formData.isEmailError ? (
                     <ErrorLabel label={formData.emailErrorLabel} />
+                  ) : (
+                    ""
+                  )}
+                </div>
+
+                <div className="pt-4">
+                  <Label label="No. Hp" />
+                  <CurrencyFormat
+                    customInput={MainInput}
+                    value={formData.phone.toString()}
+                    type="text"
+                    placeholder={"cth: 081234567890"}
+                    onChange={(e) => {
+                      setformData({
+                        ...formData,
+                        phone: e.target.value,
+                        isPhoneError: false,
+                      });
+                    }}
+                  />
+                  {formData.isPhoneError ? (
+                    <ErrorLabel label={formData.phoneErrorLabel} />
                   ) : (
                     ""
                   )}

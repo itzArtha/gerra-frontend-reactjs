@@ -8,13 +8,6 @@ const Payment = () => {
   return (
     <>
       <div className=" mt-24">
-        {query.get("status") === "success" ? (
-          <FinishPayment />
-        ) : query.get("ref_id") ? (
-          <Pay />
-        ) : (
-          <PaymentMethod />
-        )}
         <div className="flex justify-center mt-24">
           <img
             className="w-32"
@@ -22,6 +15,13 @@ const Payment = () => {
             alt="Logo"
           />
         </div>
+        {query.get("status") === "success" ? (
+          <FinishPayment />
+        ) : query.get("ref_id") ? (
+          <Pay />
+        ) : (
+          <PaymentMethod />
+        )}
       </div>
     </>
   );

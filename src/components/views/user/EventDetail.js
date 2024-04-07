@@ -71,13 +71,14 @@ const EventDetail = () => {
     isCouponError: false,
     couponErrorLabel: "Coupon ga boleh kosong",
     discountCode: "",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
 
   const [quantity, setQuantity] = useState(0);
   const [couponValue, setCouponValue] = useState(0);
 
-  const handleClick = () => {
-    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+  const handleScroll = () => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -283,6 +284,7 @@ const EventDetail = () => {
         ticket: ticket,
         quantity: quantity,
         discount_id: formData.discountCode,
+        timezone: formData.timezone,
         data: {
           name: formData.name,
           email: formData.email,
@@ -444,6 +446,7 @@ const EventDetail = () => {
               type="button"
               onClick={() => {
                 setChoice(0);
+                handleScroll();
               }}
               label="Deskripsi Event"
             />
@@ -451,11 +454,12 @@ const EventDetail = () => {
               type="button"
               onClick={() => {
                 setChoice(1);
+                handleScroll();
               }}
               label="Beli Tiket"
             />
           </div>
-          <div className="md:mx-24">
+          <div className="md:mx-24" ref={scrollRef}>
             {loading ? (
               <Skeleton
                 className="w-1/5 h-4 my-4 mx-auto rounded-full"
@@ -649,8 +653,7 @@ const EventDetail = () => {
               history.push("/manage/event/" + slug);
             }}
           />
-        ) : (parseInt(data.status) === 1 && parseInt(formData.roles) === 1) ||
-          (!auth && parseInt(data.status) === 1 && choice === 1) ? (
+        ) : parseInt(data.status) === 1 && choice === 1 ? (
           <MainButton
             className="w-full md:w-36"
             type="button"

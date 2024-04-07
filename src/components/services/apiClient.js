@@ -8,6 +8,4 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
-console.log(process.env.APP_ENV);
-
 export default apiClient;

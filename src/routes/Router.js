@@ -41,7 +41,7 @@ const Router = () => {
           component={CompleteProfile}
         />
         <PrivateUserRoute path="/profile/:router" exact component={Dashboard} />
-        <PrivateUserRoute path="/payment" exact component={Payment} />
+        <Route path="/payment" exact component={Payment} />
         <PrivateUserRoute path="/tickets/:router" exact component={Tickets} />
         <PrivateUserRoute
           path="/presence/:slug"

@@ -40,7 +40,6 @@ const EventDetail = () => {
   const [ticket, setTicket] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [authUser, setAuthUser] = useState();
-  // const [field, setField] = useState([]);
   const [choosePart, setChoosePart] = useState([]);
   const [formData, setFormData] = useState({
     id: 0,

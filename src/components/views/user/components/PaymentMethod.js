@@ -247,7 +247,7 @@ const PaymentMethod = () => {
           {/* End Detail User */}
         </div>
         {/* Countdown payment */}
-        <div className={"mt-20"}>
+        <div className={"mt-20 mb-36"}>
           <p>Selesaikan pembayaran dalam</p>
           <div>
             <h2 className="md:text-5xl text-3xl font-bold mt-4 animate-pulse">

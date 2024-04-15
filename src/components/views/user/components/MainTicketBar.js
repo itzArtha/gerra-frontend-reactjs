@@ -8,7 +8,7 @@ const MainTicketBar = ({ data, loading }) => {
   return (
     <>
       <div
-        className={`max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
+        className={`max-w-sm overflow-hidden bg-white rounded-lg shadow-lg ${data.status === 2 ? 'bg-black-100' : ''} ${
           loading ? `` : `border border-black`
         }`}
       >

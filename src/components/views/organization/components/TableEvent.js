@@ -98,8 +98,8 @@ const TableEvent = ({ callback, data }) => {
         is_online: event.is_online,
       },
       status: {
-        color: event.status.color,
-        label: event.status.label,
+        color: event.status_label.color,
+        label: event.status_label.label,
       },
       created_at: event.created_at,
       total_participants: event.total_participants,

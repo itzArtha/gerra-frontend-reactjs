@@ -209,7 +209,7 @@ const EventDetail = () => {
   const handleIncreaseQuantity = () => {
     if (quantity >= 2) return;
     if (ticket.length === 0)
-      return handleSwal("Pilih na tiketmu dulu yangg", "error");
+      return handleSwal("Pilih tiketmu dulu", "error");
 
     let qty = quantity + 1;
 

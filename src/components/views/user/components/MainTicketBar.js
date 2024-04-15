@@ -8,9 +8,8 @@ const MainTicketBar = ({ data, loading }) => {
   return (
     <>
       <div
-        className={`max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 ${
-          loading ? `` : `border border-black`
-        }`}
+        className={`max-w-sm overflow-hidden bg-white rounded-lg shadow-lg ${
+          loading ? `` : `border border-black` }`}
       >
         {loading ? (
           <Skeleton className=" h-56 rounded-md" count="1" />
@@ -55,13 +54,9 @@ const MainTicketBar = ({ data, loading }) => {
                 </h2>
               </div>
               <div>
-                {data.status === 2 ? (
-                  <span className="px-4 py-1 rounded-full text-xs bg-red-100 text-red-600">
-                    {"Berakhir"}
+                  <span className={`px-4 py-1 rounded-full text-xs ${data.status_label['color']}`}>
+                    {data.status_label['label']}
                   </span>
-                ) : (
-                  ""
-                )}
               </div>
             </div>
           )}

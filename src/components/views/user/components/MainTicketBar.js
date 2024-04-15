@@ -54,8 +54,8 @@ const MainTicketBar = ({ data, loading }) => {
                 </h2>
               </div>
               <div>
-                  <span className={`px-4 py-1 rounded-full text-xs ${data.status_label.color}`}>
-                    {data.status_label.label}
+                  <span className={`px-4 py-1 rounded-full text-xs ${data.status_label['color']}`}>
+                    {data.status_label['label']}
                   </span>
               </div>
             </div>

@@ -143,7 +143,7 @@ const PaymentMethod = () => {
             <span>Virtual Account (BNI, BRI, BSI, Mandiri)</span>
             <div>
               <span className="text-xs">
-                Biaya Admin: {data.total >= 100000 ? "Rp4.000" : "Rp.3000"}
+                Biaya Admin: {data.total >= 100000 ? "Rp4.000" : "Rp3000"}
               </span>
             </div>
           </div>
@@ -160,7 +160,7 @@ const PaymentMethod = () => {
               </span>
             </div>
           </div>
-          <div
+          {/* <div
             onClick={() => {
               handlePaymentMethod("E_WALLET");
             }}
@@ -170,7 +170,7 @@ const PaymentMethod = () => {
             <div>
               <span className="text-xs">Biaya Admin: Rp4.000</span>
             </div>
-          </div>
+          </div> */}
           <div
             onClick={() => {
               handlePaymentMethod("RETAIL");

@@ -67,13 +67,13 @@ const TableEvent = ({ callback, data }) => {
     },
     {
       name: "Status",
-      selector: (row) => row.status,
+      selector: (row) => row.status_label,
       sortable: true,
       format: (row) => (
         <span
-          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${row.status.color}`}
+          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${row.status_label.color}`}
         >
-          {row.status.label}
+          {row.status_label.label}
         </span>
       ),
     },
@@ -97,7 +97,7 @@ const TableEvent = ({ callback, data }) => {
         label: event.location,
         is_online: event.is_online,
       },
-      status: {
+      status_label: {
         color: event.status_label.color,
         label: event.status_label.label,
       },

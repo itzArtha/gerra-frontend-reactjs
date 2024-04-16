@@ -5,6 +5,7 @@ const TablePeserta = ({ data }) => {
   const items = data.map((presence, key) => {
     return {
       id: presence.id,
+      reference: presence.reference,
       user: {
         name: presence.name,
         image: presence.photo_url,
@@ -24,7 +25,7 @@ const TablePeserta = ({ data }) => {
   const columns = [
     {
       name: "No. Tiket",
-      selector: (row) => row.id,
+      selector: (row) => row.reference,
       sortable: true,
       width: "120px",
     },

@@ -24,7 +24,7 @@ const TicketDetail = ({ participant, loading, type }) => {
         <div>
           <tr className="flex justify-between border-b py-2">
             <td>Nomor Tiket</td>
-            <td>{transaction.participant_id}</td>
+            <td>{transaction.reference}</td>
           </tr>
           <tr className="flex justify-between border-b py-2">
             <td>Nama Tiket</td>

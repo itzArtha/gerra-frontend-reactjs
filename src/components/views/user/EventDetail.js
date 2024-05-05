@@ -207,7 +207,7 @@ const EventDetail = () => {
   };
 
   const handleIncreaseQuantity = () => {
-    if (quantity >= 2) return;
+    if (quantity >= 5) return;
     if (ticket.length === 0)
       return handleSwal("Pilih tiketmu dulu", "error");
 

@@ -28,7 +28,7 @@ const ScanQR = () => {
   };
 
   const getElementIdScanner = () => new Html5Qrcode("reader");
-
+  let lastScanId = "";
   const handleScan = () => {
     setShowScanner(true);
     // This method will trigger user permissions
@@ -40,7 +40,6 @@ const ScanQR = () => {
          */
         if (devices && devices.length) {
           let cameraId = devices[0].id;
-
           getElementIdScanner()
             .start(
               { facingMode: "environment" },
@@ -49,12 +48,11 @@ const ScanQR = () => {
                 qrbox: { width: 250, height: 250 }, // Optional, if you want bounded box UI
               },
               (decodedText, decodedResult) => {
-                decodedText = JSON.parse(decodedText);
-
-                if (count === "readyScan") {
-                  setCount("scanned");
-                  handlePresenceRequest(decodedText);
+                if (lastScanId !== decodedText) {
+                  handlePresenceRequest(decodedResult.decodedText);
                 }
+
+                lastScanId = decodedResult.decodedText;
               },
               (errorMessage) => {
                 // console.log(errorMessage);
@@ -89,7 +87,7 @@ const ScanQR = () => {
         });
       })
       .catch((err) => {
-        if (err.response.status === 403) {
+        if (err.response.status === 404) {
           setShowParticipant({
             message: "Peserta tidak terdaftar",
             condition: true,

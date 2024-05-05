@@ -36,8 +36,8 @@ const TicketDetail = ({ participant, loading, type }) => {
               value={participant.uuid}
               imageSettings={{
                 src: process.env.PUBLIC_URL + "/logo-qr.png",
-                width: 80,
-                height: 80,
+                width: 60,
+                height: 60,
               }}
               id="qr-download"
               size={256}

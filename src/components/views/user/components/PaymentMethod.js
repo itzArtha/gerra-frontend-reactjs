@@ -147,7 +147,7 @@ const PaymentMethod = () => {
               </span>
             </div>
           </div>
-          <div
+          {/* <div
             onClick={() => {
               handlePaymentMethod("QRIS");
             }}
@@ -159,7 +159,7 @@ const PaymentMethod = () => {
                 Biaya Admin: {data.total >= 100000 ? "Rp1.000" : "GRATIS"}
               </span>
             </div>
-          </div>
+          </div> */}
           {/* <div
             onClick={() => {
               handlePaymentMethod("E_WALLET");
@@ -171,7 +171,7 @@ const PaymentMethod = () => {
               <span className="text-xs">Biaya Admin: Rp4.000</span>
             </div>
           </div> */}
-          <div
+          {/* <div
             onClick={() => {
               handlePaymentMethod("RETAIL");
             }}
@@ -181,7 +181,7 @@ const PaymentMethod = () => {
             <div>
               <span className="text-xs">Biaya Admin: Rp5.000</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </InfoModal>
       <LoginModal

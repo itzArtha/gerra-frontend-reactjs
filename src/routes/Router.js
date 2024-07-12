@@ -28,6 +28,8 @@ import HowItWorks from "../components/views/user/HowItWorks";
 import NotFound from "../components/errors/NotFound";
 import Terms from "../components/views/terms/Terms";
 
+import Seat from "../components/views/user/cinema/Seat";
+
 const Router = () => {
   return (
     <React.Fragment>
@@ -80,6 +82,8 @@ const Router = () => {
         <Route path="/verifikasi-email" exact component={EmailVerification} />
         <Route path="/:id_params/register" exact component={Register} />
         <Route path="/:id_params/login" exact component={Login} />
+
+        <Route path="/cinema/seat" exact component={Seat} />
 
         <Route component={NotFound} />
       </Switch>

@@ -29,6 +29,7 @@ import NotFound from "../components/errors/NotFound";
 import Terms from "../components/views/terms/Terms";
 
 import Seat from "../components/views/user/cinema/Seat";
+import SeatConfiguration from "../components/views/organization/cinema/SeatConfiguration"
 
 const Router = () => {
   return (
@@ -59,6 +60,13 @@ const Router = () => {
           exact
           component={ManageEvent}
         />
+
+        <PrivateOrgRoute
+          path="/manage/cinema"
+          exact
+          component={SeatConfiguration}
+        />
+
         <PrivateOrgRoute
           path="/admin/event/:slug"
           exact

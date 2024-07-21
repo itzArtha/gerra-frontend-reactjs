@@ -15,6 +15,8 @@ import CurrencyFormat from "react-currency-format";
 import moment from "moment";
 import Swal from "sweetalert2";
 import Skeleton from "../../Skeleton";
+import StudioTimePicker from '../../StudioTimePIcker.js'
+import SecondaryButton from "../../SecondaryButton.js";
 
 const ManageEvent = () => {
   // const inputFile = useRef(null);
@@ -35,6 +37,8 @@ const ManageEvent = () => {
   const [showLocationModal, setLocationShowModal] = useState(false);
   const [showTicketModal, setTicketShowModal] = useState(false);
   const [showEditTicketModal, setEditTicketShowModal] = useState(false);
+  const [showCinemaModal, setShowCinemaModal] = useState(false);
+  const [edittStudio, setEditStudio] = useState(false);
   const [formData, setFormData] = useState({
     eventId: "",
     owner: "",
@@ -130,6 +134,11 @@ const ManageEvent = () => {
     isTypeColumnError: false,
     typeColumnErrorLabel: "",
   });
+  const [formCinema, setFormCinema] = useState({
+    id: null,
+    name : "",
+    available_hours : []
+  })
 
   const [dataPeserta, setDataPeserta] = useState({
     name: true,
@@ -202,8 +211,8 @@ const ManageEvent = () => {
           setAllCatFor(response.data);
         });
     };
-    fetchAllCategoryFormat();
-    fetchData();
+/*     fetchAllCategoryFormat();
+    fetchData(); */
   }, [slug]);
 
   const handleSwal = (data, status) => {
@@ -263,7 +272,7 @@ const ManageEvent = () => {
   const handleUpdateDateTime = async () => {
     setProcessing(true);
     await apiClient
-      .put("/api/v1/organization/event/" + slug, {
+      .put("/api/v1/organization/event/", {
         start_at: formData.startDate + " " + formData.startTime,
         end_at: formData.endDate + " " + formData.endTime,
       })
@@ -687,6 +696,85 @@ const ManageEvent = () => {
     }
   };
 
+  const onOpenAddStudioModal = () =>{
+    setFormCinema({
+      id: null,
+      name : "",
+      available_hours : []
+    })
+    setShowCinemaModal(true)
+  }
+
+  const onOpenEditStudioModal = (data) =>{
+    setFormCinema({
+      id: data?.id,
+      name : data.name,
+      available_hours : data.available_hours
+    })
+    setShowCinemaModal(true)
+  }
+
+
+  const addStudio = async () => {
+    await apiClient
+    .post(`api/v1/organization/event/${formData.eventId}/studio`, formCinema)
+    .then((response) => {
+      dummyDataStudio.push(response.data)
+      setEditStudio(false)
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+  }
+
+  const editStudio = async () => {
+    await apiClient
+    .put(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
+    .then((response) => {
+      //function replace data to nes data
+      
+      setEditStudio(false)
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+  }
+
+
+  const deleteStudio = async (data,index) => {
+    await apiClient
+    .delete(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
+    .then((response) => {
+      dummyDataStudio.splice(index,1)
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+  }
+
+  const createDummyDataStudios = (count) => {
+    const baseData = {
+      available_hours: ["17:00","21:00"],
+      total_seats: 0,
+      booked_seats: 0,
+      unbooked_seats: 0
+    };
+  
+    const studios = [];
+  
+    for (let i = 1; i <= count; i++) {
+      studios.push({
+        name: `Studio ${i}`,
+        ...baseData
+      });
+    }
+  
+    return studios;
+  };
+  
+  const dummyDataStudio = createDummyDataStudios(5);
+
+  
   return (
     <MainLayout top={true} footer={true}>
       <MainModal
@@ -1463,6 +1551,74 @@ const ManageEvent = () => {
                 )}
               </div>
             </div>
+
+            {/* type cinema */}
+            <div className="mt-16">
+              <h2 className="font-bold text-2xl">Info tiket Cinema</h2>
+              <div className="my-4">
+                <div className="grid md:grid-cols-3 grid-cols-1 gap-2">
+                  {/* Ticket Start */}
+                  {isLoading ? (
+                    <Skeleton className="w-full h-44 rounded" count="3" />
+                  ) : (
+                    <ul className="mt-2 w-10/12 m-auto col-span-3">
+                      {dummyDataStudio.map((item, index) => (
+                        <li key={item.name} className="border-b-2">
+                          <div className="px-4 py-5 sm:px-6">
+                            <div className="flex items-center justify-between">
+                              <h3 className="text-lg leading-6 font-semibold text-gray-900">
+                                {item.name}
+                              </h3>
+                              <div>
+                              <MainButton label="Edit" onClick={()=>onOpenEditStudioModal(item)}/>
+                              <SecondaryButton className="ml-2" label='Atur Kursi' onClick={()=>history.push('/manage/cinema')} />
+                              <SecondaryButton className="ml-2" label='Hapus' onClick={()=>deleteStudio(item,index)} />
+                              </div>
+                             
+                            </div>
+                            <div className="mt-4 items-center">
+                              <p className="text-sm font-medium text-gray-500">
+                                <span class="bg-yellow-400 text-gray-700 text-xs me-2 px-2.5 py-1 rounded mr-1 font-bold">
+                                  Booked Seats : {item.booked_seats}{" "}
+                                </span>
+                                <span class="bg-gray-400  text-gray-700 text-xs font-bold me-2 px-2.5 py-1 rounded">
+                                  Unbooked Seats : {item.unbooked_seats}{" "}
+                                </span>
+                              </p>
+                              <div className="mt-3">
+                                {item.available_hours.map((h, i) => (
+                                  <MainButton
+                                    label={h}
+                                    key={i}
+                                    className="mr-2"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {/* Ticket End */}
+                </div>
+                {ticket.length < 9 ? (
+                  <div className="flex justify-center my-8">
+                    {isLoading ? (
+                      <Skeleton className="w-52 h-10 rounded" count="1" />
+                    ) : (
+                      <MainButton
+                        label="Buat Tiket Studio"
+                        onClick={onOpenAddStudioModal}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+
             <div className="mt-16">
               <h2 className="font-bold text-2xl">Info penyelenggaran event</h2>
               <div className="grid md:grid-cols-3 grid-cols-2 md:gap-2">
@@ -1820,6 +1976,46 @@ const ManageEvent = () => {
           </div>
         </div>
       </div>
+
+      <MainModal
+        handleClose={() => {
+          setShowCinemaModal(false);
+          setEditStudio(false)
+          setFormCinema({
+            id: null,
+            name : "",
+            available_hours : []
+          })
+        }}
+        showModal={showCinemaModal}
+        onClick={edittStudio ? editStudio : addStudio}
+        title={`Buat Studio`}
+      >
+        <div className="grid grid-cols-3 gap-2">
+          <div className="my-2 col-span-3">
+            <Label label="Nama Studio" />
+            <MainInput
+              type="text"
+              name="name"
+              value={formCinema.name}
+              onChange={(e) => {
+                setFormCinema({ ...formCinema, name: e.target.value });
+              }}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <div className="my-2 col-span-3">
+            <Label label="Nama Studio" />
+            <StudioTimePicker
+              value={formCinema.available_hours}
+              onChange={(e) => {
+                setFormCinema({ ...formCinema, available_hours: e });
+              }}
+            />
+          </div>
+        </div>
+      </MainModal>
     </MainLayout>
   );
 };

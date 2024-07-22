@@ -15,7 +15,7 @@ import CurrencyFormat from "react-currency-format";
 import moment from "moment";
 import Swal from "sweetalert2";
 import Skeleton from "../../Skeleton";
-import StudioTimePicker from '../../StudioTimePIcker.js'
+import StudioTimePicker from "../../StudioTimePIcker.js";
 import SecondaryButton from "../../SecondaryButton.js";
 
 const ManageEvent = () => {
@@ -136,9 +136,9 @@ const ManageEvent = () => {
   });
   const [formCinema, setFormCinema] = useState({
     id: null,
-    name : "",
-    available_hours : []
-  })
+    name: "",
+    available_hours: [],
+  });
 
   const [dataPeserta, setDataPeserta] = useState({
     name: true,
@@ -211,8 +211,8 @@ const ManageEvent = () => {
           setAllCatFor(response.data);
         });
     };
-/*     fetchAllCategoryFormat();
-    fetchData(); */
+    fetchAllCategoryFormat();
+    fetchData();
   }, [slug]);
 
   const handleSwal = (data, status) => {
@@ -696,85 +696,82 @@ const ManageEvent = () => {
     }
   };
 
-  const onOpenAddStudioModal = () =>{
+  const onOpenAddStudioModal = () => {
     setFormCinema({
       id: null,
-      name : "",
-      available_hours : []
-    })
-    setShowCinemaModal(true)
-  }
+      name: "",
+      available_hours: [],
+    });
+    setShowCinemaModal(true);
+  };
 
-  const onOpenEditStudioModal = (data) =>{
+  const onOpenEditStudioModal = (data) => {
     setFormCinema({
       id: data?.id,
-      name : data.name,
-      available_hours : data.available_hours
-    })
-    setShowCinemaModal(true)
-  }
-
+      name: data.name,
+      available_hours: data.available_hours,
+    });
+    setShowCinemaModal(true);
+  };
 
   const addStudio = async () => {
     await apiClient
-    .post(`api/v1/organization/event/${formData.eventId}/studio`, formCinema)
-    .then((response) => {
-      dummyDataStudio.push(response.data)
-      setEditStudio(false)
-    })
-    .catch((error) => {
-      console.log(error)
-    });
-  }
+      .post(`api/v1/organization/event/${formData.eventId}/studio`, formCinema)
+      .then((response) => {
+        dummyDataStudio.push(response.data);
+        setEditStudio(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const editStudio = async () => {
     await apiClient
-    .put(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
-    .then((response) => {
-      //function replace data to nes data
-      
-      setEditStudio(false)
-    })
-    .catch((error) => {
-      console.log(error)
-    });
-  }
+      .put(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
+      .then((response) => {
+        //function replace data to nes data
 
+        setEditStudio(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  const deleteStudio = async (data,index) => {
+  const deleteStudio = async (data, index) => {
     await apiClient
-    .delete(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
-    .then((response) => {
-      dummyDataStudio.splice(index,1)
-    })
-    .catch((error) => {
-      console.log(error)
-    });
-  }
+      .delete(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
+      .then((response) => {
+        dummyDataStudio.splice(index, 1);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const createDummyDataStudios = (count) => {
     const baseData = {
-      available_hours: ["17:00","21:00"],
+      available_hours: ["17:00", "21:00"],
       total_seats: 0,
       booked_seats: 0,
-      unbooked_seats: 0
+      unbooked_seats: 0,
     };
-  
+
     const studios = [];
-  
+
     for (let i = 1; i <= count; i++) {
       studios.push({
         name: `Studio ${i}`,
-        ...baseData
+        ...baseData,
       });
     }
-  
+
     return studios;
   };
-  
+
   const dummyDataStudio = createDummyDataStudios(5);
 
-  
   return (
     <MainLayout top={true} footer={true}>
       <MainModal
@@ -1418,206 +1415,221 @@ const ManageEvent = () => {
                 </div>
               </div>
             </div>
-
-            <div className="mt-16">
-              <h2 className="font-bold text-2xl">Info tiket pendaftaran</h2>
-              <div className="my-4">
-                <div className="grid md:grid-cols-3 grid-cols-1 gap-2">
-                  {/* Ticket Start */}
-                  {isLoading ? (
-                    <Skeleton className="w-full h-44 rounded" count="3" />
-                  ) : (
-                    ticket.map((item, i) => (
-                      <div
-                        className="w-full border rounded grid grid-cols-4 gap-2 p-3"
-                        key={i}
-                      >
-                        <div className="border-r pr-3 col-span-1">
-                          <div>
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/gerra-14Artboard 1.png"
-                              }
-                              alt=""
-                            />
-                            <div className="text-center">
-                              <span className="text-xs">
-                                Powered by Tokoevent
-                              </span>
+            {formData.format !== 4 && (
+              <div className="mt-16">
+                <h2 className="font-bold text-2xl">Info tiket pendaftaran</h2>
+                <div className="my-4">
+                  <div className="grid md:grid-cols-3 grid-cols-1 gap-2">
+                    {/* Ticket Start */}
+                    {isLoading ? (
+                      <Skeleton className="w-full h-44 rounded" count="3" />
+                    ) : (
+                      ticket.map((item, i) => (
+                        <div
+                          className="w-full border rounded grid grid-cols-4 gap-2 p-3"
+                          key={i}
+                        >
+                          <div className="border-r pr-3 col-span-1">
+                            <div>
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/gerra-14Artboard 1.png"
+                                }
+                                alt=""
+                              />
+                              <div className="text-center">
+                                <span className="text-xs">
+                                  Powered by Tokoevent
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="pl-3 col-span-3">
-                          <div className="pb-3 border-b flex justify-between">
-                            <div>
-                              <span className="text-lg font-semibold">
-                                {item.title.substring(0, 20)}{" "}
-                                {item.title.length > 20 ? "..." : ""}
-                              </span>
-                            </div>
-                            <div className="flex gap-1">
-                              <RoundedButton
-                                className="w-8 h-8"
-                                onClick={() => {
-                                  handleUpdateTicketModal(item.id);
-                                }}
-                              >
-                                {isLoading ? (
-                                  ""
-                                ) : (
+                          <div className="pl-3 col-span-3">
+                            <div className="pb-3 border-b flex justify-between">
+                              <div>
+                                <span className="text-lg font-semibold">
+                                  {item.title.substring(0, 20)}{" "}
+                                  {item.title.length > 20 ? "..." : ""}
+                                </span>
+                              </div>
+                              <div className="flex gap-1">
+                                <RoundedButton
+                                  className="w-8 h-8"
+                                  onClick={() => {
+                                    handleUpdateTicketModal(item.id);
+                                  }}
+                                >
+                                  {isLoading ? (
+                                    ""
+                                  ) : (
+                                    <img
+                                      className="w-4 h-4"
+                                      src={process.env.PUBLIC_URL + "/edit.svg"}
+                                      alt="Icon"
+                                    />
+                                  )}
+                                </RoundedButton>
+                                <RoundedButton
+                                  className="w-8 h-8"
+                                  onClick={() => {
+                                    handleDeleteTicket(item.id);
+                                  }}
+                                >
                                   <img
                                     className="w-4 h-4"
-                                    src={process.env.PUBLIC_URL + "/edit.svg"}
+                                    src={process.env.PUBLIC_URL + "/trash.svg"}
                                     alt="Icon"
                                   />
-                                )}
-                              </RoundedButton>
-                              <RoundedButton
-                                className="w-8 h-8"
-                                onClick={() => {
-                                  handleDeleteTicket(item.id);
-                                }}
-                              >
-                                <img
-                                  className="w-4 h-4"
-                                  src={process.env.PUBLIC_URL + "/trash.svg"}
-                                  alt="Icon"
-                                />
-                              </RoundedButton>
-                            </div>
-                          </div>
-                          <div>
-                            <span className="text-sm font-light">
-                              {item.description.substring(0, 80)}{" "}
-                              {item.description.length > 80 ? "..." : ""}
-                            </span>
-                          </div>
-                          <div className="flex justify-between bottom-0 mt-4">
-                            <div>
-                              <span className="text-sm font-light text-blue-600">
-                                Dijual {moment(item.start_at).format("lll")}
-                              </span>
+                                </RoundedButton>
+                              </div>
                             </div>
                             <div>
-                              <span className="text-lg font-semibold">
-                                <CurrencyFormat
-                                  value={item.price}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  prefix={"Rp"}
-                                />
-                                {"/"}
-                                <span className="text-xs">
-                                  {item.type === 0 ? "Orang" : "Tim"}
-                                </span>{" "}
+                              <span className="text-sm font-light">
+                                {item.description.substring(0, 80)}{" "}
+                                {item.description.length > 80 ? "..." : ""}
                               </span>
+                            </div>
+                            <div className="flex justify-between bottom-0 mt-4">
+                              <div>
+                                <span className="text-sm font-light text-blue-600">
+                                  Dijual {moment(item.start_at).format("lll")}
+                                </span>
+                              </div>
+                              <div>
+                                <span className="text-lg font-semibold">
+                                  <CurrencyFormat
+                                    value={item.price}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                    prefix={"Rp"}
+                                  />
+                                  {"/"}
+                                  <span className="text-xs">
+                                    {item.type === 0 ? "Orang" : "Tim"}
+                                  </span>{" "}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                  )}
-                  {/* Ticket End */}
-                </div>
-                {ticket.length < 9 ? (
-                  <div className="flex justify-center my-8">
-                    {isLoading ? (
-                      <Skeleton className="w-52 h-10 rounded" count="1" />
-                    ) : (
-                      <MainButton
-                        onClick={() => {
-                          setFormData({
-                            ...formData,
-                            ticketId: "",
-                            ticketName: "",
-                            ticketType: "0",
-                            maxPerson: "",
-                            priceTicket: "0",
-                            ticketIsFree: false,
-                            amountTicket: 0,
-                            startSaleTicket: "",
-                            endSaleTicket: "",
-                            deskripsiTicket: "",
-                          });
-                          setTicketShowModal(true);
-                        }}
-                        label="Buat Tiket Pendaftaran"
-                      />
+                      ))
                     )}
+                    {/* Ticket End */}
                   </div>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
 
-            {/* type cinema */}
-            <div className="mt-16">
-              <h2 className="font-bold text-2xl">Info tiket Cinema</h2>
-              <div className="my-4">
-                <div className="grid md:grid-cols-3 grid-cols-1 gap-2">
-                  {/* Ticket Start */}
-                  {isLoading ? (
-                    <Skeleton className="w-full h-44 rounded" count="3" />
+                  {ticket.length < 9 ? (
+                    <div className="flex justify-center my-8">
+                      {isLoading ? (
+                        <Skeleton className="w-52 h-10 rounded" count="1" />
+                      ) : (
+                        <MainButton
+                          onClick={() => {
+                            setFormData({
+                              ...formData,
+                              ticketId: "",
+                              ticketName: "",
+                              ticketType: "0",
+                              maxPerson: "",
+                              priceTicket: "0",
+                              ticketIsFree: false,
+                              amountTicket: 0,
+                              startSaleTicket: "",
+                              endSaleTicket: "",
+                              deskripsiTicket: "",
+                            });
+                            setTicketShowModal(true);
+                          }}
+                          label="Buat Tiket Pendaftaran"
+                        />
+                      )}
+                    </div>
                   ) : (
-                    <ul className="mt-2 w-10/12 m-auto col-span-3">
-                      {dummyDataStudio.map((item, index) => (
-                        <li key={item.name} className="border-b-2">
-                          <div className="px-4 py-5 sm:px-6">
-                            <div className="flex items-center justify-between">
-                              <h3 className="text-lg leading-6 font-semibold text-gray-900">
-                                {item.name}
-                              </h3>
-                              <div>
-                              <MainButton label="Edit" onClick={()=>onOpenEditStudioModal(item)}/>
-                              <SecondaryButton className="ml-2" label='Atur Kursi' onClick={()=>history.push('/manage/cinema')} />
-                              <SecondaryButton className="ml-2" label='Hapus' onClick={()=>deleteStudio(item,index)} />
-                              </div>
-                             
-                            </div>
-                            <div className="mt-4 items-center">
-                              <p className="text-sm font-medium text-gray-500">
-                                <span class="bg-yellow-400 text-gray-700 text-xs me-2 px-2.5 py-1 rounded mr-1 font-bold">
-                                  Booked Seats : {item.booked_seats}{" "}
-                                </span>
-                                <span class="bg-gray-400  text-gray-700 text-xs font-bold me-2 px-2.5 py-1 rounded">
-                                  Unbooked Seats : {item.unbooked_seats}{" "}
-                                </span>
-                              </p>
-                              <div className="mt-3">
-                                {item.available_hours.map((h, i) => (
-                                  <MainButton
-                                    label={h}
-                                    key={i}
-                                    className="mr-2"
-                                  />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    ""
                   )}
-                  {/* Ticket End */}
                 </div>
-                {ticket.length < 9 ? (
-                  <div className="flex justify-center my-8">
-                    {isLoading ? (
-                      <Skeleton className="w-52 h-10 rounded" count="1" />
-                    ) : (
-                      <MainButton
-                        label="Buat Tiket Studio"
-                        onClick={onOpenAddStudioModal}
-                      />
-                    )}
-                  </div>
-                ) : (
-                  ""
-                )}
               </div>
-            </div>
+            )}
+            {/* type cinema */}
+            {formData.format === 4 && (
+              <div className="mt-16">
+                <h2 className="font-bold text-2xl">Info tiket Cinema</h2>
+                <div className="my-4">
+                  <div className="grid md:grid-cols-3 grid-cols-1 gap-2">
+                    {/* Ticket Start */}
+                    {isLoading ? (
+                      <Skeleton className="w-full h-44 rounded" count="3" />
+                    ) : (
+                      <ul className="mt-2 w-10/12 m-auto col-span-3">
+                        {dummyDataStudio.map((item, index) => (
+                          <li key={item.name} className="border-b-2">
+                            <div className="px-4 py-5 sm:px-6">
+                              <div className="flex items-center justify-between">
+                                <h3 className="text-lg leading-6 font-semibold text-gray-900">
+                                  {item.name}
+                                </h3>
+                                <div>
+                                  <MainButton
+                                    label="Edit"
+                                    onClick={() => onOpenEditStudioModal(item)}
+                                  />
+                                  <SecondaryButton
+                                    className="ml-2"
+                                    label="Atur Kursi"
+                                    onClick={() =>
+                                      history.push("/manage/cinema")
+                                    }
+                                  />
+                                  <SecondaryButton
+                                    className="ml-2"
+                                    label="Hapus"
+                                    onClick={() => deleteStudio(item, index)}
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-4 items-center">
+                                <p className="text-sm font-medium text-gray-500">
+                                  <span class="bg-yellow-400 text-gray-700 text-xs me-2 px-2.5 py-1 rounded mr-1 font-bold">
+                                    Booked Seats : {item.booked_seats}{" "}
+                                  </span>
+                                  <span class="bg-gray-400  text-gray-700 text-xs font-bold me-2 px-2.5 py-1 rounded">
+                                    Unbooked Seats : {item.unbooked_seats}{" "}
+                                  </span>
+                                </p>
+                                <div className="mt-3">
+                                  {item.available_hours.map((h, i) => (
+                                    <MainButton
+                                      label={h}
+                                      key={i}
+                                      className="mr-2"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {/* Ticket End */}
+                  </div>
+                  {ticket.length < 9 ? (
+                    <div className="flex justify-center my-8">
+                      {isLoading ? (
+                        <Skeleton className="w-52 h-10 rounded" count="1" />
+                      ) : (
+                        <MainButton
+                          label="Buat Tiket Studio"
+                          onClick={onOpenAddStudioModal}
+                        />
+                      )}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            )}
 
             <div className="mt-16">
               <h2 className="font-bold text-2xl">Info penyelenggaran event</h2>
@@ -1980,12 +1992,12 @@ const ManageEvent = () => {
       <MainModal
         handleClose={() => {
           setShowCinemaModal(false);
-          setEditStudio(false)
+          setEditStudio(false);
           setFormCinema({
             id: null,
-            name : "",
-            available_hours : []
-          })
+            name: "",
+            available_hours: [],
+          });
         }}
         showModal={showCinemaModal}
         onClick={edittStudio ? editStudio : addStudio}

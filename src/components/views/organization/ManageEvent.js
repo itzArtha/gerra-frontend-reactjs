@@ -18,6 +18,7 @@ import Skeleton from "../../Skeleton";
 import StudioTimePicker from "../../StudioTimePIcker.js";
 import SecondaryButton from "../../SecondaryButton.js";
 
+
 const ManageEvent = () => {
   // const inputFile = useRef(null);
   const uploadCover = useRef(null);
@@ -1057,57 +1058,6 @@ const ManageEvent = () => {
                 ""
               )}
             </div>
-            {/* <div
-              className={
-                isTicketGroup === `1`
-                  ? `grid grid-cols-1 md:grid-cols-2 gap-2`
-                  : ``
-              }
-            >
-              <div className="my-2">
-                <Label label="Tipe Tiket" />
-                <SelectInput
-                  onChange={(e) => {
-                    setTicketGroup(e.target.value);
-                    setFormData({
-                      ...formData,
-                      ticketType: e.target.value,
-                    });
-                  }}
-                  type="text"
-                  name="ticketType"
-                  value={formData.ticketType}
-                >
-                  <option value={0}>Per orang</option>
-                  <option value={1}>Per tim</option>
-                </SelectInput>
-                {formData.isTicketTypeError ? (
-                  <ErrorLabel label={formData.ticketTypeErrorLabel} />
-                ) : (
-                  ""
-                )}
-              </div>
-              {isTicketGroup === "1" ? (
-                <div className="my-2">
-                  <Label label="Maksimal orang dalam tim" />
-                  <MainInput
-                    type="text"
-                    name="maxPerson"
-                    value={formData.maxPerson}
-                    onChange={(e) => {
-                      setFormData({ ...formData, maxPerson: e.target.value });
-                    }}
-                  />
-                  {formData.isMaxPersonError ? (
-                    <ErrorLabel label={formData.maxPersonErrorLabel} />
-                  ) : (
-                    ""
-                  )}
-                </div>
-              ) : (
-                ""
-              )}
-            </div> */}
             <div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="my-2">

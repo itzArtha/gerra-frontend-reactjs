@@ -10,6 +10,13 @@ import SecButton from "../../../SecondaryButton";
 import apiClient from "../../../services/apiClient.js";
 import Skeleton from "../../../Skeleton";
 import Swal from "sweetalert2";
+import MainInput from "../../../MainInput";
+import SelectInput from "../../../SelectInput";
+import Checkbox from "../../../Checkbox";
+import StudioTimePicker from "../../../StudioTimePIcker.js";
+import moment from "moment";
+import CurrencyFormat from "react-currency-format";
+
 
 const SeatConfiguration = () => {
   const history = useHistory();
@@ -17,9 +24,17 @@ const SeatConfiguration = () => {
   const [showSettingModal, setShowSettingModal] = useState(false);
   const [dataStudio, setDataStudio] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isFree, setFree] = useState(false);
   const [formData, setFormData] = useState({
     x: 0,
     y: 0,
+    title : "",
+    is_free : false,
+    price : '0',
+    amountTicket : 0,
+    start_at : '',
+    end_at : ''
+
   });
   const [rows, setRows] = useState({
     A: Array.from({ length: 13 }, (_, i) => ({
@@ -110,17 +125,25 @@ const SeatConfiguration = () => {
   };
 
   const getStudioData = async () => {
-    setLoading(true)
+    setLoading(true);
     await apiClient
       .get(`api/v1/organization/studio/${studio}`)
       .then((response) => {
         setDataStudio(response.data.data);
         setRows(response.data.data.tickets[0].seat_layout);
-        setLoading(false)
+        setLoading(false);
+        setFormData({
+          title : response.data.data.tickets[0].title,
+          is_free : false,
+          price : response.data.data.tickets[0].price,
+          amountTicket : response.data.data.tickets[0].amount,
+          start_at : response.data.data.tickets[0].start_at,
+          end_at : response.data.data.tickets[0].end_at,
+        })
       })
       .catch((error) => {
         console.log(error);
-        setLoading(false)
+        setLoading(false);
         handleSwal(
           error?.data?.message
             ? error?.data?.message
@@ -132,11 +155,12 @@ const SeatConfiguration = () => {
 
   const SimpanKursiLayout = async () => {
     let data = {
-      title: dataStudio.tickets[0].title,
-      price: dataStudio.tickets[0].price,
-      amount: dataStudio.tickets[0].amount,
+      ...formData,
+      price : parseInt(formData.price.toString().replace(/\D/g, "")),
+      amount: getTotalSeats(),
       seat_layout: rows,
       time: dataStudio.tickets[0].time,
+      total_seats: getTotalSeats(),
     };
 
     await apiClient
@@ -164,6 +188,138 @@ const SeatConfiguration = () => {
 
   return (
     <MainLayout top={true} footer={true}>
+      <div className='p-4'>
+      <h2 className="text-2xl font-bold">
+              Atur ticket {dataStudio?.name}
+            </h2>
+        <div className="my-2">
+          <Label label="Nama Tiket" />
+          <MainInput
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                title: e.target.value,
+                isTicketNameError: false,
+              });
+            }}
+          />
+          {formData.isTicketNameError ? (
+            <ErrorLabel label={formData.ticketNameErrorLabel} />
+          ) : (
+            ""
+          )}
+        </div>
+        <div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="my-2 col-span-2">
+              <Label label="Harga Tiket" />
+              <CurrencyFormat
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    price: e.target.value,
+                    isPriceTicketError: false,
+                  });
+                }}
+                name="price"
+                disabled={formData.is_free}
+                thousandSeparator={true}
+                prefix={"Rp"}
+                value={formData.price}
+                customInput={MainInput}
+              />
+              {formData.isPriceTicketError ? (
+                <ErrorLabel label={formData.priceTicketErrorLabel} />
+              ) : (
+                ""
+              )}
+            </div>
+         {/*    <div className="my-2">
+              <Label label="Jumlah Tiket" />
+              <CurrencyFormat
+                customInput={MainInput}
+                type="text"
+                name="amountTicket"
+                value={formData.amountTicket}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    amountTicket: e.target.value,
+                    isAmountTicketError: false,
+                  });
+                }}
+              />
+              {formData.isAmountTicketError ? (
+                <ErrorLabel label={formData.amountTicketErrorLabel} />
+              ) : (
+                ""
+              )}
+            </div> */}
+          </div>
+      {/*     <div>
+            <Checkbox
+              label="Tiket ini gratis"
+              onChange={(e) => {
+                setFree((isFree) => !isFree);
+                setFormData({
+                  ...formData,
+                  is_free: e.target.checked,
+                  priceTicket: "0",
+                });
+              }}
+              checked={formData.is_free}
+            />
+          </div> */}
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
+            <div className="my-2">
+              <Label label="Mulai Dijual" />
+              <MainInput
+                min={moment().format("YYYY-MM-DD HH:II:SS")}
+                type="datetime-local"
+                name="start_at"
+                value={formData.start_at}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    start_at: e.target.value,
+                    isStartSaleTicketError: false,
+                  });
+                }}
+              />
+              {formData.isStartSaleTicketError ? (
+                <ErrorLabel label={formData.startSaleTicketErrorLabel} />
+              ) : (
+                ""
+              )}
+            </div>
+            <div className="my-2">
+              <Label label="Berakhir Dijual" />
+              <MainInput
+                min={moment().add(1, "days").format("YYYY-MM-DD HH:II:SS")}
+                type="datetime-local"
+                name="end_at"
+                value={formData.end_at}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    end_at: e.target.value,
+                    isEndSaleTicketError: false,
+                  });
+                }}
+              />
+              {formData.isEndSaleTicketError ? (
+                <ErrorLabel label={formData.endSaleTicketErrorLabel} />
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
         <div className="col-span-3 bg-gray-200 p-4">
           <div className="flex flex-col items-center relative mb-6">
@@ -216,7 +372,7 @@ const SeatConfiguration = () => {
         <div className="col-span-2 px-4">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold">
-              Atur Kursi {dataStudio?.name}
+              Atur Kursi 
             </h2>
             <MainButton
               label="Setting"

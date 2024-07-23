@@ -30,6 +30,7 @@ const EventDetail = () => {
   const [loading, setLoading] = useState(true);
   const [choice, setChoice] = useState(0);
   const [mode, setMode] = useState(0);
+  const [loadingStudio, setLoadingStudio] = useState(0);
   const [calculate, setCalculate] = useState({
     subtotal: 0,
     fee: 0,
@@ -313,13 +314,16 @@ const EventDetail = () => {
 
 
   const getStudioData = async(id) =>{
+    setLoadingStudio(true)
     await apiClient
-    .get(`api/v1/organization/event/${id}/studios`)
+    .get(`api/v1/user/event/${slug}/studios`)
     .then((response) => {
-      console.log('asd',response)
       setListStudio(response.data.data)
+      setLoadingStudio(false)
     })
     .catch((error) => {
+      handleSwal("gagal ambil data studio", "error");
+      setLoadingStudio(false)
       console.log(error);
     });
   }
@@ -497,166 +501,170 @@ const EventDetail = () => {
               </>
             ) : (
               <>
-               {data.format_id !== 4 ? (
-                <div className="md:mx-24" ref={scrollRef}>
-                  <div className="mt-4">
-                    <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
-                      {data.ticket.map((item, i) => (
-                        <label
-                          htmlFor={`checkbox${i}`}
-                          key={i}
-                          className={`w-full h-32 border p-2 ${
-                            ticket.filter(
-                              (c) => parseInt(c.id) === parseInt(item.id)
-                            ).length > 0
-                              ? "border-yellow-500"
-                              : "border-gray-200"
-                          }`}
-                        >
-                          <div className="flex justify-between">
-                            <div>
-                              {item.show_ticket ? (
-                                <Checkbox
-                                  value={item.id}
-                                  id={`checkbox${i}`}
-                                  onChange={handleSelectTicket}
-                                  checked={
-                                    ticket.filter(
-                                      (c) =>
-                                        parseInt(c.id) === parseInt(item.id)
-                                    ).length > 0
-                                  }
-                                />
-                              ) : (
-                                <div className={"p-2 bg-red-500 text-white"}>
-                                  Closed
-                                </div>
-                              )}
+                {data.format_id !== 4 ? (
+                  <div className="md:mx-24" ref={scrollRef}>
+                    <div className="mt-4">
+                      <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+                        {data.ticket.map((item, i) => (
+                          <label
+                            htmlFor={`checkbox${i}`}
+                            key={i}
+                            className={`w-full h-32 border p-2 ${
+                              ticket.filter(
+                                (c) => parseInt(c.id) === parseInt(item.id)
+                              ).length > 0
+                                ? "border-yellow-500"
+                                : "border-gray-200"
+                            }`}
+                          >
+                            <div className="flex justify-between">
+                              <div>
+                                {item.show_ticket ? (
+                                  <Checkbox
+                                    value={item.id}
+                                    id={`checkbox${i}`}
+                                    onChange={handleSelectTicket}
+                                    checked={
+                                      ticket.filter(
+                                        (c) =>
+                                          parseInt(c.id) === parseInt(item.id)
+                                      ).length > 0
+                                    }
+                                  />
+                                ) : (
+                                  <div className={"p-2 bg-red-500 text-white"}>
+                                    Closed
+                                  </div>
+                                )}
+                              </div>
+                              <div>
+                                <h2 className="text-right font-semibold text-lg">
+                                  {item.title}
+                                </h2>
+                              </div>
                             </div>
-                            <div>
-                              <h2 className="text-right font-semibold text-lg">
-                                {item.title}
-                              </h2>
-                            </div>
-                          </div>
 
-                          <div className={"flex justify-between"}>
-                            {item.show_ticket ? (
-                              <div className={"flex gap-2"}>
-                                <div className="custom-number-input h-10 w-32 mt-4">
-                                  <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
-                                    <MainButton
-                                      onClick={() => {
-                                        handleDecreaseQuantity(quantity - 1);
-                                      }}
-                                      label={"-"}
-                                    />
-                                    <input
-                                      type="number"
-                                      className="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
-                                      name="custom-input-quantity"
-                                      value={
-                                        ticket.filter(
-                                          (c) =>
-                                            parseInt(c.id) === parseInt(item.id)
-                                        ).length > 0
-                                          ? quantity
-                                          : 0
-                                      }
-                                    />
-                                    <MainButton
-                                      onClick={() => {
-                                        handleIncreaseQuantity(quantity + 1);
-                                      }}
-                                      label={"+"}
-                                    />
+                            <div className={"flex justify-between"}>
+                              {item.show_ticket ? (
+                                <div className={"flex gap-2"}>
+                                  <div className="custom-number-input h-10 w-32 mt-4">
+                                    <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+                                      <MainButton
+                                        onClick={() => {
+                                          handleDecreaseQuantity(quantity - 1);
+                                        }}
+                                        label={"-"}
+                                      />
+                                      <input
+                                        type="number"
+                                        className="outline-none focus:outline-none text-center w-full font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
+                                        name="custom-input-quantity"
+                                        value={
+                                          ticket.filter(
+                                            (c) =>
+                                              parseInt(c.id) ===
+                                              parseInt(item.id)
+                                          ).length > 0
+                                            ? quantity
+                                            : 0
+                                        }
+                                      />
+                                      <MainButton
+                                        onClick={() => {
+                                          handleIncreaseQuantity(quantity + 1);
+                                        }}
+                                        label={"+"}
+                                      />
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ) : (
-                              <div />
-                            )}
-                            <div>
-                              <h2 className="font-semibold text-lg mt-10">
-                                <CurrencyFormat
-                                  value={loading ? 0 : item.price}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  prefix={"Rp"}
-                                />
-                              </h2>
-                            </div>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
-                    <div className={"md:flex md:justify-end"}>
-                      <div className="md:w-1/3 mt-8">
-                        <h2 className="text-2xl font-bold">
-                          Informasi Pembelian
-                        </h2>
-                        <div className="mt-4">
-                          <div className="mt-2">
-                            <div className="flex justify-between my-1">
+                              ) : (
+                                <div />
+                              )}
                               <div>
-                                <span className="text-xl">
-                                  Tiket ({quantity})
-                                </span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-xl">
+                                <h2 className="font-semibold text-lg mt-10">
                                   <CurrencyFormat
-                                    value={calculate.subtotal}
+                                    value={loading ? 0 : item.price}
                                     displayType={"text"}
                                     thousandSeparator={true}
                                     prefix={"Rp"}
                                   />
-                                </span>
+                                </h2>
                               </div>
                             </div>
-                            <div className="flex justify-between my-1">
-                              <div>
-                                <span className="text-xl">
-                                  Biaya Admin ({quantity})
-                                </span>
+                          </label>
+                        ))}
+                      </div>
+                      <div className={"md:flex md:justify-end"}>
+                        <div className="md:w-1/3 mt-8">
+                          <h2 className="text-2xl font-bold">
+                            Informasi Pembelian
+                          </h2>
+                          <div className="mt-4">
+                            <div className="mt-2">
+                              <div className="flex justify-between my-1">
+                                <div>
+                                  <span className="text-xl">
+                                    Tiket ({quantity})
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="font-semibold text-xl">
+                                    <CurrencyFormat
+                                      value={calculate.subtotal}
+                                      displayType={"text"}
+                                      thousandSeparator={true}
+                                      prefix={"Rp"}
+                                    />
+                                  </span>
+                                </div>
                               </div>
-                              <div>
-                                <span className="font-semibold text-xl">
+                              <div className="flex justify-between my-1">
+                                <div>
+                                  <span className="text-xl">
+                                    Biaya Admin ({quantity})
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="font-semibold text-xl">
+                                    <CurrencyFormat
+                                      value={calculate.fee}
+                                      displayType={"text"}
+                                      thousandSeparator={true}
+                                      prefix={"Rp"}
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="mt-20">
+                                <h2 className="text-xl font-bold text-right">
+                                  Subtotal
+                                </h2>
+                                <h2
+                                  className={`text-4xl font-bold text-right ${
+                                    calculate.total ? "animate-pulse" : ""
+                                  }`}
+                                >
                                   <CurrencyFormat
-                                    value={calculate.fee}
+                                    value={calculate.total}
                                     displayType={"text"}
                                     thousandSeparator={true}
                                     prefix={"Rp"}
                                   />
-                                </span>
+                                </h2>
                               </div>
-                            </div>
-                            <div className="mt-20">
-                              <h2 className="text-xl font-bold text-right">
-                                Subtotal
-                              </h2>
-                              <h2
-                                className={`text-4xl font-bold text-right ${
-                                  calculate.total ? "animate-pulse" : ""
-                                }`}
-                              >
-                                <CurrencyFormat
-                                  value={calculate.total}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  prefix={"Rp"}
-                                />
-                              </h2>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-               ) : (
-                <div>
-                   <ul className="mt-2 w-10/12 m-auto col-span-3">
+                ) : (
+                  <div>
+                    {loadingStudio ? (
+                      <Skeleton className="w-36 h-4 rounded-full" count="1" />
+                    ) : (
+                      <ul className="mt-2 w-10/12 m-auto col-span-3">
                         {listStudio.map((item, index) => (
                           <li key={item.name} className="border-b-2">
                             <div className="px-4 py-5 sm:px-6">
@@ -671,7 +679,11 @@ const EventDetail = () => {
                                     <MainButton
                                       label={h}
                                       key={i}
-                                      onClick={()=>history.push(`/explore/event/${slug}/cinema/${item.id}`)}
+                                      onClick={() =>
+                                        history.push(
+                                          `/explore/event/${slug}/${item.id}`
+                                        )
+                                      }
                                       className="mr-2"
                                     />
                                   ))}
@@ -681,8 +693,9 @@ const EventDetail = () => {
                           </li>
                         ))}
                       </ul>
-                </div>
-               ) }
+                    )}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -698,7 +711,9 @@ const EventDetail = () => {
               history.push("/manage/event/" + slug);
             }}
           />
-        ) : parseInt(data.status) === 1 && choice === 1 && data.format_id !== 4 ? (
+        ) : parseInt(data.status) === 1 &&
+          choice === 1 &&
+          data.format_id !== 4 ? (
           <MainButton
             className="w-full md:w-36"
             type="button"

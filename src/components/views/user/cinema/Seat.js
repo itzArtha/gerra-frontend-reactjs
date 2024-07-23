@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import MainLayout from "../../../layouts/MainLayout";
 import CurrencyFormat from "react-currency-format";
-import { useHistory, useParams } from "react-router-dom";
 import apiClient from "../../../services/apiClient.js";
 import MainButton from "../../../MainButton.js";
+import handleSwal from "../../../handleSwal";
 
 const Seat = () => {
-  const { slug, id } = useParams();
+  const history = useHistory()
+  const { event, studio } = useParams();
   const [selected, setSelected] = useState([]);
   const [dataStudio, setDataStudio] = useState(null);
+  const [price, setPrice] = useState(0);
   const [rows, setRows] = useState({
     A: Array.from({ length: 13 }, (_, i) => ({
       id: i + 1,
       number: `A${i + 1}`,
-      isReserved: false, // Assuming initially no seats are reserved
+      isReserved: false,
     })),
   });
+
   const [calculate, setCalculate] = useState({
     subtotal: 0,
-    fee: 0,
+    fee: 5000, // Biaya admin per tiket
     discount: 0,
     total: 0,
   });
-
-  const price = 300000;
 
   const addSeatCallback = (seat) => {
     setSelected((prevItems) => {
@@ -32,7 +34,7 @@ const Seat = () => {
       return updatedSelected;
     });
   };
-  
+
   const removeSeatCallback = (seat) => {
     setSelected((prevItems) => {
       const updatedSelected = prevItems.filter((item) => item !== seat);
@@ -40,21 +42,48 @@ const Seat = () => {
       return updatedSelected;
     });
   };
-  
+
   const updateTotalPrice = (selectedSeats) => {
-    const total = price * selectedSeats.length;
-    setCalculate((prevCalculate) => ({
-      ...prevCalculate,
-      subtotal: total,
-      total: total,
-    }));
+    const subtotal = price * selectedSeats.length;
+    const fee = calculate.fee * selectedSeats.length; // Biaya admin untuk semua tiket
+    const total = subtotal + fee;
+    setCalculate({
+      subtotal,
+      fee,
+      total,
+    });
   };
 
-/*   const handleCheckout = async () => {;
+  const getSelectedSeats = () => {
+    const selectedSeats = [];
+    Object.values(rows).forEach((row) => {
+      row.forEach((seat) => {
+        if (selected.includes(seat.number)) {
+          selectedSeats.push(seat.number);
+        }
+      });
+    });
+    return selectedSeats;
+  };
+
+  const getStudioData = async () => {
+    try {
+      const response = await apiClient.get(`api/v1/user/studio/${studio}`);
+      setDataStudio(response.data.data);
+      setRows(response.data.data.tickets[0].seat_layout);
+      setPrice(response.data.data.tickets[0].price);
+    } catch (error) {
+      handleSwal("Gagal ambil data studio", "error");
+    }
+  };
+
+    const handleCheckout = async () => {;
     await apiClient
       .post("/api/v1/user/checkout", {
-        event_id: data.ticket[0].id,
-        ticket: data.tickets[0].id,
+        event_id: dataStudio.tickets[0].id,
+        ticket:[
+          {id : dataStudio.tickets[0].id}
+        ],
         quantity: getSelectedSeats().length,
         seats: getSelectedSeats(),
       })
@@ -69,52 +98,16 @@ const Seat = () => {
       console.log(error)
       });
   };
- */
-  const getSelectedSeats = () => {
-    const selectedSeats = [];
-    Object.values(rows).forEach((row) => {
-      row.forEach((seat) => {
-        if (selected.includes(seat.number)) {
-          selectedSeats.push(seat.number);
-        }
-      });
-    });
-    console.log(selectedSeats)
-    return selectedSeats;
-  };
 
-
-  const getStudioData = async () => {
-    await apiClient
-      .get(`api/v1/organization/studio/${id}`)
-      .then((response) => {
-        setDataStudio(response.data.data);
-        // Assuming the response contains reserved seats information
-       /*  const reservedSeats = response.data.data.reservedSeats || [];
-        setRows((prevRows) => {
-          const updatedRows = { ...prevRows };
-          Object.keys(updatedRows).forEach((rowKey) => {
-            updatedRows[rowKey] = updatedRows[rowKey].map((seat) => ({
-              ...seat,
-              isReserved: reservedSeats.includes(seat.number),
-            }));
-          });
-          return updatedRows;
-        }); */
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   useEffect(() => {
     getStudioData();
-  }, []);
-  
+  }, [studio]);
+
   return (
     <MainLayout top={true} footer={true} menu={true}>
       <div className="grid grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
-        <div className="col-span-3 bg-gray-200 p-4 ">
+        <div className="col-span-3 bg-gray-200 p-4">
           <div className="flex flex-col items-center relative mb-6">
             <div className="flex justify-evenly w-full mb-4">
               <div className="relative text-sm">
@@ -137,7 +130,7 @@ const Seat = () => {
               </div>
             </div>
             <div className="flex flex-col space-y-2 mb-5 mt-5 w-full">
-              {Object.values(rows).map((row, rowIndex) => (
+              {rows && Object.values(rows).map((row, rowIndex) => (
                 <div
                   key={`row-${rowIndex}`}
                   className="flex justify-center space-x-2"
@@ -172,7 +165,7 @@ const Seat = () => {
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-1.5 bg-blue-300 rounded-b-md border-t border-gray-400"></div>
           </div>
         </div>
-        <div className="col-span-2  p-4 ">
+        <div className="col-span-2 p-4">
           <h2 className="text-2xl font-bold">Informasi Pembelian</h2>
           <div className="mt-4">
             <div className="mt-2">
@@ -193,12 +186,12 @@ const Seat = () => {
               </div>
               <div className="flex justify-between my-1">
                 <div>
-                  <span className="text-xl">Biaya Admin ()</span>
+                  <span className="text-xl">Biaya Admin ({selected.length})</span>
                 </div>
                 <div>
                   <span className="font-semibold text-xl">
                     <CurrencyFormat
-                      value={calculate.fee}
+                      value={calculate.fee * selected.length}
                       displayType={"text"}
                       thousandSeparator={true}
                       prefix={"Rp"}
@@ -223,7 +216,19 @@ const Seat = () => {
               </div>
             </div>
           </div>
-          <MainButton label="Chekout" onClick={()=>getSelectedSeats()} className='w-full mt-5'></MainButton>
+          <MainButton
+            label="Checkout"
+            onClick={() => {
+              const seats = handleCheckout();
+              if (seats.length > 0) {
+                // Implement your checkout logic here
+                console.log('Selected seats:', seats);
+              } else {
+                handleSwal("Pilih tiket terlebih dahulu", "warning");
+              }
+            }}
+            className="w-full mt-5"
+          />
         </div>
       </div>
     </MainLayout>

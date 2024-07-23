@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import MainLayout from "../../../layouts/MainLayout";
 import Label from "../../../Label";
 import InputNumber from "../../../InputNumber";
@@ -6,9 +7,12 @@ import MainButton from "../../../MainButton";
 import MainModal from "../../../modals/MainModal";
 import ErrorLabel from "../../../ErrorLabel";
 import SecButton from "../../../SecondaryButton";
+import apiClient from "../../../services/apiClient.js";
 
 const SeatConfiguration = () => {
+  const { ticket, studio } = useParams();
   const [showSettingModal, setShowSettingModal] = useState(false);
+  const [dataStudio, setDataStudio] = useState(null);
   const [formData, setFormData] = useState({
     x: 0,
     y: 0,
@@ -82,6 +86,32 @@ const SeatConfiguration = () => {
     return Object.values(rows).reduce((total, row) => total + row.length, 0);
   };
 
+  const getStudioData = async() =>{
+    await apiClient
+      .get(`api/v1/organization/studio/${studio}`)
+      .then((response) => {
+       setDataStudio(response.data.data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const SimpanKursiLayout = async() =>{
+    await apiClient
+    .patch(`api/v1/organization/event/ticket/${dataStudio.tickets[0].id}`,{...dataStudio.tickets[0] ,seat_layout : rows})
+    .then((response) => {
+     console.log(response)
+    })
+    .catch((error) => {
+      console.log('sss',error);
+    });
+  }
+
+  useEffect(() => {
+    getStudioData()
+  },[])
+
   return (
     <MainLayout top={true} footer={true}>
       <div className="grid grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
@@ -130,7 +160,7 @@ const SeatConfiguration = () => {
         </div>
         <div className="col-span-2 px-4">
           <div className="flex justify-between">
-            <h2 className="text-2xl font-bold">Seat Configuration</h2>
+            <h2 className="text-2xl font-bold">Atur Kursi {dataStudio?.name}</h2>
             <MainButton
               label="Setting"
               onClick={() => setShowSettingModal(true)}
@@ -171,8 +201,9 @@ const SeatConfiguration = () => {
               />
             </div>
           </div>
-          <div className="col-span-2  p-4 ">
+          <div className="col-span-2 p-4 flex justify-between">
           <h2 className="text-2xl font-bold">Total Kursi : {getTotalSeats()}</h2>
+          <MainButton label='Simpan' onClick={()=>SimpanKursiLayout()}/>
         </div>
         </div>
       </div>

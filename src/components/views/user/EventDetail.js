@@ -41,6 +41,7 @@ const EventDetail = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [authUser, setAuthUser] = useState();
   const [choosePart, setChoosePart] = useState([]);
+  const [listStudio, setListStudio] = useState([]);
   const [formData, setFormData] = useState({
     id: 0,
     roles: 0,
@@ -87,7 +88,9 @@ const EventDetail = () => {
         .get("/api/v1/organization/event/" + slug)
         .then((response) => {
           setData(response.data.data);
+          console.log('aaa',response)
           setLoading(false);
+          if(response.data.data.format_id == 4) getStudioData(response.data.data.id)
           apiClient.post("api/v1/view/event", {
             event_id: response.data.data.id,
           });
@@ -308,6 +311,19 @@ const EventDetail = () => {
       });
   };
 
+
+  const getStudioData = async(id) =>{
+    await apiClient
+    .get(`api/v1/organization/event/${id}/studios`)
+    .then((response) => {
+      console.log('asd',response)
+      setListStudio(response.data.data)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   return (
     <MainLayout top={true} footer={true}>
       <div className="md:mt-12 md:mx-12">
@@ -481,6 +497,7 @@ const EventDetail = () => {
               </>
             ) : (
               <>
+               {data.format_id !== 4 ? (
                 <div className="md:mx-24" ref={scrollRef}>
                   <div className="mt-4">
                     <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
@@ -637,6 +654,35 @@ const EventDetail = () => {
                     </div>
                   </div>
                 </div>
+               ) : (
+                <div>
+                   <ul className="mt-2 w-10/12 m-auto col-span-3">
+                        {listStudio.map((item, index) => (
+                          <li key={item.name} className="border-b-2">
+                            <div className="px-4 py-5 sm:px-6">
+                              <div className="flex items-center justify-between">
+                                <h3 className="text-lg leading-6 font-semibold text-gray-900">
+                                  {item.name}
+                                </h3>
+                              </div>
+                              <div className="mt-4 items-center">
+                                <div className="mt-3">
+                                  {item.available_hours.map((h, i) => (
+                                    <MainButton
+                                      label={h}
+                                      key={i}
+                                      onClick={()=>history.push(`/explore/event/${slug}/cinema/${item.id}`)}
+                                      className="mr-2"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                </div>
+               ) }
               </>
             )}
           </div>
@@ -652,7 +698,7 @@ const EventDetail = () => {
               history.push("/manage/event/" + slug);
             }}
           />
-        ) : parseInt(data.status) === 1 && choice === 1 ? (
+        ) : parseInt(data.status) === 1 && choice === 1 && data.format_id !== 4 ? (
           <MainButton
             className="w-full md:w-36"
             type="button"

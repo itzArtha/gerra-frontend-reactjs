@@ -39,6 +39,7 @@ const ManageEvent = () => {
   const [showEditTicketModal, setEditTicketShowModal] = useState(false);
   const [showCinemaModal, setShowCinemaModal] = useState(false);
   const [edittStudio, setEditStudio] = useState(false);
+  const [listStudio, setListStudio] = useState([]);
   const [formData, setFormData] = useState({
     eventId: "",
     owner: "",
@@ -197,6 +198,7 @@ const ManageEvent = () => {
           setTicket(response.data.data.ticket);
           setDataPeserta(response.data.data.APInformation);
           setLoading(false);
+          if(response.data.data.format_id == 4) getStudioData(response.data.data.id)
         })
         .catch((error) => {
           if (error.response.status === 404) {
@@ -263,6 +265,7 @@ const ManageEvent = () => {
         handleSwal(response.data.message);
         setFormatShowModal(false);
         setProcessing(false);
+        console.log('aa',response)
       })
       .catch((error) => {
         // console.log(error);
@@ -718,21 +721,29 @@ const ManageEvent = () => {
     await apiClient
       .post(`api/v1/organization/event/${formData.eventId}/studio`, formCinema)
       .then((response) => {
-        dummyDataStudio.push(response.data);
+        const list = listStudio
+        list.push(response.data.data);
+        setListStudio([...list])
         setEditStudio(false);
+        setShowCinemaModal(false)
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  const dummyDataStudio = []
   const editStudio = async () => {
     await apiClient
       .put(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
       .then((response) => {
-        //function replace data to nes data
-
+        console.log(response)
+        const list = listStudio
+        const index = list.findIndex((item)=>item.id == formCinema.id)
+        list[index] = {...response.data}
+        setListStudio([...list])
         setEditStudio(false);
+        setShowCinemaModal(false)
       })
       .catch((error) => {
         console.log(error);
@@ -741,36 +752,29 @@ const ManageEvent = () => {
 
   const deleteStudio = async (data, index) => {
     await apiClient
-      .delete(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
+      .delete(`/api/v1/organization/studio/${data.id}`)
       .then((response) => {
-        dummyDataStudio.splice(index, 1);
+        const list = listStudio
+        list.splice(index, 1);
+        setListStudio([...list])
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const createDummyDataStudios = (count) => {
-    const baseData = {
-      available_hours: ["17:00", "21:00"],
-      total_seats: 0,
-      booked_seats: 0,
-      unbooked_seats: 0,
-    };
+  const getStudioData = async(id) =>{
+    await apiClient
+    .get(`api/v1/organization/event/${id}/studios`)
+    .then((response) => {
+      console.log('asd',response)
+      setListStudio(response.data.data)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
-    const studios = [];
-
-    for (let i = 1; i <= count; i++) {
-      studios.push({
-        name: `Studio ${i}`,
-        ...baseData,
-      });
-    }
-
-    return studios;
-  };
-
-  const dummyDataStudio = createDummyDataStudios(5);
 
   return (
     <MainLayout top={true} footer={true}>
@@ -1561,7 +1565,7 @@ const ManageEvent = () => {
                       <Skeleton className="w-full h-44 rounded" count="3" />
                     ) : (
                       <ul className="mt-2 w-10/12 m-auto col-span-3">
-                        {dummyDataStudio.map((item, index) => (
+                        {listStudio.map((item, index) => (
                           <li key={item.name} className="border-b-2">
                             <div className="px-4 py-5 sm:px-6">
                               <div className="flex items-center justify-between">
@@ -1577,7 +1581,7 @@ const ManageEvent = () => {
                                     className="ml-2"
                                     label="Atur Kursi"
                                     onClick={() =>
-                                      history.push("/manage/cinema")
+                                      history.push(`/manage/cinema/${item.id}`)
                                     }
                                   />
                                   <SecondaryButton

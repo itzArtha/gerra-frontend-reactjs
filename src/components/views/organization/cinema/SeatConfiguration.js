@@ -86,31 +86,42 @@ const SeatConfiguration = () => {
     return Object.values(rows).reduce((total, row) => total + row.length, 0);
   };
 
-  const getStudioData = async() =>{
+  const getStudioData = async () => {
     await apiClient
       .get(`api/v1/organization/studio/${studio}`)
       .then((response) => {
-       setDataStudio(response.data.data)
+        setDataStudio(response.data.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
-  const SimpanKursiLayout = async() =>{
+  const SimpanKursiLayout = async () => {
+    let data = {
+      title: dataStudio.tickets[0].title,
+      price: dataStudio.tickets[0].price,
+      amount: dataStudio.tickets[0].amount,
+      seat_layout: rows,
+      time: dataStudio.tickets[0].time,
+    };
+
     await apiClient
-    .patch(`api/v1/organization/event/ticket/${dataStudio.tickets[0].id}`,{...dataStudio.tickets[0] ,seat_layout : rows})
-    .then((response) => {
-     console.log(response)
-    })
-    .catch((error) => {
-      console.log('sss',error);
-    });
-  }
+      .patch(
+        `api/v1/organization/event/ticket/${dataStudio.tickets[0].id}`,
+        data
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log("sss", error);
+      });
+  };
 
   useEffect(() => {
-    getStudioData()
-  },[])
+    getStudioData();
+  }, []);
 
   return (
     <MainLayout top={true} footer={true}>
@@ -160,7 +171,9 @@ const SeatConfiguration = () => {
         </div>
         <div className="col-span-2 px-4">
           <div className="flex justify-between">
-            <h2 className="text-2xl font-bold">Atur Kursi {dataStudio?.name}</h2>
+            <h2 className="text-2xl font-bold">
+              Atur Kursi {dataStudio?.name}
+            </h2>
             <MainButton
               label="Setting"
               onClick={() => setShowSettingModal(true)}
@@ -186,7 +199,9 @@ const SeatConfiguration = () => {
                       <SecButton
                         label="X"
                         onClick={() => handleDeleteRow(rowLabel)}
-                        disabled={Object.keys(rows).length === 1 && rowLabel === "A"}
+                        disabled={
+                          Object.keys(rows).length === 1 && rowLabel === "A"
+                        }
                       />
                     </div>
                   </div>
@@ -202,9 +217,11 @@ const SeatConfiguration = () => {
             </div>
           </div>
           <div className="col-span-2 p-4 flex justify-between">
-          <h2 className="text-2xl font-bold">Total Kursi : {getTotalSeats()}</h2>
-          <MainButton label='Simpan' onClick={()=>SimpanKursiLayout()}/>
-        </div>
+            <h2 className="text-2xl font-bold">
+              Total Kursi : {getTotalSeats()}
+            </h2>
+            <MainButton label="Simpan" onClick={() => SimpanKursiLayout()} />
+          </div>
         </div>
       </div>
 

@@ -8,11 +8,15 @@ import MainModal from "../../../modals/MainModal";
 import ErrorLabel from "../../../ErrorLabel";
 import SecButton from "../../../SecondaryButton";
 import apiClient from "../../../services/apiClient.js";
+import Skeleton from "../../../Skeleton";
+import Swal from "sweetalert2";
 
 const SeatConfiguration = () => {
+  const history = useHistory();
   const { ticket, studio } = useParams();
   const [showSettingModal, setShowSettingModal] = useState(false);
   const [dataStudio, setDataStudio] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     x: 0,
     y: 0,
@@ -23,6 +27,25 @@ const SeatConfiguration = () => {
       number: `A${i + 1}`,
     })),
   });
+
+  const handleSwal = (data, status) => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: status ? status : "success",
+      title: data,
+    });
+  };
 
   const handleSeatChange = (value, rowLabel) => {
     setRows((prevRows) => {
@@ -87,13 +110,23 @@ const SeatConfiguration = () => {
   };
 
   const getStudioData = async () => {
+    setLoading(true)
     await apiClient
       .get(`api/v1/organization/studio/${studio}`)
       .then((response) => {
         setDataStudio(response.data.data);
+        setRows(response.data.data.tickets[0].seat_layout);
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false)
+        handleSwal(
+          error?.data?.message
+            ? error?.data?.message
+            : "gagal ambil data studio",
+          "error"
+        );
       });
   };
 
@@ -112,9 +145,15 @@ const SeatConfiguration = () => {
         data
       )
       .then((response) => {
-        console.log(response);
+        history.goBack();
       })
       .catch((error) => {
+        handleSwal(
+          error?.data?.message
+            ? error?.data?.message
+            : "gagal edit sorry ya....",
+          "error"
+        );
         console.log("sss", error);
       });
   };
@@ -148,24 +187,29 @@ const SeatConfiguration = () => {
                 </span>
               </div>
             </div>
-            <div className="flex flex-col space-y-2 mb-5 mt-5 w-full">
-              {Object.values(rows).map((row, rowIndex) => (
-                <div
-                  key={`row-${rowIndex}`}
-                  className="flex justify-center space-x-2"
-                >
-                  {row.map((seat) => (
-                    <div
-                      key={seat.id}
-                      id={seat.number}
-                      className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs bg-white border border-gray-400`}
-                    >
-                      <span>{seat.number}</span>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
+            {loading ? (
+              <Skeleton className="w-24 h-4 rounded" count="1" />
+            ) : (
+              <div className="flex flex-col space-y-2 mb-5 mt-5 w-full">
+                {Object.values(rows).map((row, rowIndex) => (
+                  <div
+                    key={`row-${rowIndex}`}
+                    className="flex justify-center space-x-2"
+                  >
+                    {row.map((seat) => (
+                      <div
+                        key={seat.id}
+                        id={seat.number}
+                        className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs bg-white border border-gray-400`}
+                      >
+                        <span>{seat.number}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-1.5 bg-blue-300 rounded-b-md border-t border-gray-400"></div>
           </div>
         </div>

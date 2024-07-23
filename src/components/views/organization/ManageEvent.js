@@ -714,6 +714,7 @@ const ManageEvent = () => {
       name: data.name,
       available_hours: data.available_hours,
     });
+    setEditStudio(true);
     setShowCinemaModal(true);
   };
 
@@ -728,16 +729,15 @@ const ManageEvent = () => {
         setShowCinemaModal(false)
       })
       .catch((error) => {
+        handleSwal(error?.data?.message ? error?.data?.message : 'gagal tambah studio' , "error");
         console.log(error);
       });
   };
 
-  const dummyDataStudio = []
   const editStudio = async () => {
     await apiClient
       .put(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
       .then((response) => {
-        console.log(response)
         const list = listStudio
         const index = list.findIndex((item)=>item.id == formCinema.id)
         list[index] = {...response.data}
@@ -746,6 +746,7 @@ const ManageEvent = () => {
         setShowCinemaModal(false)
       })
       .catch((error) => {
+        handleSwal(error?.data?.message ? error?.data?.message : 'gagal edit studio' , "error");
         console.log(error);
       });
   };
@@ -759,6 +760,7 @@ const ManageEvent = () => {
         setListStudio([...list])
       })
       .catch((error) => {
+        handleSwal(error?.data?.message ? error?.data?.message : 'gagal delete studio' , "error");
         console.log(error);
       });
   };
@@ -767,10 +769,10 @@ const ManageEvent = () => {
     await apiClient
     .get(`api/v1/organization/event/${id}/studios`)
     .then((response) => {
-      console.log('asd',response)
       setListStudio(response.data.data)
     })
     .catch((error) => {
+      handleSwal("gagal ambil data studio", "error");
       console.log(error);
     });
   }

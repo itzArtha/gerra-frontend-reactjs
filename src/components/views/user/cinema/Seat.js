@@ -22,7 +22,7 @@ const Seat = () => {
 
   const [calculate, setCalculate] = useState({
     subtotal: 0,
-    fee: 5000, // Biaya admin per tiket
+    fee: 0, // Biaya admin per tiket
     discount: 0,
     total: 0,
   });
@@ -45,7 +45,7 @@ const Seat = () => {
 
   const updateTotalPrice = (selectedSeats) => {
     const subtotal = price * selectedSeats.length;
-    const fee = calculate.fee * selectedSeats.length; // Biaya admin untuk semua tiket
+    const fee =   5000 * selectedSeats.length; // Biaya admin untuk semua tiket
     const total = subtotal + fee;
     setCalculate({
       subtotal,
@@ -98,6 +98,8 @@ const Seat = () => {
       console.log(error)
       });
   };
+
+  
 
 
   useEffect(() => {
@@ -191,7 +193,7 @@ const Seat = () => {
                 <div>
                   <span className="font-semibold text-xl">
                     <CurrencyFormat
-                      value={calculate.fee * selected.length}
+                      value={calculate.fee}
                       displayType={"text"}
                       thousandSeparator={true}
                       prefix={"Rp"}

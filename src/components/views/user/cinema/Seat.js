@@ -7,7 +7,7 @@ import MainButton from "../../../MainButton.js";
 import handleSwal from "../../../handleSwal";
 
 const Seat = () => {
-  const history = useHistory()
+  const history = useHistory();
   const { event, studio } = useParams();
   const [selected, setSelected] = useState([]);
   const [dataStudio, setDataStudio] = useState(null);
@@ -45,7 +45,7 @@ const Seat = () => {
 
   const updateTotalPrice = (selectedSeats) => {
     const subtotal = price * selectedSeats.length;
-    const fee =   5000 * selectedSeats.length; // Biaya admin untuk semua tiket
+    const fee = calculate.fee * selectedSeats.length; // Biaya admin untuk semua tiket
     const total = subtotal + fee;
     setCalculate({
       subtotal,
@@ -77,7 +77,11 @@ const Seat = () => {
     }
   };
 
-    const handleCheckout = async () => {;
+  const handleCheckout = async () => {
+    if (getSelectedSeats().length <= 0) {
+      handleSwal("Pilih tiket terlebih dahulu", "warning");
+    }
+
     await apiClient
       .post("/api/v1/user/checkout", {
         event_id: dataStudio.event_id,
@@ -95,12 +99,11 @@ const Seat = () => {
         }
       })
       .catch((error) => {
-      console.log(error)
+        if (error.response.status) {
+          handleSwal(error.response.data.message, "warning");
+        }
       });
   };
-
-  
-
 
   useEffect(() => {
     getStudioData();
@@ -132,37 +135,38 @@ const Seat = () => {
               </div>
             </div>
             <div className="flex flex-col space-y-2 mb-5 mt-5 w-full">
-              {rows && Object.values(rows).map((row, rowIndex) => (
-                <div
-                  key={`row-${rowIndex}`}
-                  className="flex justify-center space-x-2"
-                >
-                  {row.map((seat) => (
-                    <div
-                      key={seat.id}
-                      id={seat.number}
-                      onClick={() => {
-                        if (!seat.isReserved) {
-                          if (selected.includes(seat.number)) {
-                            removeSeatCallback(seat.number);
-                          } else {
-                            addSeatCallback(seat.number);
+              {rows &&
+                Object.values(rows).map((row, rowIndex) => (
+                  <div
+                    key={`row-${rowIndex}`}
+                    className="flex justify-center space-x-2"
+                  >
+                    {row.map((seat) => (
+                      <div
+                        key={seat.id}
+                        id={seat.number}
+                        onClick={() => {
+                          if (!seat.isReserved) {
+                            if (selected.includes(seat.number)) {
+                              removeSeatCallback(seat.number);
+                            } else {
+                              addSeatCallback(seat.number);
+                            }
                           }
-                        }
-                      }}
-                      className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs ${
-                        seat.isReserved
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : selected.includes(seat.number)
-                          ? "bg-yellow-400"
-                          : "bg-white border border-gray-400"
-                      }`}
-                    >
-                      <span>{seat.number}</span>
-                    </div>
-                  ))}
-                </div>
-              ))}
+                        }}
+                        className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs ${
+                          seat.isReserved
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : selected.includes(seat.number)
+                            ? "bg-yellow-400"
+                            : "bg-white border border-gray-400"
+                        }`}
+                      >
+                        <span>{seat.number}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
             </div>
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-1.5 bg-blue-300 rounded-b-md border-t border-gray-400"></div>
           </div>
@@ -193,7 +197,7 @@ const Seat = () => {
                 <div>
                   <span className="font-semibold text-xl">
                     <CurrencyFormat
-                      value={calculate.fee}
+                      value={calculate.fee * selected.length}
                       displayType={"text"}
                       thousandSeparator={true}
                       prefix={"Rp"}
@@ -221,13 +225,7 @@ const Seat = () => {
           <MainButton
             label="Checkout"
             onClick={() => {
-              const seats = handleCheckout();
-              if (seats.length > 0) {
-                // Implement your checkout logic here
-                console.log('Selected seats:', seats);
-              } else {
-                handleSwal("Pilih tiket terlebih dahulu", "warning");
-              }
+              handleCheckout();
             }}
             className="w-full mt-5"
           />

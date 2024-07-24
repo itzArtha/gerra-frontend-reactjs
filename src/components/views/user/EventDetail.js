@@ -675,13 +675,13 @@ const EventDetail = () => {
                               </div>
                               <div className="mt-4 items-center">
                                 <div className="mt-3 flex flex-wrap">
-                                  {item.available_hours.map((h, i) => (
+                                  {item.tickets.map((h, i) => (
                                     <MainButton
-                                      label={h}
+                                      label={h.time}
                                       key={i}
                                       onClick={() =>
                                         history.push(
-                                          `/explore/event/${slug}/${item.id}`
+                                          `/explore/event/${slug}/${item.id}/${h.id}`
                                         )
                                       }
                                       className="mr-2 mb-2"

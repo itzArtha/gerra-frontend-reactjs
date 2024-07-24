@@ -8,17 +8,11 @@ import handleSwal from "../../../handleSwal";
 
 const Seat = () => {
   const history = useHistory();
-  const { event, studio } = useParams();
+  const { event, studio, ticket } = useParams();
   const [selected, setSelected] = useState([]);
   const [dataStudio, setDataStudio] = useState(null);
   const [price, setPrice] = useState(0);
-  const [rows, setRows] = useState({
-    A: Array.from({ length: 13 }, (_, i) => ({
-      id: i + 1,
-      number: `A${i + 1}`,
-      isReserved: false,
-    })),
-  });
+  const [rows, setRows] = useState({});
 
   const [calculate, setCalculate] = useState({
     subtotal: 0,
@@ -45,7 +39,7 @@ const Seat = () => {
 
   const updateTotalPrice = (selectedSeats) => {
     const subtotal = price * selectedSeats.length;
-    const fee = calculate.fee * selectedSeats.length; // Biaya admin untuk semua tiket
+    const fee = calculate.fee * selectedSeats.length;
     const total = subtotal + fee;
     setCalculate({
       subtotal,
@@ -69,13 +63,28 @@ const Seat = () => {
   const getStudioData = async () => {
     try {
       const response = await apiClient.get(`api/v1/user/studio/${studio}`);
-      setDataStudio(response.data.data);
-      setRows(response.data.data.tickets[0].seat_layout);
-      setPrice(response.data.data.tickets[0].price);
+      const studioData = response.data.data;
+      setDataStudio(studioData);
+  
+      const ticketData = studioData.tickets.find((item) => item.id == ticket) || studioData.tickets[0];
+      const seats = ticketData.seat_layout;
+      const updatedRows = {};
+  
+      // Memperbarui status kursi yang sudah dipesan
+      Object.keys(seats).forEach((row) => {
+        updatedRows[row] = seats[row].map((seat) => ({
+          ...seat,
+          isReserved: ticketData.booked_seat.includes(seat.number) || seat.isReserved,
+        }));
+      });
+  
+      setRows(updatedRows);
+      setPrice(ticketData.price);
     } catch (error) {
       handleSwal("Gagal ambil data studio", "error");
     }
   };
+  
 
   const handleCheckout = async () => {
     if (getSelectedSeats().length <= 0) {
@@ -85,7 +94,7 @@ const Seat = () => {
     await apiClient
       .post("/api/v1/user/checkout", {
         event_id: dataStudio.event_id,
-        ticket: [{ id: dataStudio.tickets[0].id }],
+        ticket: [{ id: ticket }],
         quantity: getSelectedSeats().length,
         seats: getSelectedSeats(),
       })
@@ -133,74 +142,40 @@ const Seat = () => {
               </div>
             </div>
             <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
-                {Object.values(rows).map((row, rowIndex) => (
-                  <div
-                    key={`row-${rowIndex}`}
-                    className="flex md:justify-center space-x-2"
-                    style={{ whiteSpace: 'nowrap' }} // Mencegah elemen baris agar tidak membungkus
-                  >
-                    {row.map((seat) => (
-                       <div
-                       key={seat.id}
-                       id={seat.number}
-                       onClick={() => {
-                         if (!seat.isReserved) {
-                           if (selected.includes(seat.number)) {
-                             removeSeatCallback(seat.number);
-                           } else {
-                             addSeatCallback(seat.number);
-                           }
-                         }
-                       }}
-                       style={{ minWidth: '2rem', minHeight: '2rem' }}
-                       className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs bg-white border border-gray-400 ${
-                         seat.isReserved
-                           ? "bg-gray-400 cursor-not-allowed"
-                           : selected.includes(seat.number)
-                           ? "bg-yellow-400"
-                           : "bg-white border border-gray-400"
-                       }`}
-                     >
-                       <span>{seat.number}</span>
-                     </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-          {/*   <div className="flex flex-col space-y-2 mb-5 mt-5 w-full overflow-x-auto">
-              {rows &&
-                Object.values(rows).map((row, rowIndex) => (
-                  <div
-                    key={`row-${rowIndex}`}
-                    className="flex md:justify-center space-x-2"
-                  >
-                    {row.map((seat) => (
-                      <div
-                        key={seat.id}
-                        id={seat.number}
-                        onClick={() => {
-                          if (!seat.isReserved) {
-                            if (selected.includes(seat.number)) {
-                              removeSeatCallback(seat.number);
-                            } else {
-                              addSeatCallback(seat.number);
-                            }
+              {Object.values(rows).map((row, rowIndex) => (
+                <div
+                  key={`row-${rowIndex}`}
+                  className="flex md:justify-center space-x-2"
+                  style={{ whiteSpace: 'nowrap' }} // Mencegah elemen baris agar tidak membungkus
+                >
+                  {row.map((seat) => (
+                    <div
+                      key={seat.id}
+                      id={seat.number}
+                      onClick={() => {
+                        if (!seat.isReserved) {
+                          if (selected.includes(seat.number)) {
+                            removeSeatCallback(seat.number);
+                          } else {
+                            addSeatCallback(seat.number);
                           }
-                        }}
-                        className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs ${
-                          seat.isReserved
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : selected.includes(seat.number)
-                            ? "bg-yellow-400"
-                            : "bg-white border border-gray-400"
-                        }`}
-                      >
-                        <span>{seat.number}</span>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-            </div> */}
+                        }
+                      }}
+                      style={{ minWidth: '2rem', minHeight: '2rem' }}
+                      className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs ${
+                        seat.isReserved
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : selected.includes(seat.number)
+                          ? "bg-yellow-400"
+                          : "bg-white border border-gray-400"
+                      }`}
+                    >
+                      <span>{seat.number}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-1.5 bg-blue-300 rounded-b-md border-t border-gray-400"></div>
           </div>
         </div>

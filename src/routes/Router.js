@@ -91,7 +91,7 @@ const Router = () => {
         <Route path="/:id_params/register" exact component={Register} />
         <Route path="/:id_params/login" exact component={Login} />
 
-        <Route path="/explore/event/:event/:studio" exact component={Seat} />
+        <Route path="/explore/event/:event/:studio/:ticket" exact component={Seat} />
 
         <Route component={NotFound} />
       </Switch>

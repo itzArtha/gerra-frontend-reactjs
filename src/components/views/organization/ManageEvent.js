@@ -740,11 +740,12 @@ const ManageEvent = () => {
 
   const editStudio = async () => {
     await apiClient
-      .put(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
+      .patch(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
       .then((response) => {
         const list = listStudio
         const index = list.findIndex((item)=>item.id == formCinema.id)
-        list[index] = {...response.data}
+        list[index] = {...response.data.data}
+        console.log(list)
         setListStudio([...list])
         setEditStudio(false);
         setShowCinemaModal(false)
@@ -1960,7 +1961,7 @@ const ManageEvent = () => {
         }}
         showModal={showCinemaModal}
         onClick={edittStudio ? editStudio : addStudio}
-        title={`Buat Studio`}
+        title={edittStudio ? 'Edit Studio' : `Buat Studio`}
       >
         <div className="grid grid-cols-3 gap-2">
           <div className="my-2 col-span-3">

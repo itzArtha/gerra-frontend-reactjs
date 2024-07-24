@@ -80,7 +80,7 @@ const Seat = () => {
     const handleCheckout = async () => {;
     await apiClient
       .post("/api/v1/user/checkout", {
-        event_id: dataStudio.tickets[0].event_id,
+        event_id: dataStudio.event_id,
         ticket:[
           {id : dataStudio.tickets[0].id}
         ],

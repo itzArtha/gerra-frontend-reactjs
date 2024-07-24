@@ -664,7 +664,7 @@ const EventDetail = () => {
                     {loadingStudio ? (
                       <Skeleton className="w-36 h-4 rounded-full" count="1" />
                     ) : (
-                      <ul className="mt-2 w-10/12 m-auto col-span-3">
+                      <ul className="mt-2 w-full sm:w-10/12 m-auto">
                         {listStudio.map((item, index) => (
                           <li key={item.name} className="border-b-2">
                             <div className="px-4 py-5 sm:px-6">
@@ -674,7 +674,7 @@ const EventDetail = () => {
                                 </h3>
                               </div>
                               <div className="mt-4 items-center">
-                                <div className="mt-3">
+                                <div className="mt-3 flex flex-wrap">
                                   {item.available_hours.map((h, i) => (
                                     <MainButton
                                       label={h}
@@ -684,7 +684,7 @@ const EventDetail = () => {
                                           `/explore/event/${slug}/${item.id}`
                                         )
                                       }
-                                      className="mr-2"
+                                      className="mr-2 mb-2"
                                     />
                                   ))}
                                 </div>

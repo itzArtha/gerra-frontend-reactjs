@@ -11,12 +11,8 @@ import apiClient from "../../../services/apiClient.js";
 import Skeleton from "../../../Skeleton";
 import Swal from "sweetalert2";
 import MainInput from "../../../MainInput";
-import SelectInput from "../../../SelectInput";
-import Checkbox from "../../../Checkbox";
-import StudioTimePicker from "../../../StudioTimePIcker.js";
 import moment from "moment";
 import CurrencyFormat from "react-currency-format";
-
 
 const SeatConfiguration = () => {
   const history = useHistory();
@@ -293,7 +289,7 @@ const SeatConfiguration = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
         <div className="col-span-3 bg-gray-200 p-4">
           <div className="flex flex-col items-center relative mb-6">
             <div className="flex justify-evenly w-full mb-4">
@@ -317,19 +313,21 @@ const SeatConfiguration = () => {
               </div>
             </div>
             {loading ? (
-              <Skeleton className="w-24 h-4 rounded" count="1" />
+              <Skeleton className="w-24 h-4 rounded" count="5" />
             ) : (
-              <div className="flex flex-col space-y-2 mb-5 mt-5 w-full">
+              <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
                 {Object.values(rows).map((row, rowIndex) => (
                   <div
                     key={`row-${rowIndex}`}
-                    className="flex justify-center space-x-2"
+                    className="flex md:justify-center space-x-2"
+                    style={{ whiteSpace: 'nowrap' }} // Mencegah elemen baris agar tidak membungkus
                   >
                     {row.map((seat) => (
                       <div
                         key={seat.id}
                         id={seat.number}
                         className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs bg-white border border-gray-400`}
+                        style={{ minWidth: '2rem', minHeight: '2rem' }} // Menjaga ukuran saat overflow
                       >
                         <span>{seat.number}</span>
                       </div>
@@ -346,12 +344,12 @@ const SeatConfiguration = () => {
             <h2 className="text-2xl font-bold">Atur Kursi</h2>
             <MainButton label="Setting" onClick={() => setShowSettingModal(true)} />
           </div>
-          <div className="grid md:grid-cols-5 grid-cols-1 md:gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
             <div className="col-span-5 my-2 min-h-0 max-h-96 overflow-auto">
               {Object.keys(rows).map((rowLabel) => (
                 <div key={rowLabel}>
                   <Label label={`Jumlah Kursi ${rowLabel}`} />
-                  <div className="mb-2 grid md:grid-cols-3 md:gap-2">
+                  <div className="mb-2 grid md:grid-cols-3 gap-2">
                     <div className="col-span-2">
                       <InputNumber
                         name="seat"
@@ -371,7 +369,7 @@ const SeatConfiguration = () => {
                 </div>
               ))}
             </div>
-            <div className="col-span-4 my-2">
+            <div className="col-span-5 md:col-span-4 my-2">
               <MainButton label="Tambah Baris" onClick={handleAddRow} className="w-full" />
             </div>
           </div>

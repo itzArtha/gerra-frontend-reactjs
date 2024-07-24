@@ -180,7 +180,7 @@ const SeatConfiguration = () => {
         <h2 className="text-2xl font-bold">
           Atur ticket {dataStudio?.name}
         </h2>
-        <div className="my-2">
+       {/*  <div className="my-2">
           <Label label="Nama Tiket" />
           <MainInput
             type="text"
@@ -195,11 +195,11 @@ const SeatConfiguration = () => {
             }}
           />
           {formData.isTicketNameError && <ErrorLabel label={formData.ticketNameErrorLabel} />}
-        </div>
+        </div> */}
         <div>
           <div className="grid grid-cols-2 gap-2">
             {/* Uncomment and fix the following code if needed */}
-            {/* <div className="my-2 col-span-2">
+            <div className="my-2 col-span-2">
               <Label label="Harga Tiket" />
               <CurrencyFormat
                 onChange={(e) => {
@@ -217,7 +217,7 @@ const SeatConfiguration = () => {
                 customInput={MainInput}
               />
               {formData.isPriceTicketError && <ErrorLabel label={formData.priceTicketErrorLabel} />}
-            </div> */}
+            </div>
             {/* <div className="my-2">
               <Label label="Jumlah Tiket" />
               <CurrencyFormat
@@ -296,19 +296,19 @@ const SeatConfiguration = () => {
               <div className="relative text-sm">
                 <span className="absolute w-5 h-5 rounded-t-lg bg-white border border-gray-400 -left-6 top-1/2 transform -translate-y-1/2"></span>
                 <span className="text-medium font-semibold text-center text-gray-700 dark:text-white">
-                  Available
+                  Tersedia
                 </span>
               </div>
               <div className="relative text-sm">
                 <span className="absolute w-5 h-5 rounded-t-lg bg-gray-400 border border-gray-400 -left-6 top-1/2 transform -translate-y-1/2"></span>
                 <span className="text-medium font-semibold text-center text-gray-700 dark:text-white">
-                  Booked
+                  Dipesan
                 </span>
               </div>
               <div className="relative text-sm">
                 <span className="absolute w-5 h-5 rounded-t-lg bg-yellow-400 border border-gray-400 -left-6 top-1/2 transform -translate-y-1/2"></span>
                 <span className="text-medium font-semibold text-center text-gray-700 dark:text-white">
-                  Selected
+                  Terpilih
                 </span>
               </div>
             </div>
@@ -342,7 +342,7 @@ const SeatConfiguration = () => {
         <div className="col-span-2 px-4">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold">Atur Kursi</h2>
-            <MainButton label="Setting" onClick={() => setShowSettingModal(true)} />
+            <MainButton label="Pengaturan" onClick={() => setShowSettingModal(true)} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
             <div className="col-span-5 my-2 min-h-0 max-h-96 overflow-auto">

@@ -1523,7 +1523,7 @@ const ManageEvent = () => {
                         {listStudio.map((item, index) => (
                           <li key={item.name} className="border-b-2">
                             <div className="px-4 py-5 sm:px-6">
-                              <div className="flex items-center justify-between">
+                              <div className="md:flex items-center md:justify-between">
                                 <h3 className="text-lg leading-6 font-semibold text-gray-900">
                                   {item.name}
                                 </h3>

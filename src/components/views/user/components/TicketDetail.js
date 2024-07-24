@@ -22,14 +22,36 @@ const TicketDetail = ({ participant, loading, type }) => {
         title={"Detail Tiket"}
       >
         <div>
-          <tr className="flex justify-between border-b py-2">
-            <td>Nomor Tiket</td>
-            <td>{participant.reference}</td>
-          </tr>
-          <tr className="flex justify-between border-b py-2">
-            <td>Nama Tiket</td>
-            <td>{data.title}</td>
-          </tr>
+          {data.type === 2 && (
+            <tr className="flex justify-between border-b py-2">
+              <td>Nomor Tempat Duduk</td>
+              <td>{participant.seat.seat}</td>
+            </tr>
+          )}
+          {data.type === 2 && (
+            <tr className="flex justify-between border-b py-2">
+              <td>Studio</td>
+              <td>{participant.seat.studio.name}</td>
+            </tr>
+          )}
+          {data.type === 2 && (
+            <tr className="flex justify-between border-b py-2">
+              <td>Tempat</td>
+              <td>{data.event.location}</td>
+            </tr>
+          )}
+          {data.type !== 2 && (
+            <tr className="flex justify-between border-b py-2">
+              <td>Nomor Tiket</td>
+              <td>{participant.reference}</td>
+            </tr>
+          )}
+          {data.type !== 2 && (
+            <tr className="flex justify-between border-b py-2">
+              <td>Nama Tiket</td>
+              <td>{data.title}</td>
+            </tr>
+          )}
 
           <tr className={"flex justify-center mt-4"}>
             <QRCode

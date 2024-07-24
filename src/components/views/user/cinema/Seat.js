@@ -22,7 +22,7 @@ const Seat = () => {
 
   const [calculate, setCalculate] = useState({
     subtotal: 0,
-    fee: 0, // Biaya admin per tiket
+    fee: 5000,
     discount: 0,
     total: 0,
   });
@@ -85,9 +85,7 @@ const Seat = () => {
     await apiClient
       .post("/api/v1/user/checkout", {
         event_id: dataStudio.event_id,
-        ticket:[
-          {id : dataStudio.tickets[0].id}
-        ],
+        ticket: [{ id: dataStudio.tickets[0].id }],
         quantity: getSelectedSeats().length,
         seats: getSelectedSeats(),
       })
@@ -192,7 +190,9 @@ const Seat = () => {
               </div>
               <div className="flex justify-between my-1">
                 <div>
-                  <span className="text-xl">Biaya Admin ({selected.length})</span>
+                  <span className="text-xl">
+                    Biaya Admin ({selected.length})
+                  </span>
                 </div>
                 <div>
                   <span className="font-semibold text-xl">

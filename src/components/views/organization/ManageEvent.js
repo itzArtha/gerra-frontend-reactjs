@@ -266,7 +266,10 @@ const ManageEvent = () => {
         handleSwal(response.data.message);
         setFormatShowModal(false);
         setProcessing(false);
-        console.log('aa',response)
+        if(response.data.data.format_id == 4){
+          setFormData({...formData, format : response.data.data.format_id })
+          getStudioData(response.data.data.id)
+        } 
       })
       .catch((error) => {
         // console.log(error);
@@ -1544,14 +1547,14 @@ const ManageEvent = () => {
                                 </div>
                               </div>
                               <div className="mt-4 items-center">
-                                <p className="text-sm font-medium text-gray-500">
+                                {/* <p className="text-sm font-medium text-gray-500">
                                   <span class="bg-yellow-400 text-gray-700 text-xs me-2 px-2.5 py-1 rounded mr-1 font-bold">
                                     Booked Seats : {item.booked_seats}{" "}
                                   </span>
                                   <span class="bg-gray-400  text-gray-700 text-xs font-bold me-2 px-2.5 py-1 rounded">
                                     Unbooked Seats : {item.unbooked_seats}{" "}
                                   </span>
-                                </p>
+                                </p> */}
                                 <div className="mt-3">
                                   {item.available_hours.map((h, i) => (
                                     <MainButton

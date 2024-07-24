@@ -158,8 +158,8 @@ const SeatConfiguration = () => {
 
       try {
         await apiClient.patch(
-          `api/v1/organization/event/ticket/${dataStudio.tickets[0].id}`,
-          finalData
+          `api/v1/organization/event/batch/ticket`,
+          {tickets : finalData}
         );
         history.goBack();
       } catch (error) {

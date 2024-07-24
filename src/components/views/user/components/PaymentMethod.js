@@ -95,7 +95,7 @@ const PaymentMethod = () => {
         })
         .then((response) => {
           if (response.status === 200) {
-            history.push("payment?ref_id=" + response.data);
+            // history.push("payment?ref_id=" + response.data);
             window.location.href = response.data;
           }
         })

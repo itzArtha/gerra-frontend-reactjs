@@ -16,7 +16,7 @@ const Seat = () => {
 
   const [calculate, setCalculate] = useState({
     subtotal: 0,
-    fee: 5000,
+    fee: 0,
     discount: 0,
     total: 0,
   });
@@ -39,7 +39,7 @@ const Seat = () => {
 
   const updateTotalPrice = (selectedSeats) => {
     const subtotal = price * selectedSeats.length;
-    const fee = calculate.fee * selectedSeats.length;
+    const fee = 5000 * selectedSeats.length;
     const total = subtotal + fee;
     setCalculate({
       subtotal,
@@ -207,7 +207,7 @@ const Seat = () => {
                 <div>
                   <span className="font-semibold text-xl">
                     <CurrencyFormat
-                      value={calculate.fee * selected.length}
+                      value={calculate.fee}
                       displayType={"text"}
                       thousandSeparator={true}
                       prefix={"Rp"}

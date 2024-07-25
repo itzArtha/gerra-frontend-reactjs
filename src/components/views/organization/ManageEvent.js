@@ -276,7 +276,7 @@ const ManageEvent = () => {
   const handleUpdateDateTime = async () => {
     setProcessing(true);
     await apiClient
-      .put("/api/v1/organization/event/", {
+      .put("/api/v1/organization/event/" + slug, {
         start_at: formData.startDate + " " + formData.startTime,
         end_at: formData.endDate + " " + formData.endTime,
       })

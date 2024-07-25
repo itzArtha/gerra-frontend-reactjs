@@ -2018,7 +2018,7 @@ const ManageEvent = () => {
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div className="my-2 col-span-3">
-            <Label label="Nama Studio" />
+            <Label label="Jam Tayang" />
             <StudioTimePicker
               value={formCinema.available_hours}
               onChange={(e) => {

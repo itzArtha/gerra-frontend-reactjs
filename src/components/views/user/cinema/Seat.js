@@ -5,6 +5,7 @@ import CurrencyFormat from "react-currency-format";
 import apiClient from "../../../services/apiClient.js";
 import MainButton from "../../../MainButton.js";
 import handleSwal from "../../../handleSwal";
+import Skeleton from "../../../Skeleton";
 
 const Seat = () => {
   const history = useHistory();
@@ -13,6 +14,7 @@ const Seat = () => {
   const [dataStudio, setDataStudio] = useState(null);
   const [price, setPrice] = useState(0);
   const [rows, setRows] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [calculate, setCalculate] = useState({
     subtotal: 0,
@@ -61,6 +63,7 @@ const Seat = () => {
   };
 
   const getStudioData = async () => {
+    setLoading(true)
     try {
       const response = await apiClient.get(`api/v1/user/studio/${studio}`);
       const studioData = response.data.data;
@@ -77,10 +80,11 @@ const Seat = () => {
           isReserved: ticketData.booked_seat.includes(seat.number) || seat.isReserved,
         }));
       });
-  
+      setLoading(false)
       setRows(updatedRows);
       setPrice(ticketData.price);
     } catch (error) {
+      setLoading(false)
       handleSwal("Gagal ambil data studio", "error");
     }
   };
@@ -118,6 +122,7 @@ const Seat = () => {
 
   return (
     <MainLayout top={true} footer={true} menu={true}>
+      <h2 className="text-2xl font-bold p-4">{dataStudio?.name}</h2>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
         <div className="col-span-1 lg:col-span-3 bg-gray-200 p-4">
           <div className="flex flex-col items-center relative mb-6">
@@ -141,6 +146,11 @@ const Seat = () => {
                 </span>
               </div>
             </div>
+            {loading ? (
+                <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
+                <Skeleton className="w-full h-12 rounded" count="5" />
+                </div>
+            ) : (
             <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
               {Object.values(rows).map((row, rowIndex) => (
                 <div
@@ -176,6 +186,7 @@ const Seat = () => {
                 </div>
               ))}
             </div>
+            )}
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-1.5 bg-blue-300 rounded-b-md border-t border-gray-400"></div>
           </div>
         </div>

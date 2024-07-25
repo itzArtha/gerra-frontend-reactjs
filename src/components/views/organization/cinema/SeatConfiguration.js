@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import MainInput from "../../../MainInput";
 import moment from "moment";
 import CurrencyFormat from "react-currency-format";
+import { isArray } from 'lodash'
 
 const SeatConfiguration = () => {
   const history = useHistory();
@@ -68,16 +69,16 @@ const SeatConfiguration = () => {
 
   const handleAddRow = () => {
     setRows((prevRows) => {
-      const lastRowLabel = Object.keys(prevRows).slice(-1)[0] || 'A';
-      const newRowLabel = String.fromCharCode(lastRowLabel.charCodeAt(0) + 1);
-      return {
-        ...prevRows,
-        [newRowLabel]: Array.from({ length: 10 }, (_, i) => ({
-          id: i + 1,
-          number: `${newRowLabel}${i + 1}`,
-        })),
-      };
-    });
+        const lastRowLabel = Object.keys(prevRows).length ? Object.keys(prevRows).slice(-1)[0] : null;
+        const newRowLabel = lastRowLabel ? String.fromCharCode(lastRowLabel.charCodeAt(0) + 1) : 'A'
+        return {
+          ...prevRows,
+          [newRowLabel]: Array.from({ length: 10 }, (_, i) => ({
+            id: i + 1,
+            number: `${newRowLabel}${i + 1}`,
+          })),
+        };
+      })
   };
 
   const handleDeleteRow = (rowLabel) => {
@@ -313,7 +314,9 @@ const SeatConfiguration = () => {
               </div>
             </div>
             {loading ? (
-              <Skeleton className="w-24 h-4 rounded" count="5" />
+              <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
+              <Skeleton className="w-full h-12 rounded" count="5" />
+              </div>
             ) : (
               <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
                 {Object.values(rows).map((row, rowIndex) => (

@@ -7,22 +7,16 @@ import MainButton from "../../../MainButton.js";
 import handleSwal from "../../../handleSwal";
 
 const Seat = () => {
-  const history = useHistory()
-  const { event, studio } = useParams();
+  const history = useHistory();
+  const { event, studio, ticket } = useParams();
   const [selected, setSelected] = useState([]);
   const [dataStudio, setDataStudio] = useState(null);
   const [price, setPrice] = useState(0);
-  const [rows, setRows] = useState({
-    A: Array.from({ length: 13 }, (_, i) => ({
-      id: i + 1,
-      number: `A${i + 1}`,
-      isReserved: false,
-    })),
-  });
+  const [rows, setRows] = useState({});
 
   const [calculate, setCalculate] = useState({
     subtotal: 0,
-    fee: 0, // Biaya admin per tiket
+    fee: 0,
     discount: 0,
     total: 0,
   });
@@ -45,7 +39,7 @@ const Seat = () => {
 
   const updateTotalPrice = (selectedSeats) => {
     const subtotal = price * selectedSeats.length;
-    const fee =   5000 * selectedSeats.length; // Biaya admin untuk semua tiket
+    const fee = 5000 * selectedSeats.length;
     const total = subtotal + fee;
     setCalculate({
       subtotal,
@@ -69,21 +63,38 @@ const Seat = () => {
   const getStudioData = async () => {
     try {
       const response = await apiClient.get(`api/v1/user/studio/${studio}`);
-      setDataStudio(response.data.data);
-      setRows(response.data.data.tickets[0].seat_layout);
-      setPrice(response.data.data.tickets[0].price);
+      const studioData = response.data.data;
+      setDataStudio(studioData);
+  
+      const ticketData = studioData.tickets.find((item) => item.id == ticket) || studioData.tickets[0];
+      const seats = ticketData.seat_layout;
+      const updatedRows = {};
+  
+      // Memperbarui status kursi yang sudah dipesan
+      Object.keys(seats).forEach((row) => {
+        updatedRows[row] = seats[row].map((seat) => ({
+          ...seat,
+          isReserved: ticketData.booked_seat.includes(seat.number) || seat.isReserved,
+        }));
+      });
+  
+      setRows(updatedRows);
+      setPrice(ticketData.price);
     } catch (error) {
       handleSwal("Gagal ambil data studio", "error");
     }
   };
+  
 
-    const handleCheckout = async () => {;
+  const handleCheckout = async () => {
+    if (getSelectedSeats().length <= 0) {
+      handleSwal("Pilih tiket terlebih dahulu", "warning");
+    }
+
     await apiClient
       .post("/api/v1/user/checkout", {
         event_id: dataStudio.event_id,
-        ticket:[
-          {id : dataStudio.tickets[0].id}
-        ],
+        ticket: [{ id: ticket }],
         quantity: getSelectedSeats().length,
         seats: getSelectedSeats(),
       })
@@ -95,12 +106,11 @@ const Seat = () => {
         }
       })
       .catch((error) => {
-      console.log(error)
+        if (error.response.status) {
+          handleSwal(error.response.data.message, "warning");
+        }
       });
   };
-
-  
-
 
   useEffect(() => {
     getStudioData();
@@ -108,34 +118,35 @@ const Seat = () => {
 
   return (
     <MainLayout top={true} footer={true} menu={true}>
-      <div className="grid grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
-        <div className="col-span-3 bg-gray-200 p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 font-sans p-4 bg-white rounded-lg shadow-lg">
+        <div className="col-span-1 lg:col-span-3 bg-gray-200 p-4">
           <div className="flex flex-col items-center relative mb-6">
             <div className="flex justify-evenly w-full mb-4">
               <div className="relative text-sm">
                 <span className="absolute w-5 h-5 rounded-t-lg bg-white border border-gray-400 -left-6 top-1/2 transform -translate-y-1/2"></span>
-                <span className="text-medium font-semibold text-center text-gray-700 dark:text-white">
-                  Available
+                <span className="text-medium font-semibold text-center text-gray-700">
+                  Tersedia
                 </span>
               </div>
               <div className="relative text-sm">
                 <span className="absolute w-5 h-5 rounded-t-lg bg-gray-400 border border-gray-400 -left-6 top-1/2 transform -translate-y-1/2"></span>
-                <span className="text-medium font-semibold text-center text-gray-700 dark:text-white">
-                  Booked
+                <span className="text-medium font-semibold text-center text-gray-700">
+                  Dipesan
                 </span>
               </div>
               <div className="relative text-sm">
                 <span className="absolute w-5 h-5 rounded-t-lg bg-yellow-400 border border-gray-400 -left-6 top-1/2 transform -translate-y-1/2"></span>
-                <span className="text-medium font-semibold text-center text-gray-700 dark:text-white">
-                  Selected
+                <span className="text-medium font-semibold text-center text-gray-700">
+                  Dipilih
                 </span>
               </div>
             </div>
-            <div className="flex flex-col space-y-2 mb-5 mt-5 w-full">
-              {rows && Object.values(rows).map((row, rowIndex) => (
+            <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
+              {Object.values(rows).map((row, rowIndex) => (
                 <div
                   key={`row-${rowIndex}`}
-                  className="flex justify-center space-x-2"
+                  className="flex md:justify-center space-x-2"
+                  style={{ whiteSpace: 'nowrap' }} // Mencegah elemen baris agar tidak membungkus
                 >
                   {row.map((seat) => (
                     <div
@@ -150,6 +161,7 @@ const Seat = () => {
                           }
                         }
                       }}
+                      style={{ minWidth: '2rem', minHeight: '2rem' }}
                       className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs ${
                         seat.isReserved
                           ? "bg-gray-400 cursor-not-allowed"
@@ -167,7 +179,7 @@ const Seat = () => {
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-1.5 bg-blue-300 rounded-b-md border-t border-gray-400"></div>
           </div>
         </div>
-        <div className="col-span-2 p-4">
+        <div className="col-span-1 lg:col-span-2 p-4">
           <h2 className="text-2xl font-bold">Informasi Pembelian</h2>
           <div className="mt-4">
             <div className="mt-2">
@@ -188,7 +200,9 @@ const Seat = () => {
               </div>
               <div className="flex justify-between my-1">
                 <div>
-                  <span className="text-xl">Biaya Admin ({selected.length})</span>
+                  <span className="text-xl">
+                    Biaya Admin ({selected.length})
+                  </span>
                 </div>
                 <div>
                   <span className="font-semibold text-xl">
@@ -221,13 +235,7 @@ const Seat = () => {
           <MainButton
             label="Checkout"
             onClick={() => {
-              const seats = handleCheckout();
-              if (seats.length > 0) {
-                // Implement your checkout logic here
-                console.log('Selected seats:', seats);
-              } else {
-                handleSwal("Pilih tiket terlebih dahulu", "warning");
-              }
+              handleCheckout();
             }}
             className="w-full mt-5"
           />

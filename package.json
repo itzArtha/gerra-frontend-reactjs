@@ -39,6 +39,7 @@
     "react-scripts": "4.0.3",
     "react-share": "^4.4.0",
     "react-signature-canvas": "^1.0.3",
+    "react-time-picker": "^7.0.0",
     "react-transition-group": "^4.4.2",
     "styled-components": "^6.1.1",
     "sweetalert2": "^11.3.0",

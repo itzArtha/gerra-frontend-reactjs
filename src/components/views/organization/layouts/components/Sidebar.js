@@ -33,7 +33,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
         aria-hidden="true"
       />
       <div
-        className={`flex flex-col fixed z-40 left-0 top-0 md:left-auto md:top-auto md:translate-x-0 transform h-screen overflow-y-scroll md:overflow-y-auto no-scrollbar w-64 lg:w-72 flex-shrink-0 bg-white p-4 transition-all duration-200 ease-in-out ${
+        className={`flex flex-col fixed z-40 left-0 top-0 md:left-auto md:top-auto md:translate-x-0 transform h-screen overflow-y-auto md:overflow-y-auto no-scrollbar w-64 lg:w-72 flex-shrink-0 bg-white p-4 transition-all duration-200 ease-in-out ${
           sidebarOpen ? "translate-x-0" : "-translate-x-64"
         }`}
       >
@@ -159,6 +159,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, route, data, loading }) => {
                   label="Pengaturan"
                 />
               </Link>
+            </div>
+            <div className="mb-2 last:mb-0">
+              <SecondaryButton
+                onClick={(e) => {
+                  window.open("https://bisnis.tokoevent.id/", "_blank");
+                }}
+                className={`w-full py-4 ${
+                  route.includes("create") && "bg-yellow-400"
+                }`}
+                label={isLoading ? "Loading..." : "Sistem OTS"}
+              />
             </div>
           </nav>
 

@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 import MainInput from "../../../MainInput";
 import moment from "moment";
 import CurrencyFormat from "react-currency-format";
-import { isArray } from 'lodash'
 
 const SeatConfiguration = () => {
   const history = useHistory();
@@ -21,7 +20,6 @@ const SeatConfiguration = () => {
   const [showSettingModal, setShowSettingModal] = useState(false);
   const [dataStudio, setDataStudio] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isFree, setFree] = useState(false);
   const [formData, setFormData] = useState({
     x: 0,
     y: 0,
@@ -39,22 +37,24 @@ const SeatConfiguration = () => {
   }, []);
 
   const handleSwal = (data, status) => {
-    const Toast = Swal.mixin({
+    Swal.fire({
+      icon: status || "success",
+      title: data,
       toast: true,
       position: "top-end",
       showConfirmButton: false,
       timer: 3000,
       timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener("mouseenter", Swal.stopTimer);
-        toast.addEventListener("mouseleave", Swal.resumeTimer);
-      },
     });
+  };
 
-    Toast.fire({
-      icon: status || "success",
-      title: data,
-    });
+  const handleSeatClick = (rowLabel, seatId) => {
+    setRows((prevRows) => ({
+      ...prevRows,
+      [rowLabel]: prevRows[rowLabel].map((seat) =>
+        seat.id === seatId ? { ...seat, isReserved: !seat.isReserved } : seat
+      ),
+    }));
   };
 
   const handleSeatChange = (value, rowLabel) => {
@@ -62,6 +62,7 @@ const SeatConfiguration = () => {
       const newSeats = Array.from({ length: value }, (_, i) => ({
         id: i + 1,
         number: `${rowLabel}${i + 1}`,
+        isReserved: prevRows[rowLabel]?.[i]?.isReserved || false, // Preserve the reserved state if it exists
       }));
       return { ...prevRows, [rowLabel]: newSeats };
     });
@@ -69,16 +70,21 @@ const SeatConfiguration = () => {
 
   const handleAddRow = () => {
     setRows((prevRows) => {
-        const lastRowLabel = Object.keys(prevRows).length ? Object.keys(prevRows).slice(-1)[0] : null;
-        const newRowLabel = lastRowLabel ? String.fromCharCode(lastRowLabel.charCodeAt(0) + 1) : 'A'
-        return {
-          ...prevRows,
-          [newRowLabel]: Array.from({ length: 10 }, (_, i) => ({
-            id: i + 1,
-            number: `${newRowLabel}${i + 1}`,
-          })),
-        };
-      })
+      const lastRowLabel = Object.keys(prevRows).length
+        ? Object.keys(prevRows).slice(-1)[0]
+        : null;
+      const newRowLabel = lastRowLabel
+        ? String.fromCharCode(lastRowLabel.charCodeAt(0) + 1)
+        : "A";
+      return {
+        ...prevRows,
+        [newRowLabel]: Array.from({ length: 10 }, (_, i) => ({
+          id: i + 1,
+          number: `${newRowLabel}${i + 1}`,
+          isReserved: false, // New seats are not reserved by default
+        })),
+      };
+    });
   };
 
   const handleDeleteRow = (rowLabel) => {
@@ -86,7 +92,7 @@ const SeatConfiguration = () => {
       const { [rowLabel]: _, ...rest } = prevRows;
       const updatedRows = {};
       Object.keys(rest).forEach((label, index) => {
-        const newLabel = String.fromCharCode(65 + index); // 'A', 'B', 'C', etc.
+        const newLabel = String.fromCharCode(65 + index);
         updatedRows[newLabel] = rest[label].map((seat, i) => ({
           ...seat,
           number: `${newLabel}${i + 1}`,
@@ -99,10 +105,11 @@ const SeatConfiguration = () => {
   const handleGenerateSeats = () => {
     const newRows = {};
     for (let i = 0; i < formData.y; i++) {
-      const rowLabel = String.fromCharCode(65 + i); // 'A', 'B', 'C', etc.
+      const rowLabel = String.fromCharCode(65 + i);
       newRows[rowLabel] = Array.from({ length: formData.x }, (_, j) => ({
         id: j + 1,
         number: `${rowLabel}${j + 1}`,
+        isReserved: false, // New seats are not reserved by default
       }));
     }
     setRows(newRows);
@@ -116,10 +123,12 @@ const SeatConfiguration = () => {
   const getStudioData = async () => {
     setLoading(true);
     try {
-      const response = await apiClient.get(`api/v1/organization/studio/${studio}`);
+      const response = await apiClient.get(
+        `api/v1/organization/studio/${studio}`
+      );
       const studioData = response.data.data;
       setDataStudio(studioData);
-      setRows(studioData.tickets[0].seat_layout || {}); // Handle possible undefined seat_layout
+      setRows(studioData.tickets[0].seat_layout || {});
       setLoading(false);
       setFormData({
         ...formData,
@@ -129,10 +138,9 @@ const SeatConfiguration = () => {
         end_at: studioData.tickets[0].end_at,
       });
     } catch (error) {
-      console.log(error);
       setLoading(false);
       handleSwal(
-        error?.data?.message || "Gagal ambil data studio",
+        error?.response?.data?.message || "Gagal ambil data studio",
         "error"
       );
     }
@@ -142,7 +150,7 @@ const SeatConfiguration = () => {
     const finalData = [];
     const amount = getTotalSeats();
     const formattedPrice = parseInt(formData.price.toString().replace(/\D/g, ""));
-    
+
     if (dataStudio?.tickets) {
       for (let i = 0; i < dataStudio.tickets.length; i++) {
         let data = {
@@ -153,22 +161,20 @@ const SeatConfiguration = () => {
           seat_layout: rows,
           total_seats: amount,
         };
-    
+
         finalData.push(data);
       }
 
       try {
-        await apiClient.patch(
-          `api/v1/organization/event/batch/ticket`,
-          {tickets : finalData}
-        );
+        await apiClient.patch(`api/v1/organization/event/batch/ticket`, {
+          tickets: finalData,
+        });
         history.goBack();
       } catch (error) {
         handleSwal(
-          error?.data?.message || "Gagal edit, sorry ya....",
+          error?.response?.data?.message || "Gagal edit, sorry ya....",
           "error"
         );
-        console.log("sss", error);
       }
     } else {
       handleSwal("Data tiket tidak ditemukan", "error");
@@ -177,29 +183,10 @@ const SeatConfiguration = () => {
 
   return (
     <MainLayout top={true} footer={true}>
-      <div className='p-4'>
-        <h2 className="text-2xl font-bold">
-          Atur ticket {dataStudio?.name}
-        </h2>
-       {/*  <div className="my-2">
-          <Label label="Nama Tiket" />
-          <MainInput
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={(e) => {
-              setFormData({
-                ...formData,
-                title: e.target.value,
-                isTicketNameError: false,
-              });
-            }}
-          />
-          {formData.isTicketNameError && <ErrorLabel label={formData.ticketNameErrorLabel} />}
-        </div> */}
+      <div className="p-4">
+        <h2 className="text-2xl font-bold">Atur ticket {dataStudio?.name}</h2>
         <div>
           <div className="grid grid-cols-2 gap-2">
-            {/* Uncomment and fix the following code if needed */}
             <div className="my-2 col-span-2">
               <Label label="Harga Tiket" />
               <CurrencyFormat
@@ -217,40 +204,11 @@ const SeatConfiguration = () => {
                 value={formData.price}
                 customInput={MainInput}
               />
-              {formData.isPriceTicketError && <ErrorLabel label={formData.priceTicketErrorLabel} />}
+              {formData.isPriceTicketError && (
+                <ErrorLabel label={formData.priceTicketErrorLabel} />
+              )}
             </div>
-            {/* <div className="my-2">
-              <Label label="Jumlah Tiket" />
-              <CurrencyFormat
-                customInput={MainInput}
-                type="text"
-                name="amountTicket"
-                value={formData.amountTicket}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    amountTicket: e.target.value,
-                    isAmountTicketError: false,
-                  });
-                }}
-              />
-              {formData.isAmountTicketError && <ErrorLabel label={formData.amountTicketErrorLabel} />}
-            </div> */}
           </div>
-          {/* <div>
-            <Checkbox
-              label="Tiket ini gratis"
-              onChange={(e) => {
-                setFree((isFree) => !isFree);
-                setFormData({
-                  ...formData,
-                  is_free: e.target.checked,
-                  priceTicket: "0",
-                });
-              }}
-              checked={formData.is_free}
-            />
-          </div> */}
           <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
             <div className="my-2">
               <Label label="Mulai Dijual" />
@@ -267,7 +225,9 @@ const SeatConfiguration = () => {
                   });
                 }}
               />
-              {formData.isStartSaleTicketError && <ErrorLabel label={formData.startSaleTicketErrorLabel} />}
+              {formData.isStartSaleTicketError && (
+                <ErrorLabel label={formData.startSaleTicketErrorLabel} />
+              )}
             </div>
             <div className="my-2">
               <Label label="Berakhir Dijual" />
@@ -284,7 +244,9 @@ const SeatConfiguration = () => {
                   });
                 }}
               />
-              {formData.isEndSaleTicketError && <ErrorLabel label={formData.endSaleTicketErrorLabel} />}
+              {formData.isEndSaleTicketError && (
+                <ErrorLabel label={formData.endSaleTicketErrorLabel} />
+              )}
             </div>
           </div>
         </div>
@@ -315,22 +277,27 @@ const SeatConfiguration = () => {
             </div>
             {loading ? (
               <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
-              <Skeleton className="w-full h-12 rounded" count="5" />
+                <Skeleton className="w-full h-12 rounded" count="5" />
               </div>
             ) : (
               <div className="flex flex-col space-y-2 mb-5 mt-5 w-full lg:w-3/4 md:w-5/6 sm:w-full h-64 overflow-x-auto lg:h-96 md:h-80 sm:h-64">
-                {Object.values(rows).map((row, rowIndex) => (
+                {Object.entries(rows).map(([rowLabel, row], rowIndex) => (
                   <div
                     key={`row-${rowIndex}`}
                     className="flex md:justify-center space-x-2"
-                    style={{ whiteSpace: 'nowrap' }} // Mencegah elemen baris agar tidak membungkus
+                    style={{ whiteSpace: "nowrap" }}
                   >
                     {row.map((seat) => (
                       <div
                         key={seat.id}
                         id={seat.number}
-                        className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs bg-white border border-gray-400`}
-                        style={{ minWidth: '2rem', minHeight: '2rem' }} // Menjaga ukuran saat overflow
+                        onClick={() => handleSeatClick(rowLabel, seat.id)}
+                        style={{ minWidth: "2rem", minHeight: "2rem" }}
+                        className={`w-8 h-8 m-1 rounded-t-lg cursor-pointer flex items-center justify-center text-xs ${
+                          seat.isReserved
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-white border border-gray-400"
+                        }`}
                       >
                         <span>{seat.number}</span>
                       </div>
@@ -345,7 +312,10 @@ const SeatConfiguration = () => {
         <div className="col-span-2 px-4">
           <div className="flex justify-between">
             <h2 className="text-2xl font-bold">Atur Kursi</h2>
-            <MainButton label="Pengaturan" onClick={() => setShowSettingModal(true)} />
+            <MainButton
+              label="Pengaturan"
+              onClick={() => setShowSettingModal(true)}
+            />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
             <div className="col-span-5 my-2 min-h-0 max-h-96 overflow-auto">
@@ -357,7 +327,9 @@ const SeatConfiguration = () => {
                       <InputNumber
                         name="seat"
                         value={rows[rowLabel]?.length || 0}
-                        onChange={(e) => handleSeatChange(parseInt(e), rowLabel)}
+                        onChange={(e) =>
+                          handleSeatChange(parseInt(e), rowLabel)
+                        }
                         min={1}
                       />
                     </div>
@@ -365,7 +337,9 @@ const SeatConfiguration = () => {
                       <SecButton
                         label="X"
                         onClick={() => handleDeleteRow(rowLabel)}
-                        disabled={Object.keys(rows).length === 1 && rowLabel === "A"}
+                        disabled={
+                          Object.keys(rows).length === 1 && rowLabel === "A"
+                        }
                       />
                     </div>
                   </div>
@@ -373,7 +347,11 @@ const SeatConfiguration = () => {
               ))}
             </div>
             <div className="col-span-5 md:col-span-4 my-2">
-              <MainButton label="Tambah Baris" onClick={handleAddRow} className="w-full" />
+              <MainButton
+                label="Tambah Baris"
+                onClick={handleAddRow}
+                className="w-full"
+              />
             </div>
           </div>
           <div className="col-span-2 p-4 flex justify-between">
@@ -398,7 +376,9 @@ const SeatConfiguration = () => {
               onChange={(e) => setFormData({ ...formData, y: e })}
               min={1}
             />
-            {formData.isColumnNameError && <ErrorLabel label={formData.columnNameErrorLabel} />}
+            {formData.isColumnNameError && (
+              <ErrorLabel label={formData.columnNameErrorLabel} />
+            )}
           </div>
           <div className="my-2 col-span-1">
             <Label label="Baris X" />
@@ -408,7 +388,9 @@ const SeatConfiguration = () => {
               onChange={(e) => setFormData({ ...formData, x: e })}
               min={1}
             />
-            {formData.isTypeColumnError && <ErrorLabel label={formData.typeColumnErrorLabel} />}
+            {formData.isTypeColumnError && (
+              <ErrorLabel label={formData.typeColumnErrorLabel} />
+            )}
           </div>
         </div>
       </MainModal>

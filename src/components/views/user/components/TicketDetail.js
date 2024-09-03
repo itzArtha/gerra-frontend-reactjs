@@ -86,7 +86,7 @@ const TicketDetail = ({ participant, loading, type }) => {
           </div>
           <div>
             <span className="text-xs md:text-base font-light">
-              {moment(data.start_at).format("ll")}
+              {/*{moment(data.start_at).format("ll")}*/}
             </span>
           </div>
         </div>
@@ -103,7 +103,7 @@ const TicketDetail = ({ participant, loading, type }) => {
             }
           />
         </div>
-        <div>
+        {/*<div>
           <IconWithTitle
             loading={loading}
             title={moment(data.start_at).format("lll")}
@@ -117,7 +117,7 @@ const TicketDetail = ({ participant, loading, type }) => {
               </RoundedButton>
             }
           />
-        </div>
+        </div>*/}
         <div className="flex justify-between">
           <div>
             <IconWithTitle

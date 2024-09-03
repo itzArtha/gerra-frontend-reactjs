@@ -25,13 +25,19 @@ const TicketDetail = ({ participant, loading, type }) => {
           {data.type === 2 && (
             <tr className="flex justify-between border-b py-2">
               <td>Nomor Tempat Duduk</td>
-              <td>{participant.seat.seat}</td>
+              <td>{participant?.seat?.seat}</td>
+            </tr>
+          )}
+          {data.type === 2 && (
+            <tr className="flex justify-between border-b py-2">
+              <td>Jam Tayang</td>
+              <td>{data?.time}</td>
             </tr>
           )}
           {data.type === 2 && (
             <tr className="flex justify-between border-b py-2">
               <td>Studio</td>
-              <td>{participant.seat.studio.name}</td>
+              <td>{participant?.seat?.studio?.name}</td>
             </tr>
           )}
           {data.type === 2 && (

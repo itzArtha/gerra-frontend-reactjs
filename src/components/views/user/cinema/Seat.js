@@ -195,7 +195,7 @@ const Seat = () => {
                 ))}
               </div>
             )}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 my-2 bg-blue-300 rounded-b-md border-t border-gray-400 text-white text-center">
+            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-72 my-2 bg-blue-300 rounded-b-md border-t border-gray-400 text-white text-center">
               Screen
             </div>
           </div>

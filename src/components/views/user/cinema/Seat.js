@@ -195,7 +195,9 @@ const Seat = () => {
                 ))}
               </div>
             )}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-1.5 bg-blue-300 rounded-b-md border-t border-gray-400"></div>
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 my-2 bg-blue-300 rounded-b-md border-t border-gray-400 text-white text-center">
+              Screen
+            </div>
           </div>
         </div>
         <div className="col-span-1 lg:col-span-2 p-4">
@@ -251,13 +253,15 @@ const Seat = () => {
               </div>
             </div>
           </div>
-          <MainButton
-            label="Checkout"
-            onClick={() => {
-              handleCheckout();
-            }}
-            className="w-full mt-5"
-          />
+          {dataStudio?.is_active && (
+            <MainButton
+              label="Checkout"
+              onClick={() => {
+                handleCheckout();
+              }}
+              className="w-full mt-5"
+            />
+          )}
         </div>
       </div>
     </MainLayout>

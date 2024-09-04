@@ -107,8 +107,8 @@ const Register = ({ id, callback }) => {
           } else {
             setformData({
               ...formData,
-              isEmailError: true,
-              emailErrorLabel: error.response.data.message,
+              isPhoneError: true,
+              phoneErrorLabel: "No. Hp sudah digunakan",
             });
           }
         });

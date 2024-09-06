@@ -103,6 +103,7 @@ const Login = ({ id, callback }) => {
       });
     }
   };
+
   return (
     <Layout>
       <React.Fragment>
@@ -184,7 +185,7 @@ const Login = ({ id, callback }) => {
                     <Label label="Password" />
                     <Link to="/forget-password">
                       <div className="text-xs cursor-pointer text-gray-500 dark:text-gray-300 hover:underline">
-                        Forget Password?
+                        Lupa Password?
                       </div>
                     </Link>
                   </div>
@@ -235,9 +236,9 @@ const Login = ({ id, callback }) => {
                       ? history.push("/" + id + "/register")
                       : callback("register", id);
                   }}
-                  className="text-xs cursor-pointer text-gray-500 uppercase dark:text-gray-400 hover:underline"
+                  className="text-md cursor-pointer text-gray-500 dark:text-gray-400 hover:underline"
                 >
-                  or sign up
+                  Belum punya akun? Daftar
                 </p>
 
                 <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4" />

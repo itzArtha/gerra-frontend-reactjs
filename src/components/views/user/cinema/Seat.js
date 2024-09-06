@@ -24,12 +24,6 @@ const Seat = () => {
   });
 
   const addSeatCallback = (seat) => {
-    if (getSelectedSeats().length >= 5) {
-      handleSwal("Maksimal 5 tiket dalam sekali checkout", "warning");
-
-      return false;
-    }
-
     setSelected((prevItems) => {
       const updatedSelected = [...prevItems, seat];
       updateTotalPrice(updatedSelected);

@@ -190,10 +190,6 @@ const Register = ({ id, callback }) => {
               <h2 className="text-2xl font-semibold text-center text-gray-700 dark:text-white">
                 Daftar Sebagai {id === "user" ? "Pembeli" : "Organisasi"}
               </h2>
-
-              <div className="text-sm text-center text-gray-600 dark:text-gray-200 py-4">
-                "Hidup memang seperti itu kawan, jangan lupa staycation"
-              </div>
               {/*
                     <GoogleBtn
                         type="button"
@@ -364,9 +360,9 @@ const Register = ({ id, callback }) => {
                       ? history.push("/" + id + "/login")
                       : callback("");
                   }}
-                  className="text-xs cursor-pointer text-gray-500 uppercase dark:text-gray-400 hover:underline"
+                  className="text-md cursor-pointer text-gray-500 dark:text-gray-400 hover:underline"
                 >
-                  or sign in
+                  Sudah punya akun? Login
                 </p>
 
                 <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4" />

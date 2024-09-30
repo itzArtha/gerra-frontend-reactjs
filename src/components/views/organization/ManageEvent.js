@@ -18,7 +18,6 @@ import Skeleton from "../../Skeleton";
 import StudioTimePicker from "../../StudioTimePIcker.js";
 import SecondaryButton from "../../SecondaryButton.js";
 
-
 const ManageEvent = () => {
   // const inputFile = useRef(null);
   const uploadCover = useRef(null);
@@ -199,7 +198,8 @@ const ManageEvent = () => {
           setTicket(response.data.data.ticket);
           setDataPeserta(response.data.data.APInformation);
           setLoading(false);
-          if(response.data.data.format_id == 4) getStudioData(response.data.data.id)
+          if (response.data.data.format_id == 4)
+            getStudioData(response.data.data.id);
         })
         .catch((error) => {
           if (error.response.status === 404) {
@@ -266,10 +266,10 @@ const ManageEvent = () => {
         handleSwal(response.data.message);
         setFormatShowModal(false);
         setProcessing(false);
-        if(response.data.data.format_id == 4){
-          setFormData({...formData, format : response.data.data.format_id })
-          getStudioData(response.data.data.id)
-        } 
+        if (response.data.data.format_id == 4) {
+          setFormData({ ...formData, format: response.data.data.format_id });
+          getStudioData(response.data.data.id);
+        }
       })
       .catch((error) => {
         // console.log(error);
@@ -726,14 +726,17 @@ const ManageEvent = () => {
     await apiClient
       .post(`api/v1/organization/event/${formData.eventId}/studio`, formCinema)
       .then((response) => {
-        const list = listStudio
+        const list = listStudio;
         list.push(response.data.data);
-        setListStudio([...list])
+        setListStudio([...list]);
         setEditStudio(false);
-        setShowCinemaModal(false)
+        setShowCinemaModal(false);
       })
       .catch((error) => {
-        handleSwal(error?.data?.message ? error?.data?.message : 'gagal tambah studio' , "error");
+        handleSwal(
+          error?.data?.message ? error?.data?.message : "gagal tambah studio",
+          "error"
+        );
         console.log(error);
       });
   };
@@ -742,16 +745,19 @@ const ManageEvent = () => {
     await apiClient
       .patch(`/api/v1/organization/studio/${formCinema.id}`, formCinema)
       .then((response) => {
-        const list = listStudio
-        const index = list.findIndex((item)=>item.id == formCinema.id)
-        list[index] = {...response.data.data}
-        console.log(list)
-        setListStudio([...list])
+        const list = listStudio;
+        const index = list.findIndex((item) => item.id == formCinema.id);
+        list[index] = { ...response.data.data };
+        console.log(list);
+        setListStudio([...list]);
         setEditStudio(false);
-        setShowCinemaModal(false)
+        setShowCinemaModal(false);
       })
       .catch((error) => {
-        handleSwal(error?.data?.message ? error?.data?.message : 'gagal edit studio' , "error");
+        handleSwal(
+          error?.data?.message ? error?.data?.message : "gagal edit studio",
+          "error"
+        );
         console.log(error);
       });
   };
@@ -760,28 +766,30 @@ const ManageEvent = () => {
     await apiClient
       .delete(`/api/v1/organization/studio/${data.id}`)
       .then((response) => {
-        const list = listStudio
+        const list = listStudio;
         list.splice(index, 1);
-        setListStudio([...list])
+        setListStudio([...list]);
       })
       .catch((error) => {
-        handleSwal(error?.data?.message ? error?.data?.message : 'gagal delete studio' , "error");
+        handleSwal(
+          error?.data?.message ? error?.data?.message : "gagal delete studio",
+          "error"
+        );
         console.log(error);
       });
   };
 
-  const getStudioData = async(id) =>{
+  const getStudioData = async (id) => {
     await apiClient
-    .get(`api/v1/organization/event/${id}/studios`)
-    .then((response) => {
-      setListStudio(response.data.data)
-    })
-    .catch((error) => {
-      handleSwal("gagal ambil data studio", "error");
-      console.log(error);
-    });
-  }
-
+      .get(`api/v1/organization/event/${id}/studios`)
+      .then((response) => {
+        setListStudio(response.data.data);
+      })
+      .catch((error) => {
+        handleSwal("gagal ambil data studio", "error");
+        console.log(error);
+      });
+  };
 
   return (
     <MainLayout top={true} footer={true}>
@@ -1573,20 +1581,16 @@ const ManageEvent = () => {
                     )}
                     {/* Ticket End */}
                   </div>
-                  {ticket.length < 9 ? (
-                    <div className="flex justify-center my-8">
-                      {isLoading ? (
-                        <Skeleton className="w-52 h-10 rounded" count="1" />
-                      ) : (
-                        <MainButton
-                          label="Buat Tiket Studio"
-                          onClick={onOpenAddStudioModal}
-                        />
-                      )}
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                  <div className="flex justify-center my-8">
+                    {isLoading ? (
+                      <Skeleton className="w-52 h-10 rounded" count="1" />
+                    ) : (
+                      <MainButton
+                        label="Buat Tiket Studio"
+                        onClick={onOpenAddStudioModal}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -1961,7 +1965,7 @@ const ManageEvent = () => {
         }}
         showModal={showCinemaModal}
         onClick={edittStudio ? editStudio : addStudio}
-        title={edittStudio ? 'Edit Studio' : `Buat Studio`}
+        title={edittStudio ? "Edit Studio" : `Buat Studio`}
       >
         <div className="grid grid-cols-3 gap-2">
           <div className="my-2 col-span-3">

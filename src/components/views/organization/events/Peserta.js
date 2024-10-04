@@ -25,13 +25,12 @@ const Peserta = ({ slug }) => {
           response.data.data.map((item) => {
             let obj = {
               "ID Peserta": item.id,
+              "Nomor Tiket": item.reference,
               "Nama Peserta": item.name,
               "Nama Tiket": item.ticket_name,
               "Harga Tiket": item.ticket_price,
               Email: item.email,
-              NIM: item.nim,
-              Referral: item.referral,
-              Hadir: item.presence,
+              Hadir: item.presence.label,
               "No. Telepon": item.phone,
               "Tanggal Registrasi": moment(item.created_at).format("lll"),
             };

@@ -5,11 +5,12 @@ function App() {
   window.Echo = new Echo({
     broadcaster: "pusher",
     key: "app-key",
-    cluster: "ap1",
-    wsHost: "ws.tokoevent.id",
-    wsPort: 6001,
+    wsHost: "ws.arkaya.site",
+    wsPort: 6002,
     wssPort: 6002,
     forceTLS: true,
+    encrypted: true,
+    disableStats: true,
     enabledTransports: ["ws", "wss"],
   });
 

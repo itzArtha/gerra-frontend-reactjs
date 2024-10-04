@@ -5,7 +5,7 @@ function App() {
   window.Echo = new Echo({
     broadcaster: "pusher",
     key: "app-key",
-    wsHost: "ws.arkaya.site",
+    wsHost: "ws.tokoevent.site",
     wsPort: 6002,
     wssPort: 6002,
     forceTLS: true,

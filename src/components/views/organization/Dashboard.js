@@ -70,7 +70,7 @@ const Dashboard = () => {
           <div className="font-semibold text-3xl pb-2">{count.events ?? 0}</div>
           <div className="font-light text-lg text-right pt-2">Events</div>
         </MainBox>
-        <MainBox className="bg-yellow-400 hover:bg-yellow-300">
+        {/*<MainBox className="bg-yellow-400 hover:bg-yellow-300">
           <div className="font-semibold text-3xl pb-2">
             {" "}
             {
@@ -83,11 +83,11 @@ const Dashboard = () => {
             }
           </div>
           <div className="font-light text-lg text-right pt-2">Pemasukan</div>
-        </MainBox>
-        <MainBox className="bg-yellow-400 hover:bg-yellow-300">
+        </MainBox>*/}
+        {/*<MainBox className="bg-yellow-400 hover:bg-yellow-300">
           <div className="font-semibold text-3xl pb-2">{count.sells ?? 0}</div>
           <div className="font-light text-lg text-right pt-2">Transaksi</div>
-        </MainBox>
+        </MainBox>*/}
         <MainBox className="bg-yellow-400 hover:bg-yellow-300">
           <div className="font-semibold text-3xl pb-2">
             {count.viewers ?? 0}

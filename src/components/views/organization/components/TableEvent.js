@@ -119,7 +119,7 @@ const TableEvent = ({ callback, data }) => {
           </MainBox>
         </div>
         <div>
-          <MainBox className="bg-red-400 hover:bg-red-300 pt-8">
+          {/*         <MainBox className="bg-red-400 hover:bg-red-300 pt-8">
             <div className="font-semibold text-5xl pb-4">
               <CurrencyFormat
                 value={data.total_sales}
@@ -129,7 +129,7 @@ const TableEvent = ({ callback, data }) => {
               />
             </div>
             <div className="font-light text-lg pt-4">Total penjualan tiket</div>
-          </MainBox>
+          </MainBox>*/}
         </div>
       </div>
       <div className={"text-center mt-2"}>

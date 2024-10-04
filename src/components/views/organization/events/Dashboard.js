@@ -254,7 +254,7 @@ const Dashboard = ({ slug }) => {
           <div className="font-semibold text-3xl pb-2">{trans}</div>
           <div className="font-light text-lg text-right pt-2">Peserta</div>
         </MainBox>
-        <MainBox className="bg-yellow-400 hover:bg-yellow-300">
+        {/*<MainBox className="bg-yellow-400 hover:bg-yellow-300">
           <div className="font-semibold text-3xl pb-2">
             {
               <CurrencyFormat
@@ -266,11 +266,11 @@ const Dashboard = ({ slug }) => {
             }
           </div>
           <div className="font-light text-lg text-right pt-2">Penjualan</div>
-        </MainBox>
-        <MainBox className="bg-yellow-400 hover:bg-yellow-300">
+        </MainBox>*/}
+        {/*        <MainBox className="bg-yellow-400 hover:bg-yellow-300">
           <div className="font-semibold text-3xl pb-2">{trans}</div>
           <div className="font-light text-lg text-right pt-2">Transaksi</div>
-        </MainBox>
+        </MainBox>*/}
         <MainBox className="bg-yellow-400 hover:bg-yellow-300">
           <div className="font-semibold text-3xl pb-2">{data.viewers ?? 0}</div>
           <div className="font-light text-lg text-right pt-2">Pengunjung</div>

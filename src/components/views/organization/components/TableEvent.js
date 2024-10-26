@@ -109,7 +109,7 @@ const TableEvent = ({ callback, data }) => {
 
   const ExpandedComponent = ({ data }) => (
     <div className={"p-4"}>
-      <div className={"grid grid-cols-2 gap-2"}>
+      {/* <div className={"grid grid-cols-2 gap-2"}>
         <div>
           <MainBox className="bg-indigo-400 hover:bg-indigo-300 pt-8">
             <div className="font-semibold text-5xl pb-4">
@@ -131,7 +131,7 @@ const TableEvent = ({ callback, data }) => {
             <div className="font-light text-lg pt-4">Total penjualan tiket</div>
           </MainBox>*/}
         </div>
-      </div>
+      </div> */}
       <div className={"text-center mt-2"}>
         <MainButton
           label={"Lihat Preview"}

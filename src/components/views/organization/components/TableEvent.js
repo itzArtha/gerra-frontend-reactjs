@@ -130,8 +130,8 @@ const TableEvent = ({ callback, data }) => {
             </div>
             <div className="font-light text-lg pt-4">Total penjualan tiket</div>
           </MainBox>*/}
-        </div>
-      </div> */}
+      {/*</div>*/}
+      {/*</div>*/}
       <div className={"text-center mt-2"}>
         <MainButton
           label={"Lihat Preview"}
